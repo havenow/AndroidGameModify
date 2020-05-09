@@ -16,7 +16,7 @@
 #ifdef LOG_PRINT
 
 #define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"scanmem",__VA_ARGS__)
-#define ELF_LOG(...) fprintf (stderr, const char*format, [argument])
+#define ELF_LOG(...) fprintf (stderr, __VA_ARGS__)
 
 #else
 
