@@ -16,3 +16,8 @@ LOCAL_LDFLAGS += -fPIE -pie
 # Android Studio 利用CMake生成的是ninja
 ninja是一个小型的关注速度的构建系统，不需要关心ninja的脚本，知道怎么配置CMake就可以了      
 
+# 安卓通过socket给elf发送命令，修改内存
+/data/local/tmp目录下面的elf可以运行（chmod 777），程序入口函数是main    
+安卓上层调用so里面的本地方法     
+socket都是用c++实现     
+
