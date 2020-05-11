@@ -35,3 +35,21 @@ printf("%0x", addr);//打印 A8F79F30
 //printf("%s", addr);会崩溃
 int value = strtol(ptr, &ptr, 10);
 ```
+
+# Android studio ndk samples
+https://github.com/android/ndk-samples     
+ndk-samples\other-builds\ndkbuild\two-libs      
+这个例子是ndk还是使用android.mk来编译，但是c++代码是无法调试的，也看不了c++代码      
+Android Studio只能写CMakeList.txt，才能调试c++代码？？？     
+```
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
+        }
+    }
+```
+使用夜神模拟器只能跑程序，无法调试程序???     
+
+
+
+
