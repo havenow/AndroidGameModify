@@ -21,3 +21,17 @@ ninja是一个小型的关注速度的构建系统，不需要关心ninja的脚�
 安卓上层调用so里面的本地方法     
 socket都是用c++实现     
 
+# strtoll打印时导致的crash
+```c++
+char* io_buffer = "W A8F79F30 1222";
+int data;
+char *ptr;
+char *ptr1;
+
+char* cursor = io_buffer;
+cursor += 1;
+void * addr = (void *)strtoll(cursor, &ptr, 16);
+printf("%0x", addr);//打印 A8F79F30
+//printf("%s", addr);会崩溃
+int value = strtol(ptr, &ptr, 10);
+```
