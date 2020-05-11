@@ -52,4 +52,11 @@ Android Studio只能写CMakeList.txt，才能调试c++代码？？？
 
 
 
-
+# ndk里面函数如果最后无返回值，Android Studio调试此函数时会崩溃
+```
+static jint init_native(JNIEnv *env, jobject thiz)
+{
+	... ...
+	//return 0;
+}
+```

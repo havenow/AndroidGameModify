@@ -411,6 +411,7 @@ static jint init_native(JNIEnv *env, jobject thiz)
 		return 1;
 	}
 	LOGE("connect socket sucess %d\n", g_socket);
+	return 0;
 }
 
 static void doCmdD_native(JNIEnv *env, jobject thiz, jint pid)
