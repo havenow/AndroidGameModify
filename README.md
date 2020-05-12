@@ -60,3 +60,14 @@ static jint init_native(JNIEnv *env, jobject thiz)
 	//return 0;
 }
 ```
+
+# Android Studio调试c++代码
+真机可以进入java和c++断点					
+安卓自带的模拟器可以进入java和c++断点					
+夜神模拟器可以进入java断点，无法进入c++断点，没有找到原因				
+(夜神模拟器应该需要使用x86的so，使用了还是无法进入c++断点)			
+```
+       ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+```		
