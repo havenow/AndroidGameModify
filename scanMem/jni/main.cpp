@@ -21,18 +21,20 @@
 #include <jni.h>
 #include <android/log.h>
 
-#define LOG_PRINT
-#ifdef LOG_PRINT
+//#define LOG_PRINT
+//#ifdef LOG_PRINT
+//
+//#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"scanmem",__VA_ARGS__)
+//#define ELF_LOG(...) fprintf (stderr, __VA_ARGS__)
+//
+//#else
+//
+//#define  LOGE(...)
+//#define ELF_LOG(...)
+//
+//#endif
 
-#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"scanmem",__VA_ARGS__)
-#define ELF_LOG(...) fprintf (stderr, __VA_ARGS__)
-
-#else
-
-#define  LOGE(...)
-#define ELF_LOG(...)
-
-#endif
+#include "common.h"
 
 //adb forward tcp:1111 localabstract:minitouch
 //localabstract:<unix domain socket name>
@@ -41,10 +43,11 @@ char g_szDefaultSocketName[64] = "android_scanmem";
 
 int g_socket = 0;
 int g_port = 1122;
+int g_callType = 1;//1ï¼š é€šè¿‡è°ƒç”¨elfï¼›2ï¼šé€šè¿‡è°ƒç”¨so
 pid_t g_cur_target = -1;
 
 /********************************************************
-ÔËÐÐelf£¬²ÎÊý£ºÒª¸½¼ÓµÄ½ø³Ì£¬ÐèÒªÐÞ¸ÄÄÚ´æµÄµØÖ·£¬ÐÞ¸ÄµÄÖµ
+è¿è¡Œelfï¼Œå‚æ•°ï¼šè¦é™„åŠ çš„è¿›ç¨‹ï¼Œéœ€è¦ä¿®æ”¹å†…å­˜çš„åœ°å€ï¼Œä¿®æ”¹çš„å€¼
 ./scanmemDemo2 1222 A8F79F30 99
 *********************************************************/
 int start_server(char* sockname)
@@ -81,7 +84,7 @@ int start_server(char* sockname)
 
 void process_cmd(char* io_buffer)
 {
-	ELF_LOG("process_cmd io_buffer:	%s\n", io_buffer);
+	ANDROID_ELF_LOG("process_cmd io_buffer:	%s\n", io_buffer);
 	long int pid;
 	char* nextPtr;
 	void* addr;
@@ -92,52 +95,53 @@ void process_cmd(char* io_buffer)
 	switch (io_buffer[0])
 	{
 	case 'D':
-		ELF_LOG("process_cmd D:	%s\n", io_buffer);
+		ANDROID_ELF_LOG("process_cmd D:	%s\n", io_buffer);
 		pid = strtol(cursor, &cursor, 10);
 
 		if ((g_cur_target != -1) && (g_cur_target != pid))
 		{
-			ELF_LOG("#########	new detach, first detach old\n");
+			ANDROID_ELF_LOG("#########	new detach, first detach old\n");
 			ptrace(PTRACE_DETACH, g_cur_target, 1, 0);
 		}
 
 		g_cur_target = (pid_t)pid;
-		ELF_LOG("#########	attach\n");
+		ANDROID_ELF_LOG("#########	attach\n");
 		if (ptrace(PTRACE_ATTACH, g_cur_target, NULL, NULL) == -1L)
 		{
-			ELF_LOG("failed to attach\n");
+			ANDROID_ELF_LOG("failed to attach\n");
+			ANDROID_ELF_LOG("failed to attach errno: %d\n", errno);
 			return;
 		}
 		if (waitpid(g_cur_target, &status, 0) == -1 || !WIFSTOPPED(status))
 		{
-			ELF_LOG("there was an error waiting for the target to stop.\n");
+			ANDROID_ELF_LOG("there was an error waiting for the target to stop.\n");
 			return;
 		}
 		break;
 	case 'S':
-		ELF_LOG("process_cmd S:	%s\n", io_buffer);
+		ANDROID_ELF_LOG("process_cmd S:	%s\n", io_buffer);
 
 		break;
 	case 'W':
-		ELF_LOG("process_cmd W:	%s\n", io_buffer);
+		ANDROID_ELF_LOG("process_cmd W:	%s\n", io_buffer);
 
-		ELF_LOG("string split\n");
+		ANDROID_ELF_LOG("string split\n");
 		addr = (void *)strtoll(cursor, &nextPtr, 16);
-		ELF_LOG("address	%0x\n", addr);
+		ANDROID_ELF_LOG("address	%0x\n", addr);
 		data = strtol(nextPtr, NULL, 10);
-		ELF_LOG("value 	%d\n", data);
+		ANDROID_ELF_LOG("value 	%d\n", data);
 
 		ELF_LOG("#########	write mem\n");
 		if (ptrace(PTRACE_POKEDATA, g_cur_target, addr, data) == -1L)
 		{
-			ELF_LOG("memory allocation failed.\n");
+			ANDROID_ELF_LOG("memory allocation failed.\n");
 			return;
 		}
-		ELF_LOG("#########	detach\n");
+		ANDROID_ELF_LOG("#########	detach\n");
 		ptrace(PTRACE_DETACH, g_cur_target, 1, 0);
 		break;
 	case 'E':
-		ELF_LOG("process_cmd E:	%s\n", io_buffer);
+		ANDROID_ELF_LOG("process_cmd E:	%s\n", io_buffer);
 
 		break;
 	default:
@@ -209,6 +213,24 @@ int main(int argc, char **argv)
 
 	fprintf(stderr, "#########	return sucess\n");
 #endif
+    if (getuid() != 0)
+		ELF_LOG("*** RUNNING AS unROOT, uid: %d. ***\n", getuid());
+    else
+		ELF_LOG( "*** RUNNING AS ROOT, uid: %d. ***\n", getuid());
+
+    /*
+     * rootçš„æ‰‹æœº  uid = 2000ï¼Œç”¨adb shell ps -efæŸ¥çœ‹ï¼Œuidæ˜¯shell
+     * å¤œç¥žæ¨¡æ‹Ÿ    uid = 0
+     * */
+
+//	if (getuid() != 0)
+//	{
+//		execl("/system/xbin/su", "su", NULL);
+//		if (getuid() != 0)
+//			ELF_LOG("*** RUNNING AS unROOT, uid: %d. ***\n", getuid());
+//		else
+//			ELF_LOG( "*** RUNNING AS ROOT, uid: %d. ***\n", getuid());
+//	}
 
 	char* sockname = g_szDefaultSocketName;
 	struct sockaddr_un client_addr;
@@ -331,9 +353,7 @@ bail:
 }
 
 __attribute__((visibility("default")))
-void JNI_OnUnload(JavaVM* vm, void* reserved)//ÍË³öÊÇÃ»ÓÐ±»µ÷ÓÃ£¿£¿£¿
-//ÍË³öµÄÊ±ºòjavaµ÷µÄSystem.exit(0)£¬²»ÖªµÀÄÜ²»ÄÜÕý³£µ÷µ½unloadº¯Êý
-//JNI_OnUnloadÊ²Ã´Ê±ºòµ÷ÓÃ
+void JNI_OnUnload(JavaVM* vm, void* reserved)
 {
 	LOGE("JNI_OnUnload");
 }
@@ -343,10 +363,10 @@ static jint gameModifyDemo_native(JNIEnv *env, jobject thiz, jstring pid, jstrin
 	const char *strPid = env->GetStringUTFChars(pid, NULL);
 	const char *strAddress = env->GetStringUTFChars(address, NULL);
 
-	if (getuid() != 0)
-        LOGE("*** RUNNING AS unROOT. ***\n");
-	else
-		LOGE( "*** RUNNING AS ROOT. ***\n");
+    if (getuid() != 0)
+        LOGE("*** RUNNING AS unROOT, uid: %d. ***\n", getuid());
+    else
+        LOGE( "*** RUNNING AS ROOT, uid: %d. ***\n", getuid());
 
 	LOGE("pid     %s\n", strPid);
 	LOGE("address %s\n", strAddress);
@@ -389,28 +409,43 @@ static jint gameModifyDemo_native(JNIEnv *env, jobject thiz, jstring pid, jstrin
 	return 0;
 }
 
-static jint init_native(JNIEnv *env, jobject thiz)
+static jint init_native(JNIEnv *env, jobject thiz, jint callType)
 {
-	struct sockaddr_in addr;
-	g_socket = socket(AF_INET, SOCK_STREAM, 0);
-	if (g_socket < 0)
-	{
-		LOGE("creating socket error\n");
-		return 1;
-	}
+    if (callType == 1 || callType == 2)
+        g_callType = callType;
 
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET; //ÉèÖÃÎªIPÍ¨ÐÅ
-	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	addr.sin_port = htons(g_port);
+    if (getuid() != 0)
+        LOGE("*** RUNNING AS unROOT, uid: %d. ***\n", getuid());
+    else
+        LOGE( "*** RUNNING AS ROOT, uid: %d. ***\n", getuid());
 
-	if (connect(g_socket, (struct sockaddr *) &addr, sizeof(addr)) < 0)
-	{
-		LOGE("connect socket error %d\n", errno);
-		close(g_socket);
-		return 1;
-	}
-	LOGE("connect socket sucess %d\n", g_socket);
+    if (g_callType == 1)
+    {
+        struct sockaddr_in addr;
+        g_socket = socket(AF_INET, SOCK_STREAM, 0);
+        if (g_socket < 0)
+        {
+            LOGE("creating socket error\n");
+            return 1;
+        }
+
+        memset(&addr, 0, sizeof(addr));
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        addr.sin_port = htons(g_port);
+
+        if (connect(g_socket, (struct sockaddr *) &addr, sizeof(addr)) < 0)
+        {
+            LOGE("connect socket error %d\n", errno);
+            close(g_socket);
+            return 1;
+        }
+        LOGE("connect socket sucess %d\n", g_socket);
+    }
+    else if (g_callType == 2)
+    {
+
+    }
 	return 0;
 }
 
@@ -419,14 +454,29 @@ static void doCmdD_native(JNIEnv *env, jobject thiz, jint pid)
 	LOGE("doCmdD_native %d\n", pid);
 	char cmd[80] = { 0 };
 	int io_length = snprintf(cmd, sizeof(cmd), "D %d\n", pid);
-	send(g_socket, cmd, io_length, 0);
+
+    if (g_callType == 1)
+    {
+        send(g_socket, cmd, io_length, 0);
+    }
+    else if (g_callType == 2)
+    {
+        process_cmd(cmd);
+    }
 }
 
 static void doCmdS_native(JNIEnv *env, jobject thiz)
 {
 	char cmd[80] = { 0 };
 	int io_length = snprintf(cmd, sizeof(cmd), "S\n");
-	send(g_socket, cmd, io_length, 0);
+    if (g_callType == 1)
+    {
+        send(g_socket, cmd, io_length, 0);
+    }
+    else if (g_callType == 2)
+    {
+        process_cmd(cmd);
+    }
 }
 
 static void doCmdW_native(JNIEnv *env, jobject thiz, jstring address, jint value)
@@ -436,32 +486,50 @@ static void doCmdW_native(JNIEnv *env, jobject thiz, jstring address, jint value
 	char *endptr;
 	addr = (void *)strtoll(strAddress, &endptr, 16);
 
-	if (getuid() != 0)
-		LOGE("*** RUNNING AS unROOT. ***\n");
-	else
-		LOGE( "*** RUNNING AS ROOT. ***\n");
-
 	LOGE("doCmdW_native addr %0x\n", addr);
 	LOGE("doCmdW_native value %d\n", value);
 	char cmd[80] = { 0 };
 	int io_length = snprintf(cmd, sizeof(cmd), "W %0x %d\n", addr, value);
 	LOGE("doCmdW_native cmd %s\n", cmd);
-	send(g_socket, cmd, io_length, 0);
+
+    if (g_callType == 1)
+    {
+        send(g_socket, cmd, io_length, 0);
+    }
+    else if (g_callType == 2)
+    {
+        process_cmd(cmd);
+    }
 
 	env->ReleaseStringUTFChars(address, strAddress);
+    LOGE("doCmdW_native\n");
 }
 
 static void doCmdE_native(JNIEnv *env, jobject thiz)
 {
 	char cmd[80] = { 0 };
 	int io_length = snprintf(cmd, sizeof(cmd), "E\n");
-	send(g_socket, cmd, io_length, 0);
+    if (g_callType == 1)
+    {
+        send(g_socket, cmd, io_length, 0);
+    }
+    else if (g_callType == 2)
+    {
+        process_cmd(cmd);
+    }
 }
 
 static void eixt_native(JNIEnv *env, jobject thiz)
 {
-	LOGE("socket close %d\n", g_socket);
-	close(g_socket);
+    if (g_callType == 1)
+    {
+        LOGE("socket close %d\n", g_socket);
+        close(g_socket);
+    }
+    else if (g_callType == 2)
+    {
+
+    }
 }
 
 #define APP_PKG_NAME	"com/wufun91/gameModify"
@@ -470,7 +538,7 @@ int register_ScanMem(JNIEnv *env)
 {
 	static const JNINativeMethod methods[] = {
 			{ "gameModifyDemo", "(Ljava/lang/String;Ljava/lang/String;I)I", (int *)gameModifyDemo_native },
-			{ "init",           "()I",                                      (int *)init_native },
+			{ "init",           "(I)I",                                      (int *)init_native },
 			{ "doCmdD",         "(I)V",                                     (void *)doCmdD_native },
 			{ "doCmdS",         "()V",                                      (void *)doCmdS_native },
 			{ "doCmdW",         "(Ljava/lang/String;I)V",                   (void *)doCmdW_native },
@@ -483,3 +551,11 @@ int register_ScanMem(JNIEnv *env)
     return env->RegisterNatives(clazz, methods, NELEM(methods));
 }
 
+//#include <jni.h>
+//#include <string>
+//
+//extern "C" JNIEXPORT jstring JNICALL Java_com_wufun91_gameModify_MainActivity_stringFromJNI(JNIEnv* env, jobject /* this */)
+//{
+//	std::string hello = "Hello from C++";
+//	return env->NewStringUTF(hello.c_str());
+//}
