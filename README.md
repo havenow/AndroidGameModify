@@ -74,7 +74,10 @@ static jint init_native(JNIEnv *env, jobject thiz)
 
 # getuid()
 ```
+	使用elf，/data/local/tmp目下调用ptrace：
      root的手机  uid = 2000，用adb shell ps -ef查看，uid是shell
      夜神模拟    uid = 0
 	 uid为0时ptrace(PTRACE_DETACH,才会成功
+	 
+	在Virtual Xposed中使用so调用ptrace，是可以成功的，但是无法看到日志。
 ```
