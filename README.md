@@ -71,3 +71,10 @@ static jint init_native(JNIEnv *env, jobject thiz)
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
 ```		
+
+# getuid()
+```
+     root的手机  uid = 2000，用adb shell ps -ef查看，uid是shell
+     夜神模拟    uid = 0
+	 uid为0时ptrace(PTRACE_DETACH,才会成功
+```
