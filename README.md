@@ -81,3 +81,42 @@ static jint init_native(JNIEnv *env, jobject thiz)
 	 
 	在Virtual Xposed中使用so调用ptrace，是可以成功的，但是无法看到日志。
 ```
+
+# linux内存
+text、rodata、data、bss、stack、heap     
+https://www.cnblogs.com/DataArt/p/9879192.html     
+
+.text (r-x), .rodata (r--), .data (rw-) and .bss (rw-)     
+
+/proc/${pid}/maps，这个文件有内存所有的详细信息     
+查找的内存段：     
+heap, stack, .data, .bss     
+
+```
+ /*
+             * get the load address for regions of the same ELF file
+             *
+             * When the ELF loader loads an executable or a library into
+             * memory, there is one region per ELF segment created:
+             * .text (r-x), .rodata (r--), .data (rw-) and .bss (rw-). The
+             * 'x' permission of .text is used to detect the load address
+             * (region start) and the end of the ELF file in memory. All
+             * these regions have the same filename. The only exception
+             * is the .bss region. Its filename is empty and it is
+             * consecutive with the .data region. But the regions .bss and
+             * .rodata may not be present with some ELF files. This is why
+             * we can't rely on other regions to be consecutive in memory.
+             * There should never be more than these four regions.
+             * The data regions use their variables relative to the load
+             * address. So determining it makes sense as we can get the
+             * variable address used within the ELF file with it.
+             * But for the executable there is the special case that there
+             * is a gap between .text and .rodata. Other regions might be
+             * loaded via mmap() to it. So we have to count the number of
+             * regions belonging to the exe separately to handle that.
+             * References:
+             * http://en.wikipedia.org/wiki/Executable_and_Linkable_Format
+             * http://wiki.osdev.org/ELF
+             * http://lwn.net/Articles/531148/
+             */
+```
