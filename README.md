@@ -120,3 +120,36 @@ heap, stack, .data, .bss
              * http://lwn.net/Articles/531148/
              */
 ```
+
+# 连接符
+```
+##表示连接符
+#define DEFINE_INTEGER_MATCHANY_ROUTINE(DATATYPENAME, DATAWIDTH) \
+    int scan_routine_##DATATYPENAME##_ANY ()//DATATYPENAME的后面跟的是字符串,所以需要加##
+	{
+	}
+
+DEFINE_INTEGER_MATCHANY_ROUTINE(INTEGER8, 8)
+展开之后就是：
+    int scan_routine_INTEGER8_ANY ()
+	{
+	}
+
+注意下面的区别
+
+#define REGISTER_NATIVE(env, module) { \
+	extern int register_##module(JNIEnv *); \
+	if (register_##module(env) < 0) \
+		return JNI_FALSE; \
+}
+
+module后面不是跟的字符串，所以不需要加##
+
+REGISTER_NATIVE(env, Emulator);会替换成
+//##表示连接符
+{
+	extern int register_Emulator(JNIEnv *);//register_Emulator(JNIEnv *)在emulator.cpp中
+	if (register_Emulator(env) < 0)
+		return JNI_FALSE;
+}
+```
