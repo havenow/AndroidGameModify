@@ -21,7 +21,18 @@
 #define PACKAGE_VERSION "0.13"
 #define PACKAGE_BUGREPORT "http://code.google.com/p/scanmem/"
 /********************************************************
-运行elf，
+运行elf：将elf文件拷贝到/data/local/tmp/目录下面，修改权限
+./elfTest -p 100
+./elfTest -v		打印版本之后直接返回
+./elfTest -h		打印版本和帮助之后直接返回
+./elfTest -b
+./elfTest -d
+
+下面是输入有参数有误时
+./elfTest -p		进入default，打印版本和帮助之后直接返回
+./elfTest			进入设置signal的sighandler 这一行
+./elfTest 3			进入done
+./elfTest f			进入done
 *********************************************************/
 typedef struct {
 	unsigned exit : 1;
@@ -129,7 +140,9 @@ done:
 		}
 	}//done 结束
 
-	if (1) 
+/*********************************************************************************************/
+
+	if (1) //设置signal的sighandler
 	{
 		fprintf(stderr, "let it crash and see the core dump.\n");
 		(void)signal(SIGHUP, sighandler);
