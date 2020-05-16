@@ -17,6 +17,7 @@
 #include <android/log.h>
 
 #include "common.h"
+#include "list.h"
 
 #define PACKAGE_VERSION "0.13"
 #define PACKAGE_BUGREPORT "http://code.google.com/p/scanmem/"
@@ -37,6 +38,7 @@
 typedef struct {
 	unsigned exit : 1;
 	pid_t target;
+	list_t *commands;      /* command handlers */
 } globals_t;
 
 globals_t globals = {
@@ -152,6 +154,11 @@ done:
 		(void)signal(SIGILL, sighandler);
 		(void)signal(SIGFPE, sighandler);
 		(void)signal(SIGTERM, sighandler);
+	}
+
+	if ((vars->commands = l_init()) == NULL) {
+		fprintf(stderr, "sorry, there was a memory allocation error.\n");
+		ret = EXIT_FAILURE;
 	}
 
 	fprintf(stderr, "main exit 0");

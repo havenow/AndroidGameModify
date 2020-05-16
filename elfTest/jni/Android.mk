@@ -6,7 +6,11 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := elfTest
 
-LOCAL_SRC_FILES := main.cpp
+LOCAL_C_INCLUDES := $(LOCAL_PATH)\
+
+LOCAL_SRC_FILES := main.cpp \
+					list.c \
+
 
 # Enable PIE manually. Will get reset on $(CLEAR_VARS).
 LOCAL_CFLAGS += -fPIE
