@@ -17,7 +17,9 @@
 #include <android/log.h>
 
 #include "common.h"
-#include "list.h"
+#include "scanmem.h"
+#include "commands.h"
+#include "handlers.h"
 
 #define PACKAGE_VERSION "0.13"
 #define PACKAGE_BUGREPORT "http://code.google.com/p/scanmem/"
@@ -35,11 +37,6 @@
 ./elfTest 3			进入done
 ./elfTest f			进入done
 *********************************************************/
-typedef struct {
-	unsigned exit : 1;
-	pid_t target;
-	list_t *commands;      /* command handlers */
-} globals_t;
 
 globals_t globals = {
 	0,                          /* exit flag */
@@ -160,6 +157,41 @@ done:
 		fprintf(stderr, "sorry, there was a memory allocation error.\n");
 		ret = EXIT_FAILURE;
 	}
+
+	/* NULL shortdoc means dont display this command in `help` listing */
+	registercommand("set",		(void*)handler__set,		vars->commands, SET_SHRTDOC,			SET_LONGDOC);
+	registercommand("list",		(void*)handler__list,		vars->commands, LIST_SHRTDOC,			LIST_LONGDOC);
+	registercommand("delete",	(void*)handler__delete,		vars->commands, DELETE_SHRTDOC,			DELETE_LONGDOC);
+	registercommand("reset",	(void*)handler__reset,		vars->commands, RESET_SHRTDOC,			RESET_LONGDOC);
+	registercommand("pid",		(void*)handler__pid,		vars->commands, PID_SHRTDOC,			PID_LONGDOC);
+	registercommand("snapshot",	(void*)handler__snapshot,	vars->commands, SNAPSHOT_SHRTDOC,		SNAPSHOT_LONGDOC);
+	registercommand("dregion",	(void*)handler__dregion,	vars->commands, DREGION_SHRTDOC,		DREGION_LONGDOC);
+	registercommand("dregions",	(void*)handler__dregion,	vars->commands, NULL,					DREGION_LONGDOC);
+	registercommand("lregions",	(void*)handler__lregions,	vars->commands, LREGIONS_SHRTDOC,		LREGIONS_LONGDOC);
+	registercommand("version",	(void*)handler__version,	vars->commands, VERSION_SHRTDOC,		VERSION_LONGDOC);
+	registercommand("=",		(void*)handler__decinc,		vars->commands, NOTCHANGED_SHRTDOC,		NOTCHANGED_LONGDOC);
+	registercommand("!=",		(void*)handler__decinc,		vars->commands, CHANGED_SHRTDOC,		CHANGED_LONGDOC);
+	registercommand("<",		(void*)handler__decinc,		vars->commands, LESSTHAN_SHRTDOC,		LESSTHAN_LONGDOC);
+	registercommand(">",		(void*)handler__decinc,		vars->commands, GREATERTHAN_SHRTDOC,	GREATERTHAN_LONGDOC);
+	registercommand("+",		(void*)handler__decinc,		vars->commands, INCREASED_SHRTDOC,		INCREASED_LONGDOC);
+	registercommand("-",		(void*)handler__decinc,		vars->commands, DECREASED_SHRTDOC,		DECREASED_LONGDOC);
+	registercommand("\"",		(void*)handler__string,		vars->commands, STRING_SHRTDOC,			STRING_LONGDOC);
+	registercommand("update",	(void*)handler__update,		vars->commands, UPDATE_SHRTDOC,			UPDATE_LONGDOC);
+	registercommand("exit",		(void*)handler__exit,		vars->commands, EXIT_SHRTDOC,			EXIT_LONGDOC);
+	registercommand("quit",		(void*)handler__exit,		vars->commands, NULL,					EXIT_LONGDOC);
+	registercommand("q",		(void*)handler__exit,		vars->commands, NULL,					EXIT_LONGDOC);
+	registercommand("help",		(void*)handler__help,		vars->commands, HELP_SHRTDOC,			HELP_LONGDOC);
+	registercommand("shell",	(void*)handler__shell,		vars->commands, SHELL_SHRTDOC,			SHELL_LONGDOC);
+	registercommand("watch",	(void*)handler__watch,		vars->commands, WATCH_SHRTDOC,			WATCH_LONGDOC);
+	registercommand("show",		(void*)handler__show,		vars->commands, SHOW_SHRTDOC,			SHOW_LONGDOC);
+	registercommand("dump",		(void*)handler__dump,		vars->commands, DUMP_SHRTDOC,			DUMP_LONGDOC);
+	registercommand("write",	(void*)handler__write,		vars->commands, WRITE_SHRTDOC,			WRITE_LONGDOC);
+	registercommand("option",	(void*)handler__option,		vars->commands, OPTION_SHRTDOC,			OPTION_LONGDOC);
+	registercommand("__eof",	(void*)handler__eof,		vars->commands, NULL,					NULL);
+	registercommand(NULL,		(void*)handler__default,	vars->commands, DEFAULT_SHRTDOC,		DEFAULT_LONGDOC);
+
+
+
 
 	fprintf(stderr, "main exit 0");
 	return 0;

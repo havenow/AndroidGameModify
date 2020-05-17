@@ -10,6 +10,10 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)\
 
 LOCAL_SRC_FILES := main.cpp \
 					list.c \
+					show_message.c \
+					commands.c \
+					handlers.c \
+					
 
 
 # Enable PIE manually. Will get reset on $(CLEAR_VARS).

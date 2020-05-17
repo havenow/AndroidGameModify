@@ -5,6 +5,10 @@
 #ifndef DEMO_COMMON_H
 #define DEMO_COMMON_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #include <jni.h>
 #include <android/log.h>
@@ -21,6 +25,10 @@
 #define  LOGE(...)
 #define ELF_LOG(...)
 #define ANDROID_ELF_LOG(...)
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif //DEMO_COMMON_H
