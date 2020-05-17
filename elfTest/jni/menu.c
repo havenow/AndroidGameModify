@@ -78,7 +78,7 @@ bool getcommand(globals_t * vars, char **line)
             fflush(stdout); /* otherwise front-end may not receive this */
             *line = NULL; /* let getline malloc it */
             size_t n;
-            ssize_t bytes_read = getline(line, &n, stdin);
+            ssize_t bytes_read = getline(line, &n, stdin);//获取控制台的输入
             success = (bytes_read > 0);
             if (success)
                 (*line)[bytes_read-1] = '\0'; /* remove the trialing newline */
