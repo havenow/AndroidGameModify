@@ -61,7 +61,7 @@ bool registercommand(const char *command, void *handler, list_t * commands,
     assert(commands != NULL);
 
     if (command != NULL) {
-        if ((data = malloc(sizeof(command_t) + strlen(command) + 1)) == NULL) {
+        if ((data = malloc(sizeof(command_t) + strlen(command) + 1)) == NULL) {//分配一个command_t（只是四个指针）的内存块，后面接着分配的是存放实际command的内存
             show_error("sorry, there was a memory allocation problem.\n");
             return false;
         }
