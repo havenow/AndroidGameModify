@@ -13,6 +13,9 @@ LOCAL_SRC_FILES := main.cpp \
 					show_message.c \
 					commands.c \
 					handlers.c \
+					menu.c \
+					getdelim.c \
+					getline.c \
 					
 
 

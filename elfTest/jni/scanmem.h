@@ -32,6 +32,7 @@ extern "C"
 typedef struct {
 	unsigned exit : 1;
 	pid_t target;
+	long num_matches;
 	list_t *commands;      /* command handlers */
 	const char *current_cmdline; /* the command being executed */
 	struct {

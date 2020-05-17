@@ -20,6 +20,7 @@
 #include "scanmem.h"
 #include "commands.h"
 #include "handlers.h"
+#include "menu.h"
 
 #define PACKAGE_VERSION "0.13"
 #define PACKAGE_BUGREPORT "http://code.google.com/p/scanmem/"
@@ -111,10 +112,10 @@ int main(int argc, char **argv)
 			printhelp();
 			return EXIT_SUCCESS;
 		case 'b':
-			//vars->options.backend = 1;
+			vars->options.backend = 1;
 			break;
 		case 'd':
-			//vars->options.debug = 1;
+			vars->options.debug = 1;
 			break;
 		case -1://不是"vhbdp:"这几个参数时；注意p后面是带参数的
 			goto done;
@@ -191,7 +192,30 @@ done:
 	registercommand(NULL,		(void*)handler__default,	vars->commands, DEFAULT_SHRTDOC,		DEFAULT_LONGDOC);
 
 
+	/* main loop, read input and process commands */
+	while (!vars->exit) {
+		char *line;
 
+		/* reads in a commandline from the user, and returns a pointer to it in *line */
+		if (getcommand(vars, &line) == false) {
+			fprintf(stderr, "failed to read in a command.\n");
+			ret = EXIT_FAILURE;
+			break;
+		}
+
+		/* execcommand returning failure isnt fatal, just the a command couldnt complete. */
+		if (execcommand(vars, line) == false) {
+			if (vars->target == 0) {
+				fprintf(stderr, "Enter the pid of the process to search using the \"pid\" command.\n");
+				fprintf(stderr, "Enter \"help\" for other commands.\n");
+			}
+			else {
+				fprintf(stderr, "Please enter current value, or \"help\" for other commands.\n");
+			}
+		}
+
+		free(line);
+	}
 
 	fprintf(stderr, "main exit 0");
 	return 0;

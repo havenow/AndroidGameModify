@@ -105,8 +105,7 @@ bool handler__reset(globals_t * vars, char **argv, unsigned argc)
 
 bool handler__pid(globals_t * vars, char **argv, unsigned argc)
 {
-   
-
+	show_info("handler__pid.\n");
     return true;
 }
 
@@ -162,7 +161,8 @@ bool handler__update(globals_t * vars, char **argv, unsigned argc)
 
 bool handler__exit(globals_t * vars, char **argv, unsigned argc)
 {
-    
+	vars->exit = 1;
+	show_info("handler__exit.\n");
     return true;
 }
 
@@ -170,7 +170,7 @@ bool handler__exit(globals_t * vars, char **argv, unsigned argc)
 
 bool handler__help(globals_t * vars, char **argv, unsigned argc)
 {
-    
+	show_info("handler__help.\n");
     return true;
 }
 
