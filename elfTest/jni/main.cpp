@@ -172,11 +172,9 @@ int main(int argc, char **argv)
 		free(line);
 	}
 
-	fprintf(stderr, "main exit 0");
-	return 0;
-
 end:
-	
+	fprintf(stderr, "main exit");
+	l_destroy(vars->commands);
 	return ret;
 }
 
