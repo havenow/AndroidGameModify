@@ -17,6 +17,7 @@ LOCAL_SRC_FILES := main.cpp \
 					getdelim.c \
 					getline.c \
 					scanmem.c \
+					maps.c \
 					
 
 

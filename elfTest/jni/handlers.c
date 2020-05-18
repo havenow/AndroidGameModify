@@ -99,6 +99,28 @@ bool handler__delete(globals_t * vars, char **argv, unsigned argc)
 
 bool handler__reset(globals_t * vars, char **argv, unsigned argc)
 {
+	show_info("handler__reset.\n");
+
+	USEPARAMS();
+
+	if (vars->matches) { free(vars->matches); vars->matches = NULL; vars->num_matches = 0; }
+
+	/* refresh list of regions */
+	l_destroy(vars->regions);
+
+	/* create a new linked list of regions */
+	if ((vars->regions = l_init()) == NULL) {
+		show_error("sorry, there was a problem allocating memory.\n");
+		return false;
+	}
+
+	/* read in maps if a pid is known */
+	if (vars->target && readmaps(vars->target, vars->regions) != true) {
+		show_error("sorry, there was a problem getting a list of regions to search.\n");
+		show_warn("the pid may be invalid, or you don't have permission.\n");
+		vars->target = 0;
+		return false;
+	}
    
     return true;
 }
@@ -106,7 +128,28 @@ bool handler__reset(globals_t * vars, char **argv, unsigned argc)
 bool handler__pid(globals_t * vars, char **argv, unsigned argc)
 {
 	show_info("handler__pid.\n");
-    return true;
+	char *resetargv[] = { "reset", NULL };
+	char *end = NULL;
+
+	if (argc == 2) {
+		vars->target = (pid_t)strtoul(argv[1], &end, 0x00);
+
+		if (vars->target == 0) {
+			show_error("`%s` does not look like a valid pid.\n", argv[1]);
+			return false;
+		}
+	}
+	else if (vars->target) {
+		/* print the pid of the target program */
+		show_info("target pid is %u.\n", vars->target);
+		return true;
+	}
+	else {
+		show_info("no target is currently set.\n");
+		return false;
+	}
+
+	return handler__reset(vars, resetargv, 1);
 }
 
 bool handler__snapshot(globals_t * vars, char **argv, unsigned argc)

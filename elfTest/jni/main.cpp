@@ -146,6 +146,10 @@ int main(int argc, char **argv)
 		goto end;
 	}
 
+	/* this will initialise matches and regions */
+	if (execcommand(vars, "reset") == false) {
+		vars->target = 0;
+	}
 
 	/* main loop, read input and process commands */
 	while (!vars->exit) {

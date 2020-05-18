@@ -17,13 +17,17 @@
 globals_t globals = {
 	0,                          /* exit flag */
     0,                          /* pid target */
+	NULL,                       /* matches */
     0,                          /* match count */
+	NULL,                       /* regions */
     NULL,                       /* commands */
     NULL,                       /* current_cmdline */
     /* options */
     {
         0,                      /* debug */
         0,                      /* backend */
+		ANYINTEGER,             /* scan_data_type */
+		REGION_HEAP_STACK_EXECUTABLE_BSS, /* region_detail_level */
     }
 };
 
