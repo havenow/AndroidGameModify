@@ -18,6 +18,7 @@ extern "C"
 #include <stdio.h>
 #include <stdint.h>
 #include <sys/types.h>          /*lint !e537 */
+#include <stdbool.h>
 
 #include "list.h"
 
@@ -45,6 +46,8 @@ typedef struct {
 
 /* global settings */
 extern globals_t globals;
+
+bool sm_init(void);
 
 #ifdef __cplusplus
 }
