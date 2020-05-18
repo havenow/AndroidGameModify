@@ -142,7 +142,7 @@ bool execcommand(globals_t * vars, const char *commandline)
         if (command->command == NULL) {
             /* the default handler has a NULL command */
             err = command;
-        } else if (strcasecmp(argv[0], command->command) == 0) //比较command的名称，选择匹配的handler执行
+        } else if (strcasecmp(argv[0], command->command) == 0){ //比较command的名称，选择匹配的handler执行
 
             /* match found, execute handler */
             ret = command->handler(vars, argv, argc - 1);
