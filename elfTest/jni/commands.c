@@ -68,7 +68,7 @@ bool registercommand(const char *command, void *handler, list_t * commands,
         data->command = (char *) data + sizeof(*data);
 
         /* command points to the extra space allocated after data */
-        strcpy(data->command, command);
+        strcpy(data->command, command);//存下了的命令名称在execcommand时会用来搜索需要调用对应的handler
     } else {
         if ((data = malloc(sizeof(command_t))) == NULL) {
             show_error("sorry, there was a memory allocation problem.\n");
@@ -94,10 +94,10 @@ bool execcommand(globals_t * vars, const char *commandline)
 {
     unsigned argc;
     char *str = NULL, *tok = NULL;
-    char **argv = NULL;
+    char **argv = NULL;//注意是二级指针
     command_t *err = NULL;
     bool ret = false;
-    list_t *commands = vars->commands;
+    list_t *commands = vars->commands;//注册了的commands
     element_t *np = NULL;
 
     assert(commandline != NULL);
@@ -107,19 +107,19 @@ bool execcommand(globals_t * vars, const char *commandline)
 
     np = commands->head;
 
-    str = tok = strdupa(commandline);
-
+    str = tok = strdupa(commandline);//将串拷贝到新建的位置处 内部调用了malloc()为变量分配内存 需要用free()释放
+	 
     /* tokenize command line into an argument vector */
-    for (argc = 0; tok; argc++, str = NULL) {
+    for (argc = 0; tok; argc++, str = NULL) {//commandline = "pid 100"，分解之后，argv[0] = "pid"; argv[1] = "100";
 
         /* make enough size for another pointer (+1 for NULL at end) */
-        if ((argv = realloc(argv, (argc + 1) * sizeof(char *))) == NULL) {
+        if ((argv = realloc(argv, (argc + 1) * sizeof(char *))) == NULL) {//realloc的是指向char*的指针
             show_error("sorry there was a memory allocation error.\n");
             return false;
         }
 
         /* insert next token */
-        argv[argc] = tok = strtok(str, " \t");
+        argv[argc] = tok = strtok(str, " \t");//分解字符串
     }
 
     assert(argc >= 1);
@@ -142,7 +142,7 @@ bool execcommand(globals_t * vars, const char *commandline)
         if (command->command == NULL) {
             /* the default handler has a NULL command */
             err = command;
-        } else if (strcasecmp(argv[0], command->command) == 0) {
+        } else if (strcasecmp(argv[0], command->command) == 0) //比较command的名称，选择匹配的handler执行
 
             /* match found, execute handler */
             ret = command->handler(vars, argv, argc - 1);
@@ -155,7 +155,7 @@ bool execcommand(globals_t * vars, const char *commandline)
     }
 
     /* no match, if there was a default handler found, run it now */
-    if (err != NULL) {
+    if (err != NULL) {//command是NULL，执行handler__default
         ret = err->handler(vars, argv, argc - 1);
     }
 
