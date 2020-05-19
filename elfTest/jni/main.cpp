@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 
 end:
 	fprintf(stderr, "main exit");
-	l_destroy(vars->commands);
+	sm_cleanup();
 	return ret;
 }
 

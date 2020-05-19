@@ -118,3 +118,9 @@ bool sm_init(void)
 
     return true;
 }
+
+void sm_cleanup(void)
+{
+	l_destroy(globals.regions);
+	l_destroy(globals.commands);
+}

@@ -54,6 +54,7 @@ typedef struct {
 extern globals_t globals;
 
 bool sm_init(void);
+void sm_cleanup(void);
 
 #ifdef __cplusplus
 }

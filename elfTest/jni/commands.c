@@ -53,7 +53,7 @@
  */
 
 /*lint -esym(818,handler) dont declare handler const */
-bool registercommand(const char *command, void *handler, list_t * commands,
+bool registercommand(const char *command, handler_ptr handler, list_t * commands,
                      char *shortdoc, char *longdoc)
 {
     command_t *data;
