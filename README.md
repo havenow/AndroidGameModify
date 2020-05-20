@@ -153,3 +153,19 @@ REGISTER_NATIVE(env, Emulator);会替换成
 		return JNI_FALSE;
 }
 ```
+
+# (stringType " ")
+
+```
+#define FLAG_MACRO_NEW(stringType) true ? (stringType " ") : ""
+printf("%s\n", FLAG_MACRO_NEW("I32"));
+
+打印：I32 (注意有一个空格)
+
+#define FLAG_MACRO_NEW(stringType) true ? (stringType " aditext") : ""
+printf("%s\n", FLAG_MACRO_NEW("I32"));
+
+打印：I32 aditext
+
+```
+
