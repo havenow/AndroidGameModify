@@ -169,3 +169,48 @@ printf("%s\n", FLAG_MACRO_NEW("I32"));
 
 ```
 
+# char data[0]	data是一个数组名；该数组没有元素
+
+先看一段代码，old_value_and_match_info data[0];没有暂用内存空间    
+```
+typedef struct {
+	uint8_t old_value;
+	match_flags match_info;
+} old_value_and_match_info;//8字节
+
+typedef struct {
+	void *first_byte_in_child;
+	unsigned long number_of_bytes;
+	old_value_and_match_info data[0];
+} matches_and_old_values_swath;//8字节
+```
+
+```
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct _Info
+{
+    int i;
+    char data[0];
+}Info;
+int main(int argc, char* argv[])
+{
+    char buf[10] = "123456789";
+    void* p = NULL;
+    printf("%d/n",sizeof(Info));
+    Info* info = (Info*)malloc(sizeof(Info) + 10);
+    p = (void*)info->data;
+    printf("addr of info is %p. addr of data is %p ./n", info, p);
+    strcpy((char*)p, buf);
+    printf("%s/n", (char*)p);
+    return 0;
+}
+
+data是一个数组名；该数组没有元素；该数组的真实地址紧随结构体Info之后；这种声明方法可以巧妙的实现C语言里的数组扩展。    
+
+输出结果：
+4
+addr of info is 0072B1D0. addr of data is 0072B1D4 .
+123456789
+```
