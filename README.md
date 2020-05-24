@@ -231,3 +231,10 @@ addr of info is 0072B1D0. addr of data is 0072B1D4 .
 下一列包含权限,如果这是文件映射,则有关于文件(偏移量,设备,inode和名称)的一些信息.
 有关更多信息,请参见proc(5)手册页或Understanding Linux /proc/id/maps.
 ```
+
+# crash
+
+```
+
+result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]);  /*lint !e826 */
+```
