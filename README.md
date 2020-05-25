@@ -238,3 +238,33 @@ addr of info is 0072B1D0. addr of data is 0072B1D4 .
 
 result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]);  /*lint !e826 */
 ```
+
+# 读取内存数据
+
+```
+//-----------------		searchregions
+void *address = NULL;
+unsigned offset, nread = 0;
+for (offset = 0; offset < nread; offset++) 
+{
+	address = r->start + offset;
+	
+	peekdata(vars->target, address, &data_value) //第一次地址：0x8000	第二次地址：0x8001	
+}
+
+
+//-----------------		peekdata
+for (i = 0; i < shift_size1; i += sizeof(long))// 循环一次到两次
+{
+	long ptraced_long = ptrace(PTRACE_PEEKDATA, pid, ptrace_address, NULL);	//读4字节
+	
+	... ....
+	*((long *)&peekbuf.cache[peekbuf.size]) = ptraced_long;
+    peekbuf.size += sizeof(long);
+}
+	
+result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]);  /*lint !e826 */	
+//结果存的是8字节
+//第一次	result->int64_value = *((int64_t *)&peekbuf.cache[0]);
+//第二次	result->int64_value = *((int64_t *)&peekbuf.cache[1]);
+```
