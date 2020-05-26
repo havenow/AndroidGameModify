@@ -268,3 +268,32 @@ result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]);  
 //第一次	result->int64_value = *((int64_t *)&peekbuf.cache[0]);
 //第二次	result->int64_value = *((int64_t *)&peekbuf.cache[1]);
 ```
+
+# 输出日志到文件
+
+```
+#include <stdarg.h>
+void appendToLogFile(const char *format, ...)
+{
+	char content[1024];
+	memset(content, 0, 1024);
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(content, format, args);
+#if 1	//添加换行
+	strcat(content, "\n");
+#endif 	
+	va_end(args);
+
+	FILE* log_file = fopen("/data/local/tmp/scan.log", "a+");
+	if (log_file != NULL) {
+		fwrite(content, strlen(content), 1, log_file);
+		fflush(log_file);
+		fclose(log_file);
+	}
+}
+
+使用：    
+appendToLogFile("## tag2.1.3 peekbuf.base : %0x", peekbuf.base);
+```
