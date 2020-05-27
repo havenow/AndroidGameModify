@@ -297,3 +297,24 @@ void appendToLogFile(const char *format, ...)
 使用：    
 appendToLogFile("## tag2.1.3 peekbuf.base : %0x", peekbuf.base);
 ```
+
+# 内存中数据代表不同数据类型时的值
+在内存中存放的数据是不会区分类型的，在某个地址取出来的数据，强制转换之后数据是可以直观理解的数据     
+
+```
+	unsigned char uip_buf1[] = { 0x5E, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };//内存中的十六进制数据
+	char* 	resultChar		= (char*)(&(uip_buf1));		//取出1字节
+	int* 	resultInt		= (int*)(&(uip_buf1));		//取出4字节
+	float*  resultFlo		= (float*)(&(uip_buf1));	//取出4字节
+	double* resultDou		= (double*)(&(uip_buf1));	//取出8字节
+	printf("%c\n", *resultChar);												//^(对应ascii码0x5E)
+	printf("%d\n", *resultInt);													//94
+	printf("%f %lf %e %.8e\n", *resultFlo, *resultFlo, *resultFlo, *resultFlo);	//0.000000 0.000000 1.317221e-43  1.31722056e-43
+	printf("%f %lf %e %.8e\n", *resultDou, *resultDou, *resultDou, *resultDou);	//0.000000 0.000000 4.243992e-313 4.24399159e-313
+	
+	char strMsg[512];
+	memset(strMsg, 0, 512);
+	sprintf(strMsg, "%c, %d, %.8e, %.8e\n", *resultChar, *resultInt, *resultFlo, *resultDou);
+	printf("%s", strMsg);														//^, 94, 1.31722056e-43, 4.24399159e-313
+
+```
