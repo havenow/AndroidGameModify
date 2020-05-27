@@ -300,6 +300,7 @@ appendToLogFile("## tag2.1.3 peekbuf.base : %0x", peekbuf.base);
 
 # 内存中数据代表不同数据类型时的值
 在内存中存放的数据是不会区分类型的，在某个地址取出来的数据，强制转换之后数据是可以直观理解的数据     
+[float double类型,在内存中的存储方式](https://github.com/havenow/AndroidGameModify/blob/master/float%20double%E7%B1%BB%E5%9E%8B%2C%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F.md)     
 
 ```
 	unsigned char uip_buf1[] = { 0x5E, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };//内存中的十六进制数据
