@@ -334,3 +334,23 @@ long类型表示long int，一般简写为long，注意long不表示long double�
 
 即sizeof(long)>=sizeof(int)
 ```
+
+# ptrace获取到内存数据存储到文件中
+
+```
+#include <stdarg.h>
+void dumpMem(long data)
+{
+	FILE* log_file = fopen("/data/local/tmp/memRegion", "a+");
+	if (log_file != NULL) 
+	{
+		fwrite(&data, 1, 4, log_file);
+		fflush(log_file);
+		fclose(log_file);
+	}
+}
+
+long ptraced_long = ptrace(PTRACE_PEEKDATA, pid, ptrace_address, NULL);		//ptrace获取到的数据是long类型的
+dumpMem(ptraced_long);
+
+```
