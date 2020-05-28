@@ -356,7 +356,7 @@ dumpMem(ptraced_long);
 ```
 
 # 获取内存块里面的数据
-[内存块0x8000-0xA000数据的读取](https://github.com/havenow/AndroidGameModify/blob/master/float%20double%E7%B1%BB%E5%9E%8B%2C%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F.md)      
+[内存块0x8000-0xA000数据的读取](https://github.com/havenow/AndroidGameModify/blob/master/%E5%86%85%E5%AD%98%E5%9D%970x8000-0xA000%E6%95%B0%E6%8D%AE%E7%9A%84%E8%AF%BB%E5%8F%96.log)      
 
 ```
 element_t *n = vars->regions->head;
