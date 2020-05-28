@@ -319,3 +319,18 @@ appendToLogFile("## tag2.1.3 peekbuf.base : %0x", peekbuf.base);
 	printf("%s", strMsg);														//^, 94, 1.31722056e-43, 4.24399159e-313
 
 ```
+
+# long和int的区别
+
+```
+long类型表示long int，一般简写为long，注意long不表示long double。
+虽然有时候会有sizeof(long)=sizeof(int)，long int与int是不同的：
+
+16位系统：long是4字节，int是2字节
+32位系统：long是4字节，int是4字节
+64位系统：long也是4字节，int是4字节
+
+标准只规定long不小于int的长度，int不小于short的长度。
+
+即sizeof(long)>=sizeof(int)
+```
