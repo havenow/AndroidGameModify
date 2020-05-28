@@ -354,3 +354,69 @@ long ptraced_long = ptrace(PTRACE_PEEKDATA, pid, ptrace_address, NULL);		//ptrac
 dumpMem(ptraced_long);
 
 ```
+
+# 获取内存块里面的数据
+
+```
+element_t *n = vars->regions->head;
+region_t *r;
+while (n) 
+{
+	unsigned offset, nread = 0;
+	r = n->data;
+	nread = r->size;
+	
+	for (offset = 0; offset < nread; offset++) 
+	{
+		value_t data_value;
+		address = r->start + offset;
+		
+		peekdata(vars->target, address, &data_value);
+	}
+}
+
+bool peekdata(pid_t pid, void *addr, value_t * result)
+{
+	if ()//有缓存时，直接读取 返回
+	{
+		case 1;
+		
+		result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]); 
+		return true;
+	}
+	else if ()//没有缓存，计算shift_size1 后面ptrace(PTRACE_PEEKDATA
+	{
+		case 2;
+		//做数据的迁移
+	}
+	else if ()//开始时调用一次
+	{
+		case 3;
+	}
+	for (i = 0; i < shift_size1; i += sizeof(long))
+    {
+		long ptraced_long = ptrace(PTRACE_PEEKDATA, pid, ptrace_address, NULL);
+	}
+	
+	result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]); 
+	return true;
+}
+
+读内存
+	case 3
+	
+	case 3
+	case 2
+	case 1
+	case 1
+	case 1
+	case 2
+	case 1
+	case 1
+	case 1
+	case 2
+	case 1
+	case 1
+	case 1
+	... ...
+```
