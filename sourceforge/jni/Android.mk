@@ -20,4 +20,9 @@ target_memory_info_array.c \
 lib/getline.c \
 lib/getdelim.c
 
+#error: only position independent executables (PIE) are supported.
+# Enable PIE manually. Will get reset on $(CLEAR_VARS).
+LOCAL_CFLAGS += -fPIE
+LOCAL_LDFLAGS += -fPIE -pie
+
 include $(BUILD_EXECUTABLE)
