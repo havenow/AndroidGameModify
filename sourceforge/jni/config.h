@@ -114,7 +114,7 @@
 #define HAVE_MEMSET 1
 
 /* Enable /proc/pid/mem support */
-#define HAVE_PROCMEM 1
+#define HAVE_PROCMEM 0
 
 /* Define to 1 if atoll is declared even after undefining macros. */
 #define HAVE_RAW_DECL_ATOLL 1
