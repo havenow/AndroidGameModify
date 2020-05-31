@@ -9,6 +9,8 @@
 
 #include "scanmem.h"
 
+typedef bool(*handler_ptr)(globals_t *vars, char **argv, unsigned argc);
+
 /*lint -esym(534,registercommand) okay to ignore return value */
 
 typedef struct {
@@ -19,7 +21,7 @@ typedef struct {
 } command_t;
 
 
-bool registercommand(const char *command, void *handler, list_t * commands,
+bool registercommand(const char *command, handler_ptr handler, list_t * commands,
                      char *shortdoc, char *longdoc);
 bool execcommand(globals_t * vars, const char *commandline);
 
