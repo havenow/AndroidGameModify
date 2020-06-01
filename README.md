@@ -237,6 +237,9 @@ addr of info is 0072B1D0. addr of data is 0072B1D4 .
 ```
 
 result->int64_value =    *((int64_t *)&peekbuf.cache[reqaddr - peekbuf.base]);  /*lint !e826 */
+
+原因：
+在夜神模拟器中要使用x86架构的程序，如果使用armeabi-v7a架构的程序会崩溃
 ```
 
 # 读取内存数据
