@@ -24,10 +24,13 @@ globals_t globals = {
     NULL,                       /* current_cmdline */
     /* options */
     {
+		1,                      /* alignment */
         0,                      /* debug */
         0,                      /* backend */
 		ANYINTEGER,             /* scan_data_type */
 		REGION_HEAP_STACK_EXECUTABLE_BSS, /* region_detail_level */
+		0,                      /* detect_reverse_change */
+		1,                      /* dump_with_ascii */
     }
 };
 

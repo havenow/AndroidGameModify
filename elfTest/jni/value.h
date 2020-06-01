@@ -142,13 +142,17 @@ int val_max_width_in_bytes(value_t *val);
 
 /*#define DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(type, typename) \
     unsigned type get_u##typename (const value_t const *val); \
-    signed type get_s##typename (const value_t const *val); 
+    signed type get_s##typename (const value_t const *val); */
+	
+#define DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(type, typename) \
+    unsigned type get_u##typename (const value_t *val); \
+    signed type get_s##typename (const value_t *val); 
 
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(char, char);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(short, short);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(int, int);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(long, long);
-DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(long long, longlong);*/
+DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(long long, longlong);
 
 #ifdef __cplusplus
 }

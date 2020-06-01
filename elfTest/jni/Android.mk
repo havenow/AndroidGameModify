@@ -18,6 +18,10 @@ LOCAL_SRC_FILES := main.cpp \
 					getline.c \
 					scanmem.c \
 					maps.c \
+					scanroutines.c \
+					target_memory_info_array.c \
+					ptrace.c \
+					value.c \
 					
 
 

@@ -40,12 +40,15 @@ typedef struct {
 	list_t *commands;      /* command handlers */
 	const char *current_cmdline; /* the command being executed */
 	struct {
+		unsigned short alignment;
 		unsigned short debug;
 		unsigned short backend; /* if 1, scanmem will work as a backend, and output would be more machine-readable */
 		
 		/* options that can be changed during runtime */
 		scan_data_type_t scan_data_type;
 		region_scan_level_t region_scan_level;
+		unsigned short detect_reverse_change;
+		unsigned short dump_with_ascii;
 	} options;
 } globals_t;
 
