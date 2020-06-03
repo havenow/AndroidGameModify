@@ -317,6 +317,28 @@ fail:
 	return false;
 }
 
+#include <stdarg.h>
+void appendMatchToLogFile(const char *format, ...)
+{
+	char content[1024];
+	memset(content, 0, 1024);
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(content, format, args);
+#if 1
+	strcat(content, "\n");
+#endif 	
+	va_end(args);
+
+	FILE* log_file = fopen("/data/local/tmp/match.log", "a+");
+	if (log_file != NULL) {
+		fwrite(content, strlen(content), 1, log_file);
+		fflush(log_file);
+		fclose(log_file);
+	}
+}
+
 /* XXX: add yesno command to check if matches > 099999 */
 /* FORMAT (don't change, front-end depends on this): 
  * [#no] addr, value, [possible types (separated by space)]
@@ -347,8 +369,12 @@ bool handler__list(globals_t * vars, char **argv, unsigned argc)
 
 		match_flags flags = reading_swath_index->data[reading_iterator].match_info;
 
+		//appendMatchToLogFile("### match number_of_bytes: %d", reading_swath_index->number_of_bytes);
+
 		/* Only actual matches are considered */
-		if (flags_to_max_width_in_bytes(flags) > 0)
+		if (flags_to_max_width_in_bytes(flags) > 0)//add_element时是一个字节add的，如果超过一个字节 其他字节是zero_flag
+			//old_value_and_match_info new_value = { get_u8b(&data_value), checkflags };
+			//ld_value_and_match_info new_value = { get_u8b(&data_value), zero_flag };
 		{
 			switch (globals.options.scan_data_type)
 			{
@@ -400,6 +426,7 @@ bool handler__list(globals_t * vars, char **argv, unsigned argc)
 #endif
 
 			fprintf(stdout, "[%2u] "POINTER_FMT", %s\n", i++, remote_address_of_nth_element(reading_swath_index, reading_iterator /* ,MATCHES_AND_VALUES */), v);
+			//appendMatchToLogFile("[%2u] "POINTER_FMT", %s\n", i, remote_address_of_nth_element(reading_swath_index, reading_iterator /* ,MATCHES_AND_VALUES */), v);
 		}
 
 		/* Go on to the next one... */
