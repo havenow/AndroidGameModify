@@ -381,7 +381,7 @@ bool handler__list(globals_t * vars, char **argv, unsigned argc)
 				break;
 			default: /* numbers */
 				; /* cheat gcc */
-				value_t val = data_to_val(reading_swath_index, reading_iterator /* ,MATCHES_AND_VALUES */);
+				value_t val = data_to_val(reading_swath_index, reading_iterator /* ,MATCHES_AND_VALUES */);//获取匹配的项 numbers
 				truncval_to_flags(&val, flags);
 
 				if (valtostr(&val, v, buf_len) != true) {
