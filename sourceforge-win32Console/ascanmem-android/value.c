@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include <config.h>
+#include "config.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -281,7 +281,7 @@ bool parse_uservalue_float(const char *nptr, uservalue_t * val)
 
 int flags_to_max_width_in_bytes(match_flags flags)
 {
-    switch(globals.options.scan_data_type)
+    switch(ANYNUMBER/*globals.options.scan_data_type*/)
     {
         case BYTEARRAY:
             return flags.bytearray_length;

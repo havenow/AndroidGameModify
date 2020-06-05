@@ -36,18 +36,18 @@ typedef enum {
 typedef struct {
     void *start;             /* start address. Hack: If HAVE_PROCMEM, this is actually an (unsigned long) offset into /proc/{pid}/mem */
     unsigned long size;              /* size */
-    struct __attribute__((packed)) {
+    struct /*__attribute__((packed))*/ {
         unsigned read:1;
         unsigned write:1;
         unsigned exec:1;
         unsigned shared:1;
-        unsigned private:1;
+        unsigned private_scan:1;
     } flags;
     unsigned id;                /* unique identifier */
     char filename[1];           /* associated file, must be last */
 } region_t;
 
-bool readmaps(pid_t target, list_t * regions);
+//bool readmaps(pid_t target, list_t * regions);
 int compare_region_id(const region_t *a, const region_t *b);
 
 #endif /* _MAPS_INC */

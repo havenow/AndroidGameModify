@@ -19,6 +19,11 @@
 #ifndef SCANROUTINES_H__
 #define SCANROUTINES_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdbool.h>
 
 #include "value.h"
@@ -59,7 +64,7 @@ typedef enum {
 /* NOTE: saveflag must be set to 0, since only useful bits are set, but extra bits are not cleared! */
 /*       address is pointing to new_value in TARGET PROCESS MEMORY SPACE, used when searching for a byte array */
 /* return the number of bytes needed to store old_value, 0 for not matched */
-typedef int (*scan_routine_t)(const value_t *new_value, const value_t *old_value, const uservalue_t *user_value, match_flags *saveflag, void *address);
+typedef int (*scan_routine_t)(const value_t *new_value, const value_t *old_value, /*const*/ uservalue_t *user_value, match_flags *saveflag, void *address);
 extern scan_routine_t g_scan_routine;
 
 /* 
@@ -69,4 +74,9 @@ extern scan_routine_t g_scan_routine;
 bool choose_scanroutine(scan_data_type_t dt, scan_match_type_t mt);
 
 scan_routine_t get_scanroutine(scan_data_type_t dt, scan_match_type_t mt);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* SCANROUTINES_H__ */

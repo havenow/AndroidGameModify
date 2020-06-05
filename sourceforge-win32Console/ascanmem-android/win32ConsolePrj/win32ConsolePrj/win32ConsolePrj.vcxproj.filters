@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="scanmem">
+      <UniqueIdentifier>{865f38be-6d8c-4895-8f62-2a7917ad1545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,6 +27,21 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\list.h">
+      <Filter>scanmem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\scanroutines.h">
+      <Filter>scanmem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\show_message.h">
+      <Filter>scanmem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\target_memory_info_array.h">
+      <Filter>scanmem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\value.h">
+      <Filter>scanmem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -31,6 +49,21 @@
     </ClCompile>
     <ClCompile Include="win32ConsolePrj.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\list.c">
+      <Filter>scanmem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\scanroutines.c">
+      <Filter>scanmem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\show_message.c">
+      <Filter>scanmem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\target_memory_info_array.c">
+      <Filter>scanmem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\value.c">
+      <Filter>scanmem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

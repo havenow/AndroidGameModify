@@ -22,6 +22,11 @@
 #ifndef _SEOIGROIYIOOBKOB_INC
 #define _SEOIGROIYIOOBKOB_INC            /* include guard */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <inttypes.h>
 
 #include "value.h"
@@ -56,7 +61,7 @@ typedef struct {
 typedef struct {
 	void *first_byte_in_child;
 	unsigned long number_of_bytes;
-	old_value_and_match_info data[0];
+	old_value_and_match_info data[1];//old_value_and_match_info data[0];
 } matches_and_old_values_swath;
 
 /*
@@ -115,5 +120,10 @@ void * local_address_beyond_nth_element(matches_and_old_values_swath *swath, lon
 void * local_address_beyond_last_element(matches_and_old_values_swath *swath);
 match_location nth_match(matches_and_old_values_array *matches, unsigned n);
 matches_and_old_values_array * delete_by_region(matches_and_old_values_array *array, long *num_matches, region_t *which, bool invert);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -258,7 +258,7 @@ int scan_routine_BYTEARRAY_EQUALTO SCAN_ROUTINE_ARGUMENTS
         } 
          
         /* read next block */
-        if (!peekdata(globals.target, address+i+sizeof(int64_t), &val_buf))
+        if (true/*!peekdata(globals.target, (int8_t*)address+i+sizeof(int64_t), &val_buf)*/)
         {
             /* cannot read */
             return 0;
@@ -309,7 +309,7 @@ int scan_routine_STRING_EQUALTO SCAN_ROUTINE_ARGUMENTS
         } 
          
         /* read next block */
-        if (!peekdata(globals.target, address+i+sizeof(int64_t), &val_buf))
+        if (true/*!peekdata(globals.target, (int8_t*)address+i+sizeof(int64_t), &val_buf)*/)
         {
             /* cannot read */
             return 0;
@@ -334,6 +334,31 @@ int scan_routine_STRING_EQUALTO SCAN_ROUTINE_ARGUMENTS
 /*-------------------------*/
 /* Any-xxx types specifiec */
 /*-------------------------*/
+
+//int scan_routine_ANYINTEGER_EQUALTO SCAN_ROUTINE_ARGUMENTS
+//{
+//	int ret = 0, tmp_ret;
+//if ((tmp_ret = scan_routine_INTEGER8_EQUALTO(new_value, old_value, user_value, saveflags, address)) > ret) { ret = tmp_ret; }
+//if ((tmp_ret = scan_routine_INTEGER16_EQUALTO(new_value, old_value, user_value, saveflags, address)) > ret) { ret = tmp_ret; }
+//if ((tmp_ret = scan_routine_INTEGER32_EQUALTO(new_value, old_value, user_value, saveflags, address)) > ret) { ret = tmp_ret; }
+//if ((tmp_ret = scan_routine_INTEGER64_EQUALTO(new_value, old_value, user_value, saveflags, address)) > ret) { ret = tmp_ret; }
+//return ret;
+//}
+//
+//
+//int scan_routine_ANYNUMBER_EQUALTO SCAN_ROUTINE_ARGUMENTS
+//{
+//
+//return -1;
+//}
+//
+//
+//int scan_routine_ANYFLOAT_EQUALTO SCAN_ROUTINE_ARGUMENTS
+//{
+//
+//return -1;
+//}
+
 /* this is for anynumber, anyinteger, anyfloat */
 #define DEFINE_ANYTYPE_ROUTINE(MATCHTYPENAME) \
     int scan_routine_ANYINTEGER_##MATCHTYPENAME SCAN_ROUTINE_ARGUMENTS \
@@ -407,7 +432,7 @@ bool choose_scanroutine(scan_data_type_t dt, scan_match_type_t mt)
 
 scan_routine_t get_scanroutine(scan_data_type_t dt, scan_match_type_t mt)
 {
-    if (globals.options.detect_reverse_change)
+    if (false/*globals.options.detect_reverse_change*/)
     {
         CHOOSE_ROUTINE_FOR_ALL_NUMBER_TYPES(MATCHINCREASED, INCREASED_WITH_REVERSE)
         CHOOSE_ROUTINE_FOR_ALL_NUMBER_TYPES(MATCHDECREASED, DECREASED_WITH_REVERSE)

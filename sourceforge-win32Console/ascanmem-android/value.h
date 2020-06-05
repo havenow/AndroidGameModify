@@ -26,6 +26,11 @@
 #ifndef _VALUE_INC
 #define _VALUE_INC
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -34,7 +39,7 @@
 /* this is memory-efficient but DANGEROUS */
 /* always keep in mind that don't mess up with bytearray_length or string_length when scanning for BYTEARRAY of STRING */
 typedef union {
-    struct __attribute__ ((packed)) {
+    struct /*__attribute__ ((packed))*/ {
         unsigned  u8b:1;        /* could be an unsigned  8-bit variable (e.g. unsigned char)      */
         unsigned u16b:1;        /* could be an unsigned 16-bit variable (e.g. unsigned short)     */
         unsigned u32b:1;        /* could be an unsigned 32-bit variable (e.g. unsigned int)       */
@@ -143,6 +148,11 @@ DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(short, short);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(int, int);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(long, long);
 DECLARE_GET_BY_SYSTEM_DEPENDENT_TYPE_FUNCTIONS(long long, longlong);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

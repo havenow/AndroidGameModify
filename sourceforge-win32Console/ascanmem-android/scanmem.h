@@ -18,6 +18,7 @@
 #include "list.h"
 #include "value.h"
 #include "target_memory_info_array.h"
+#include "common.h"
 
 /* list of functions where i dont want to be warned about ignored return value */
 

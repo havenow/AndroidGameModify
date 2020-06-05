@@ -36,6 +36,11 @@
 #ifndef SHOW_MESSAGE_H__
 #define SHOW_MESSAGE_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /* prepend 'info: ', output to stderr */
 void show_info(const char *fmt, ...);
 /* prepend 'error: ', output to stderr */
@@ -51,5 +56,9 @@ void show_user(const char *fmt, ...);
 
 /* display progress of scan */
 void show_scan_progress(unsigned long cur, unsigned long total);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SHOW_MESSAGE_H__ */
