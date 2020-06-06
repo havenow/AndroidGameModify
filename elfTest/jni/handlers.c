@@ -430,7 +430,7 @@ bool handler__list(globals_t * vars, char **argv, unsigned argc)
 		}
 
 		/* Go on to the next one... */
-		++reading_iterator;
+		++reading_iterator;//搜索90时，reading_swath_index->number_of_bytes = 4，内存数据可能是 5A 00 5A 00，其实有两个90
 		if (reading_iterator >= reading_swath_index->number_of_bytes)
 		{
 			assert(((matches_and_old_values_swath *)(local_address_beyond_last_element(reading_swath_index /* ,MATCHES_AND_VALUES */)))->number_of_bytes >= 0);
