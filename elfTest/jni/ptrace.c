@@ -126,6 +126,28 @@ void dumpMem(long data)
 		fclose(log_file);
 	}
 }
+
+void appendToLogFile(const char *format, ...)
+{
+	char content[1024];
+	memset(content, 0, 1024);
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(content, format, args);
+#if 1
+	strcat(content, "\n");
+#endif 	
+	va_end(args);
+
+	FILE* log_file = fopen("/data/local/tmp/can_routine.log", "a+");
+	if (log_file != NULL) {
+		fwrite(content, strlen(content), 1, log_file);
+		fflush(log_file);
+		fclose(log_file);
+	}
+}
+
 bool peekdata(pid_t pid, void *addr, value_t * result)
 {
     char *reqaddr = addr;
@@ -616,14 +638,24 @@ bool searchregions(globals_t * vars, scan_match_type_t match_type, const userval
                 ++vars->num_matches;
                 
                 required_extra_bytes_to_record = match_length - 1;
+
+				
+				//appendToLogFile("### if match_length %d", match_length);
+				//appendToLogFile("### if offset %d", offset);
+				//appendToLogFile("### if required_extra_bytes_to_record  %d", required_extra_bytes_to_record);
+				//appendToLogFile("### -------------------------------------------");
             }
             else if (required_extra_bytes_to_record)
             {
                 old_value_and_match_info new_value = { get_u8b(&data_value), zero_flag };
                 writing_swath_index = add_element((&vars->matches), writing_swath_index, r->start + offset, &new_value);
                 --required_extra_bytes_to_record;
-            }
 
+				//appendToLogFile("### else offset %d", offset);
+				//appendToLogFile("### else required_extra_bytes_to_record %d", required_extra_bytes_to_record);
+				//appendToLogFile("### ++++++++++++++++++++++++++++++++++++++++++++");
+            }
+			
             /* print a simple progress meter. */
             if (EXPECT((r->size >= 110) && (offset % ((r->size) / 10) == 10), false)) {
                 /* for user, just print a dot */
