@@ -424,3 +424,7 @@ bool peekdata(pid_t pid, void *addr, value_t * result)
 	case 1
 	... ...
 ```
+
+# root的手机ptrace(PTRACE_ATTACH )失败
+在调用ptrace(PTRACE_ATTACH )之前，需要先执行su，有管理权限调用才会成功。     
+
