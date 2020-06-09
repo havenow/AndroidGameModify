@@ -428,3 +428,11 @@ bool peekdata(pid_t pid, void *addr, value_t * result)
 # root的手机ptrace(PTRACE_ATTACH )失败
 在调用ptrace(PTRACE_ATTACH )之前，需要先执行su，有管理权限调用才会成功。     
 
+```
+	if (system("su") == -1)
+		LOGE( "system(\"su\") failed, command was not executed.\n");
+	else
+		LOGE("system(\"su\") sucess, command was executed.\n");
+		
+	Android Studio下面调试（ndk）上面的代码，调用system("su")是会signal---SIGCHLD
+```
