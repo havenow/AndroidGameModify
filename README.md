@@ -436,3 +436,8 @@ bool peekdata(pid_t pid, void *addr, value_t * result)
 		
 	Android Studio下面调试（ndk）上面的代码，调用system("su")是会signal---SIGCHLD
 ```
+
+# ptrace的PTRACE_ATTACH和PTRACE_DETACH要成对调用
+ptrace只调用PTRACE_ATTACH游戏后，回到游戏，游戏会卡死黑屏。      
+
+
