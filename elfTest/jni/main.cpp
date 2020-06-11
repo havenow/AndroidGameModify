@@ -132,6 +132,11 @@ done:
 
 int main(int argc, char **argv)
 {
+	//if (system("su") == -1) 
+	//	fprintf(stderr, "system(\"su\") failed, command was not executed.\n");
+	//else
+	//	fprintf(stderr, "system(\"su\") sucess, command was executed.\n");
+
 	char *initial_commands = NULL;
 	bool exit_on_error = false;
 	parse_parameters(argc, argv, &initial_commands, &exit_on_error);
@@ -162,6 +167,7 @@ int main(int argc, char **argv)
 			break;
 		}
 
+		fprintf(stderr, "### get command: %s\n", line);
 		/* execcommand returning failure isnt fatal, just the a command couldnt complete. */
 		if (execcommand(vars, line) == false) {
 			if (vars->target == 0) {
