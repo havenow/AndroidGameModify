@@ -440,4 +440,49 @@ bool peekdata(pid_t pid, void *addr, value_t * result)
 # ptrace的PTRACE_ATTACH和PTRACE_DETACH要成对调用
 ptrace只调用PTRACE_ATTACH游戏后，回到游戏，游戏会卡死黑屏。      
 
+# RegisterNatives (IIII)I
 
+```
+#define APP_PKG_NAME	"com/gameassist/plugin/nativeutils"
+# define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
+int register_GodBridge(JNIEnv *env)
+{
+	static const JNINativeMethod methods[] = {
+			{ "init", "(I)V",(void *)init_bridge}, 
+			{ "initNativePtr", "(II)V", (void *)initNativePtr_bridge }, 
+			{ "nativeProcessCheat", "(IIII)I", (int *)nativeProcessCheat_bridge }
+	};
+
+    jclass clazz;
+    clazz = env->FindClass(APP_PKG_NAME"/NativeUtils");
+    return env->RegisterNatives(clazz, methods, NELEM(methods));
+}
+
+注意"(IIII)I"，括号里面的IIII直接不要加分号，不然会register失败
+Ljava/lang/String;后面是要加分号的
+```
+# dlsym extern "C"
+加了extern "C"	才能通过dlsym找到so里面的函数    
+```
+extern "C"
+{
+__attribute__((visibility("default"))) int jniInitNativePtr(JNIEnv *env, jobject thiz, int arg0, int arg1)
+{
+    LOGE("#########	jniInitNativePtr begin.\n");
+
+ 
+    LOGE("#########	jniInitNativePtr end.\n");
+	return 0;
+}
+
+__attribute__((visibility("default"))) int jniDoProcessCheat(JNIEnv *env, jobject thiz, int arg0, int arg1, int arg2, int arg3)
+{
+    LOGE("#########	jniDoProcessCheat begin.\n");
+
+   
+    LOGE("#########	jniDoProcessCheat end.\n");
+	return 0;
+}
+
+}
+```
