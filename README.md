@@ -486,3 +486,18 @@ __attribute__((visibility("default"))) int jniDoProcessCheat(JNIEnv *env, jobjec
 
 }
 ```
+
+# dlsym JNI_OnLoad
+
+```
+int (*f_JNIOnLoad)(JavaVM* vm, void* reserved);
+
+f_JNIOnLoad = (jint(*)(JavaVM*, void*))dlsym(dll, "JNI_OnLoad");
+
+JNI_OnLoad的实现都是这样写：
+__attribute__((visibility("default")))
+jint JNI_OnLoad(JavaVM* vm, void* reserved)
+{
+
+}
+```
