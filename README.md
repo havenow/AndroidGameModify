@@ -501,3 +501,44 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 
 }
 ```
+
+# dlsym jniInitNativePtr失败的原因
+
+```
+so在IDA中export可以看到的函数都是可以dlysm的，在Functions window中看到的函数名和export的可能是不一样的
+
+f_initNativePtr = (int(*)(JNIEnv *, jobject, unsigned int, unsigned int))dlsym(dll, "_Z16jniInitNativePtrP7_JNIEnvP7_jclassii");
+f_nativeProcessCheat = (int(*)(JNIEnv *, jobject, int, int, int, int))dlsym(dll, "_Z17jniDoProcessCheatP7_JNIEnvP7_jclassiiii"); 
+
+
+//info.dli_fbase 加载so时的地址，info.dli_saddr 符号的实际地址
+//info.dli_fbase + 查看IDA .text段 符号的偏移 = 符号的实际地址
+	Dl_info info;
+	dladdr((void*)f_JNIOnLoad, &info);
+	appendToLogFile("f_JNIOnLoad          Dl_info: %x	%x	%x", info.dli_fbase, info.dli_saddr, (void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase)));
+	dladdr((void*)f_initNativePtr, &info);
+	appendToLogFile("f_initNativePtr      Dl_info: %x	%x	%x", info.dli_fbase, info.dli_saddr, (void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase)));
+	dladdr((void*)f_nativeProcessCheat, &info);
+	appendToLogFile("f_nativeProcessCheat Dl_info: %x	%x	%x", info.dli_fbase, info.dli_saddr, (void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase)));
+
+	(void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase))在armeabi-v7a x86下可以编译通过， 在x86_64下编译不报错
+	
+
+打印的日志：
+#########	init_bridge begin.
+dlsym dlopen sucess
+dlsym dll != NULL
+find f_JNIOnLoad.
+call f_JNIOnLoad.
+find jniInitNativePtr.
+find jniDoProcessCheat.
+f_JNIOnLoad          Dl_info: c4da0000	c4da539d	539d
+f_initNativePtr      Dl_info: c4da0000	c4da5301	5301
+f_nativeProcessCheat Dl_info: c4da0000	c4da52b9	52b9
+#########	init_bridge end.
+```
+
+# unknown type name 'Dl_info' 
+Dl_info info; 需要在Application.mk中使用APP_PLATFORM := android-9指定android平台版本。     
+默认情况下，如果使用android-3并失败，出现找不到Dl_info     
+
