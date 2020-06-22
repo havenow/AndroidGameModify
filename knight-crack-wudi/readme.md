@@ -34,17 +34,7 @@ ptrace(PTRACE_POKEDATA, target_pid, (void *)(dllBaseAddr + 0x70A5F0 + 4), *(long
 ptrace(PTRACE_POKEDATA, target_pid, (void *)(dllBaseAddr + 0x70A5F0 + 4+ 4), *(long *)(data + 4));//在地址0xBA4195F8写入机器码0x1E 0xFF 0x2F 0xE1
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 关键函数怎么定位
+部分可以通过GG来搜索定位关键点在内存中的实际地址，结合libil2cpp.so的起始地址，算出偏移       
+结合IDA和dnSpy来定位变量或者函数来达到修改的目的       
 
