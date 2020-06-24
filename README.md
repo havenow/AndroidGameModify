@@ -10,7 +10,7 @@ LOCAL_LDFLAGS += -fPIE -pie
 ```
 
 # 两种调用方式     
-在夜神模拟上面通过so方式ptrace(PTRACE_ATTACH会失败，没找到原因     
+在夜神模拟上面通过so方式ptrace(PTRACE_ATTACH会失败，没找到原因（如果将程序放在virtualxposed中运行，PTRACE_ATTACH是成功的，应该还是权限的问题）            
 在夜神模拟上面通过eof方式ptrace(PTRACE_ATTACH成功     
 
 # Android Studio 利用CMake生成的是ninja
