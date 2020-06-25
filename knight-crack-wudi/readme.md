@@ -38,3 +38,26 @@ ptrace(PTRACE_POKEDATA, target_pid, (void *)(dllBaseAddr + 0x70A5F0 + 4+ 4), *(l
 部分可以通过GG来搜索定位关键点在内存中的实际地址，结合libil2cpp.so的起始地址，算出偏移       
 结合IDA和dnSpy来定位变量或者函数来达到修改的目的       
 
+```
+在dnSpy中搜索到了
+		// Token: 0x040029A9 RID: 10665
+		[FieldOffset(Offset = "0x4C")]
+		public int coin
+
+用GG搜索金币的内存地址
+搜索三次
+B3272FD4
+B3272FD4 - b3266000 = CFD4
+info: ### 120, size: 626688, name: , b3266000-b32ff000, type: 0
+
+C1EEC944
+C1EEC944 - c1ede000 = E944 		
+info: ### 211, size: 626688, name: , c1ede000-c1f77000, type: 0
+
+C30D397C
+C30D397C - c30c4000 = F97C
+info: ### 234, size: 626688, name: , c30c4000-c315d000, type: 0
+
+变量的地址，好像没法办法重新定位
+在size: 626688这个内存块里面，不在libil2cpp.so的内存块里面，而且每次相对内存块的相对偏移也不一样
+```
