@@ -77,5 +77,25 @@ LDR 从存储器中加载数据到寄存器
 LDR R3,=0X40000000;LDR伪指令，把地址加载到寄存器里面去
 LDR R4,[R3,#0x04];把首地址加上偏移量得到数据的地址再寻址 R3------->0x40000000+4=0x40000004----->4
 ldr r0, =0x12345678
-这样，就把0x12345678这个地址写到r0中了。所以，ldr伪指令和mov是比较相似的。只不过mov指令限制了立即数的长度为8位，也就是不能超过512。而ldr伪指令没有这个限制。如果使用ldr伪指令时，后面跟的立即数没有超过8位，那么在实际汇编的时候该ldr伪指令是被转换为mov指令的。
+这样，就把0x12345678这个地址写到r0中了。所以，ldr伪指令和mov是比较相似的。只不过mov指令限制了立即数的长度为8位，也就是不能超过512。而ldr伪指令没有这个限制。如果使用ldr伪指令时，后面跟的立即数没有超
+
+# IDA动态调试so问题
+
+```
+触发断点后，游戏直接闪退了
+
+尝试用下面的方法
+	./data/local/tmp/android_server
+	adb forward tcp:23946 tcp:23946	
+	adb shell am start -D -n com.knight.union.aligames/com.chillyroom.plugin.wrapper4399.ActivityWrapper4399
+	IDA附加进程
+	C:\Java\jdk1.8.0_31\bin\jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=8700
+	
+DDMS无法看到进程
+临时解决方案 添加 <application android:debuggable="true" 重新打包
+修改ro.debuggable为1 尝试用mprop修改失败	
+
+jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=8700是提示
+致命错误:
+无法附加到目标 VM
 ```
