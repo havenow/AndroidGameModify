@@ -80,7 +80,7 @@ ldr r0, =0x12345678
 这样，就把0x12345678这个地址写到r0中了。所以，ldr伪指令和mov是比较相似的。只不过mov指令限制了立即数的长度为8位，也就是不能超过512。而ldr伪指令没有这个限制。如果使用ldr伪指令时，后面跟的立即数没有超
 
 # IDA动态调试so问题
-
+https://www.bilibili.com/video/BV1ub411E7wS?from=search&seid=15387634077601357608      
 ```
 触发断点后，游戏直接闪退了
 
@@ -96,6 +96,22 @@ DDMS无法看到进程
 修改ro.debuggable为1 尝试用mprop修改失败	
 
 jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=8700是提示
+致命错误:
+无法附加到目标 VM
+```
+
+# 使用老手机IDA动态调试so
+
+```
+./data/local/tmp/android_server
+adb forward tcp:23946 tcp:23946	
+直接手机上启动游戏，玩到场景1
+IDA附加进程
+
+调试时可以进入断点
+
+如果使用C:\Java\jdk1.8.0_31\bin\jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=8700命令
+还是会提示
 致命错误:
 无法附加到目标 VM
 ```
