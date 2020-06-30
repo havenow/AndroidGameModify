@@ -296,6 +296,7 @@ bool getcommand(char **line)
 dllBaseAddr + 70AEB0 + 4	护甲 不掉		00 00 A0 E3 1E FF 2F E1
 dllBaseAddr + 70AF90 + 4	生命值 不掉		00 00 A0 E3 1E FF 2F E1
 dllBaseAddr + 68BDC4 		子弹（气）不掉	C8 00 A0 E3				//mov r0,#200
+dllBaseAddr + 703ED0 + B4	金币无限(0x01000000)	RGCoin__GetItem函数；	ADD R0, R6, R4 改为：LDR R0, =0x01000000；04 00 86 E0 改为 01 04 A0 E3
 在dnSpy中搜索数字时，选择 数字/字符串 的方式搜索，搜索70AEB0时不要带0x
 */
 int wudi(pid_t target_pid, int open)
