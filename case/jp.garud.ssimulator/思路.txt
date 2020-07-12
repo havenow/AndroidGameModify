@@ -1,0 +1,252 @@
+
+搜索金钱   
+
+  public class CharacterStatus : MonoBehaviour
+{
+   	// Token: 0x0400069E RID: 1694
+	[FieldOffset(Offset = "0x7C")]
+	public int Money;
+	
+	
+	public enum Personality
+	{
+		// Token: 0x0400075E RID: 1886
+		[FieldOffset(Offset = "0x0")]
+		Kurai,
+		// Token: 0x0400075F RID: 1887
+		[FieldOffset(Offset = "0x0")]
+		Otonasii,
+		// Token: 0x04000760 RID: 1888
+		[FieldOffset(Offset = "0x0")]
+		Futu,
+		// Token: 0x04000761 RID: 1889
+		[FieldOffset(Offset = "0x0")]
+		Akarui,
+		// Token: 0x04000762 RID: 1890
+		[FieldOffset(Offset = "0x0")]
+		Kappatu,
+		// Token: 0x04000763 RID: 1891
+		[FieldOffset(Offset = "0x0")]
+		Kougeki
+	}
+	
+	public enum Club
+	{
+		// Token: 0x04000765 RID: 1893
+		[FieldOffset(Offset = "0x0")]
+		None,
+		// Token: 0x04000766 RID: 1894
+		[FieldOffset(Offset = "0x0")]
+		Soccer,
+		// Token: 0x04000767 RID: 1895
+		[FieldOffset(Offset = "0x0")]
+		Valley,
+		// Token: 0x04000768 RID: 1896
+		[FieldOffset(Offset = "0x0")]
+		Tennis,
+		// Token: 0x04000769 RID: 1897
+		[FieldOffset(Offset = "0x0")]
+		BaseBall,
+		// Token: 0x0400076A RID: 1898
+		[FieldOffset(Offset = "0x0")]
+		Takkyu,
+		// Token: 0x0400076B RID: 1899
+		[FieldOffset(Offset = "0x0")]
+		Rikujo,
+		// Token: 0x0400076C RID: 1900
+		[FieldOffset(Offset = "0x0")]
+		Kendo,
+		// Token: 0x0400076D RID: 1901
+		[FieldOffset(Offset = "0x0")]
+		KickBoxing,
+		// Token: 0x0400076E RID: 1902
+		[FieldOffset(Offset = "0x0")]
+		Basket,
+		// Token: 0x0400076F RID: 1903
+		[FieldOffset(Offset = "0x0")]
+		Swim,
+		// Token: 0x04000770 RID: 1904
+		[FieldOffset(Offset = "0x0")]
+		Ride,
+		// Token: 0x04000771 RID: 1905
+		[FieldOffset(Offset = "0x0")]
+		Book,
+		// Token: 0x04000772 RID: 1906
+		[FieldOffset(Offset = "0x0")]
+		StudentCouncil,
+		// Token: 0x04000773 RID: 1907
+		[FieldOffset(Offset = "0x0")]
+		Sadou,
+		// Token: 0x04000774 RID: 1908
+		[FieldOffset(Offset = "0x0")]
+		Kyudo
+	}
+	
+		[Address(RVA = "0x7D5208", Offset = "0x7D5208", VA = "0x7D5208")]
+	public int GetDefenderCharaNum()
+	{
+		return 0;
+	}
+}
+	
+	public class MoneyActiveTrigger : MonoBehaviour
+	{
+		[FieldOffset(Offset = "0x14")]
+	[SerializeField]
+	private int MoneyNum;
+	}
+	
+	
+	SaveGameManager
+	
+public class SettingManager : MonoBehaviour
+{
+	public List<CharacterStatus> characterStatuses;
+	
+	
+	[Address(RVA = "0x6DD294", Offset = "0x6DD294", VA = "0x6DD294")]
+	public int[] SaveStatusAll(CharacterStatus[] CStatusList)
+	{
+		return null;
+	}
+										女孩		男孩	小男孩		小女孩		猫管家
+	
+	// Token: 0x04000687 RID: 1671
+	[FieldOffset(Offset = "0x10")]
+	public int ID;						8			48			100			101			144
+
+	// Token: 0x04000688 RID: 1672
+	[FieldOffset(Offset = "0x14")]
+	public bool ActiveOnVisible;		0			0			0			0				0
+
+	// Token: 0x04000689 RID: 1673
+	[FieldOffset(Offset = "0x18")]
+	public int Sex;						1			0			0			1				0
+
+	// Token: 0x0400068A RID: 1674
+	[FieldOffset(Offset = "0x1C")]
+	public int Age;						16			17			10			9				1000
+
+	// Token: 0x0400068B RID: 1675
+	[FieldOffset(Offset = "0x20")]
+	public float Stature;				165.0		180.0		140			139				130
+
+	// Token: 0x0400068C RID: 1676
+	[FieldOffset(Offset = "0x24")]
+	public string Name;					C593CF50h	C593CDC0h	A54FED70h	A3BFCD00h		A5453410h
+
+	// Token: 0x0400068D RID: 1677
+	[FieldOffset(Offset = "0x28")]
+	public bool NameChange;				0			0			0			0				0
+	
+	// Token: 0x0400068E RID: 1678
+	[FieldOffset(Offset = "0x2C")]		
+	public int HPMax;					100			1000		100			100				100	
+
+	// Token: 0x0400068F RID: 1679
+	[FieldOffset(Offset = "0x30")]		
+	public int HP;						100			1000		100			100				100	
+
+	// Token: 0x04000690 RID: 1680
+	[FieldOffset(Offset = "0x34")]
+	public int Sield;					100			100			100			100				100	
+
+	// Token: 0x04000691 RID: 1681
+	[FieldOffset(Offset = "0x38")]
+	public int SieldMax;				100			100			100			100				100	
+
+	// Token: 0x04000692 RID: 1682
+	[FieldOffset(Offset = "0x3C")]
+	public int MP;						100			100			100			100				100	
+
+	// Token: 0x04000693 RID: 1683
+	[FieldOffset(Offset = "0x40")]
+	public int MPMax;					100			100			100			100				100	
+
+	// Token: 0x04000694 RID: 1684
+	[FieldOffset(Offset = "0x44")]
+	public float ArmStrength;			2.0f		3.0			1.0			1.0				1.0
+
+	// Token: 0x04000695 RID: 1685
+	[FieldOffset(Offset = "0x48")]
+	public float LegStrength;			1.0f		3.0			1.0			1.0				1.0
+
+	// Token: 0x04000696 RID: 1686
+	[FieldOffset(Offset = "0x4C")]
+	public float Intelligence;			5.0f		1.0			1.0			1.0				3.0
+
+	// Token: 0x04000697 RID: 1687
+	[FieldOffset(Offset = "0x50")]
+	public Vector3 Position;			0
+
+	// Token: 0x04000698 RID: 1688
+	[FieldOffset(Offset = "0x5C")]
+	public Vector3 Rotation;			0
+
+	// Token: 0x04000699 RID: 1689
+	[FieldOffset(Offset = "0x68")]
+	public int State;					0
+
+	// Token: 0x0400069A RID: 1690
+	[FieldOffset(Offset = "0x6C")]
+	public int AnimeState;				0
+
+	// Token: 0x0400069B RID: 1691
+	[FieldOffset(Offset = "0x70")]
+	public int Goto;					0
+
+	// Token: 0x0400069C RID: 1692
+	[FieldOffset(Offset = "0x74")]
+	public int Hungry;					0			36			100			100				100
+
+	// Token: 0x0400069D RID: 1693
+	[FieldOffset(Offset = "0x78")]
+	public int Condition;				0
+
+	// Token: 0x0400069E RID: 1694
+	[FieldOffset(Offset = "0x7C")]
+	public int Money;			
+
+	
+8E604A0C 
+
+
+	[Address(RVA = "0x7D2838", Offset = "0x7D2838", VA = "0x7D2838")]
+	public void AddMoney(int num)
+	{
+	}
+	B5D52888 - B5D52838 = 0x50
+	c0900000 	+ 0x7D2838 + 0x50 = C10D2888
+	
+	00 00 81 E0
+	write bytearray C10D2888 01 06 A0 E3
+
+il2cpp:B5D52838 CharacterStatus$$AddMoney_8202296       ; CODE XREF: SentakuManager$$Update+3D30↑p
+il2cpp:B5D52838                                         ; CharacterStatus$$AddMoney+1C↑j
+il2cpp:B5D52838                                         ; DATA XREF: ...
+il2cpp:B5D52838 ; __unwind {
+il2cpp:B5D52838                 STMFD           SP!, {R4-R6,R10,R11,LR}
+
+il2cpp:B5D52888                 ADD             R0, R1, R0			改为 LDR R0, =0x00100000			01 06 A0 E3
+il2cpp:B5D5288C                 STR             R0, [R4,#0x7C]
+
+void __cdecl CharacterStatus__AddMoney_8202296(CharacterStatus_o *this, int32_t num)
+{
+  v2->Money += v4;
+  
+  
+  
+  void __cdecl SystemManager__Update(SystemManager_o *this)
+  
+  [Address(RVA = "0x4F1060", Offset = "0x4F1060", VA = "0x4F1060")]
+	private void Update()
+	{
+	}
+  
+  B5A762E0 - B5A71060 = 0x5280
+  
+  caf00000 + 0x4F1060 + 0x5280 = CB3F62E0
+  write bytearray CB3F62E0 01 06 A0 E3 7C 00 95 E5	
+  
+il2cpp:B5A762E0                 LDR             R0, [R5,#0x7C]	7C 00 95 E5				LDR R0, =0x00100000	01 06 A0 E3
+il2cpp:B5A762E4                 CMP             R0, #0x64 ; 	64 00 50 E3				LDR R0, [R5,#0x7C]	7C 00 95 E5	
