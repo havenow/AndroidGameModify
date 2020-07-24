@@ -522,7 +522,7 @@ f_nativeProcessCheat = (int(*)(JNIEnv *, jobject, int, int, int, int))dlsym(dll,
 	appendToLogFile("f_nativeProcessCheat Dl_info: %x	%x	%x", info.dli_fbase, info.dli_saddr, (void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase)));
 
 	(void*)(uint32_t(info.dli_saddr) - uint32_t(info.dli_fbase))在armeabi-v7a x86下可以编译通过， 在x86_64下编译不报错
-	
+	error: 'Dl_info' was not declared in this scope Dl_info info;	在Application.mk中添加APP_PLATFORM := android-9
 
 打印的日志：
 #########	init_bridge begin.
