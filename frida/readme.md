@@ -31,7 +31,17 @@ public class MainActivity extends ActionBarActivity {		eclipse
 ```
 Java层Hook(普通方法、构造方法、重载方法、构造对象参数、修改对象属性)
 https://www.bilibili.com/video/BV1Z4411j7at/?p=3
+https://www.bilibili.com/video/BV1Ei4y1b7ST	打印Java层函数堆栈定位关键代码
 
 YouTube教程 Android逆向---Hook神器家族的Frida工具使用详解
 https://www.bilibili.com/video/BV1yE411f7uW/?spm_id_from=333.788.videocard.11
+```
+
+```
+Frida hook native中的函数
+https://www.jianshu.com/p/b833fba1bffe
+
+还可以按照wp Level1 Writeup使用Frida hook代码获取flag。
+
+Frida使用的过程中不能和Magisk Hide一起使用, 不然会出现Failed to spawn: unable to access zygote64 while preparing for app launch; try disabling Magisk Hide in case it is active的报错。所以我们需要先关掉Magisk Hide(Magisk Manager > Settings >Magisk > Magisk Hide (关掉)), 并且还要在Frida脚本里面绕过root的检测。
 ```
