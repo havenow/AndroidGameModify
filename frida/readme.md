@@ -44,4 +44,7 @@ https://www.jianshu.com/p/b833fba1bffe
 还可以按照wp Level1 Writeup使用Frida hook代码获取flag。
 
 Frida使用的过程中不能和Magisk Hide一起使用, 不然会出现Failed to spawn: unable to access zygote64 while preparing for app launch; try disabling Magisk Hide in case it is active的报错。所以我们需要先关掉Magisk Hide(Magisk Manager > Settings >Magisk > Magisk Hide (关掉)), 并且还要在Frida脚本里面绕过root的检测。
+
+ipython
+https://blog.csdn.net/qq_39362996/article/details/82892671
 ```
