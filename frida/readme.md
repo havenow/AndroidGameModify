@@ -48,3 +48,22 @@ Frida使用的过程中不能和Magisk Hide一起使用, 不然会出现Failed to spawn: unable to
 ipython
 https://blog.csdn.net/qq_39362996/article/details/82892671
 ```
+
+```
+frida objection ZenTracer
+https://www.anquanke.com/post/id/197657
+
+objection的安装：
+pip3 install objection
+
+objection注入“设置”应用
+	objection -g com.android.settings explore
+查看内存中加载的库
+	memory list modules
+查看库的导出函数
+	memory list exports libssl.so
+将结果保存到json文件中
+	 memory list exports libart.so --json c:\\libart.json 
+
+好像没法hook so??
+```
