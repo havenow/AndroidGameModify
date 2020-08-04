@@ -67,3 +67,22 @@ objection注入“设置”应用
 
 好像没法hook so??
 ```
+
+```
+FRIDA系列文章
+https://github.com/r0ysue/AndroidSecurityStudy
+```
+
+```
+frida doc
+https://frida.re/docs/
+
+frida好像无法attach /data/local/tmp下面启动的elf程序
+  printf("pid: %d\n", getpid());
+  printf ("f() is at %p\n", f);
+  session = frida.attach(30434)
+根据pid 去attach会失败，adb shell ps > msg.txt 查看不到进程号
+
+Interceptor NativePointer(Function/Callback)使用
+https://www.anquanke.com/post/id/195869#h3-16
+```
