@@ -86,3 +86,46 @@ frida好像无法attach /data/local/tmp下面启动的elf程序
 Interceptor NativePointer(Function/Callback)使用
 https://www.anquanke.com/post/id/195869#h3-16
 ```
+
+```
+使用frida框架hook so的例子，用来打印函数参数，返回值，修改返回值
+
+import frida
+import sys
+import io
+
+device = frida.get_usb_device()
+
+session = device.attach(int(sys.argv[1]))
+
+scr = """
+setImmediate(function() {
+Interceptor.attach(Module.findExportByName("libc.so" , "open"), {
+    onEnter: function(args) {
+
+        send("open called! args[0]:",Memory.readByteArray(args[0],256));		将libc.so中open函数的第一个参数存到文件D:\\log.txt中
+		console.log('args[1]  : ' + args[1].toInt32());							打印libc.so中open函数的第二个参数
+    },
+    onLeave:function(retval){
+		console.log('retval  :' + retval.toInt32());
+		retval.replace(666);													修改libc.so中open函数的返回值
+		console.log('retval replace :' + retval.toInt32());						注意这里的修改返回值有可能导致attach的进程崩溃
+    }
+});
+
+});
+"""
+
+def on_message(message ,data):
+    file_object=open("D:\\log.txt",'ab+')
+    file_object.write(message['payload'].encode())
+    file_object.write(data.split(b'\x00')[0])
+    file_object.write('\n'.encode())
+    file_object.close()
+
+
+script = session.create_script(scr)
+script.on("message" , on_message)
+script.load()
+sys.stdin.read()
+```
