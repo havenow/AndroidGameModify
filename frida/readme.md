@@ -89,6 +89,8 @@ https://www.anquanke.com/post/id/195869#h3-16
 
 ```
 使用frida框架hook so的例子，用来打印函数参数，返回值，修改返回值
+hook的是chrom浏览器 com.android.chrome
+启动时 open.py pid
 
 import frida
 import sys
@@ -129,3 +131,42 @@ script.on("message" , on_message)
 script.load()
 sys.stdin.read()
 ```
+
+```
+使用frida框架hook so的例子，用来replace函数
+hook的是chrom浏览器 com.android.chrome
+启动时 openReplace.py pid
+
+import frida
+import sys
+import io
+
+
+device = frida.get_usb_device()
+
+session = device.attach(int(sys.argv[1]))
+
+scr = """
+setImmediate(function() {
+	var open_method = new NativeFunction(Module.findExportByName('libc.so', 'open'), 'int',['pointer','int']);
+	 Interceptor.replace(open_method, new NativeCallback(function (a, b) {
+            return -1;															hook了libc.so中open函数，直接返回-1
+       }, 'int', ['pointer', 'int']));
+});
+"""
+
+def on_message(message ,data):
+   print('on_message')
+
+
+script = session.create_script(scr)
+script.on("message" , on_message)
+script.load()
+sys.stdin.read()
+
+
+先openReplace.py pid
+在open.py pid
+会看到调用open函数之后的的返回值都是-1
+```
+
