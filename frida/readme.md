@@ -170,3 +170,19 @@ sys.stdin.read()
 会看到调用open函数之后的的返回值都是-1
 ```
 
+```
+frida官方的demo，Instrumentation用法
+https://frida.re/docs/javascript-api/#interceptor
+hook libc.so的read和open函数
+
+var openPtr = Module.getExportByName('libc.so', 'open');
+var open = new NativeFunction(openPtr, 'int', ['pointer', 'int']);			
+Interceptor.replace(openPtr, new NativeCallback(function (pathPtr, flags) {
+  var path = pathPtr.readUtf8String();
+  log('Opening "' + path + '"');
+  var fd = open(pathPtr, flags);											调用libc.so中的open
+  log('Got fd: ' + fd);
+  return fd;
+}, 'int', ['pointer', 'int']));
+
+```
