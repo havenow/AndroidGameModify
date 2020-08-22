@@ -41,3 +41,37 @@ _ZN6CCheat11HealthCheatEv ... 其他CCheat类的函数
 .bss:00006084                                         ; .data.rel.ro.local:00005CD4↑o
 
 ```
+
+# 破解思路
+```
+首先是对游戏的注入，写的代码编译成so，注入到游戏进程
+如果直接讲写的so打进游戏包里面，在java层loadLibrary，就不用注入so了
+在GTASA.smali中添加
+    const-string v0, "inlineHook"
+    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+	
+对libGTASA.so中的函数进行inline hook，可以实现replace函数
+
+下面是关键点：！！！！！！！！！！！！！！！！！！！！！！！！
+查看libCEO.so
+signed int __fastcall JNI_OnLoad(int a1)
+int sub_51BC()
+int __fastcall sub_46DC(int a1, int a2)
+函数中会dlsym libGTASA.so中的函数，查看了下
+感觉_ZN14CRunningScript17ProcessOneCommandEv有点像使能cheat的函数
+
+hook replace libGTASA.so中的ProcessOneCommand函数：	hook replace都成功了，但是游戏会闪退
+CRunningScript::ProcessOneCommand
+继续查看调用
+int __fastcall CRunningScript::Process(CRunningScript *this)
+int __fastcall CGame::Process(CGame *this)
+
+感觉CGame::Process比较像游戏跑每一帧的函数
+hook replace 函数CGame::Process，在replace函数中打印日志，发现进入游戏场景后，会不停的输出
+int __fastcall CGame::Process(CGame *this)
+
+
+在函数CGame::Process的replace函数中，调用f__ZN6CCheat12WeaponCheat1Ev，WeaponCheat1是生效的
+
+如果直接调用WeaponCheat1游戏是会崩溃的，调用应该是在游戏的帧与帧之间
+```
