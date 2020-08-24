@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <android/log.h>
 #include <pthread.h>
+#include <map>
+#include <vector>
+#include <dlfcn.h>
 
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -15,7 +18,55 @@
 #include <errno.h>
 #include <unistd.h>
 
+using namespace std;
+
 #define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"inlinehook",__VA_ARGS__)
+
+void* g_dllGTASA = NULL;
+#ifndef _TAG_CHEAT_UNIT_
+#define _TAG_CHEAT_UNIT_
+typedef struct tagCheatUnit
+{
+	char strCheatName[128];
+	int (*pfunCheat)();
+	bool bCall;
+} CheatUnit;
+#endif
+
+pthread_mutex_t cheat_mutex ;
+map<string, CheatUnit> g_cheatData;
+vector <string> cheatNameData = {
+	"_ZN6CCheat12WeaponCheat1Ev",
+	"_ZN6CCheat12WeaponCheat2Ev",
+	"_ZN6CCheat12WeaponCheat3Ev",
+	"_ZN6CCheat12WeaponCheat4Ev"
+};
+void initCheat()
+{
+	for (auto elem : cheatNameData)
+	{
+		string cheat = elem;
+
+		CheatUnit obj;
+		strcpy(obj.strCheatName, cheat.c_str());
+		if (g_dllGTASA)
+		{
+			obj.pfunCheat = (int(*)())dlsym(g_dllGTASA, obj.strCheatName);
+			if (obj.pfunCheat)
+				LOGE("find %s.\n", obj.strCheatName);
+			else
+				LOGE("can not find %s.\n", obj.strCheatName);
+			char *error;	
+			if ((error = (char*)dlerror()) != NULL)  
+				LOGE("dlsym %s:	%s\n", obj.strCheatName, error);
+		}
+		else
+			obj.pfunCheat = nullptr;
+
+		obj.bCall = false;
+		g_cheatData[cheat] = obj;
+	}
+}
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;
@@ -66,10 +117,32 @@ void process_cmd(char* io_buffer)
 	switch (io_buffer[0])
 	{
 	case 'D':
-		LOGE("process_cmd D:	%s\n", io_buffer);
-		index = strtol(cursor, &cursor, 10);
-		LOGE("index:	%d\n", index);
-		g_bCallWeaponCheat1 = true;
+		{
+			char strCheatCmd[128];
+			memset(strCheatCmd, '0', 128);
+			sscanf(io_buffer, "D: %s", strCheatCmd);
+ 			pthread_mutex_lock(&cheat_mutex);
+			auto pItem = g_cheatData.find(strCheatCmd);
+			if (pItem != g_cheatData.end())
+			{
+				(*pItem).second.bCall = true;
+				LOGE("process_cmd: %s", (*pItem).second.strCheatName);
+			}
+			else
+				LOGE("cant find process_cmd: %s", strCheatCmd); 
+			pthread_mutex_unlock(&cheat_mutex); 
+/* 			pthread_mutex_lock(&cheat_mutex);
+			for (auto elem : g_cheatData)
+			{
+				if (0 == strcmp(elem.second.strCheatName, strCheatCmd))
+				{
+					elem.second.bCall = true;	//没有赋值给g_cheatData elem应该是引用
+					LOGE("process_cmd: %s", elem.second.strCheatName);
+					break;
+				}
+			}
+			pthread_mutex_unlock(&cheat_mutex); */
+		}
 		break;
 	default:
 		break;
@@ -142,6 +215,7 @@ void* threadProc(void* param)
 
 	close(server_fd);
 	LOGE("exit cheat thread\n");
+	pthread_mutex_destroy(&cheat_mutex);
     return NULL;
 }
 
@@ -266,16 +340,6 @@ int find_pid_of(const char *process_name)
 #include "inlineHook.h"
 //enum ele7en_status registerInlineHook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
 
-#ifndef _TAG_CHEAT_UNIT_
-#define _TAG_CHEAT_UNIT_
-typedef struct tagCheatUnit
-{
-	char strCheatName[128];
-	int (*pfunCheat)();
-	bool bCall;
-} CheatUnit;
-#endif
-
 int (*old_WeaponCheat1)(/*void* CCheatThis*/) = NULL;
 int replaceWeaponCheat1(/*void* CCheatThis*/)
 {
@@ -309,11 +373,29 @@ int replaceGameProcess()
 	int ret = old_GameProcess();
 	//LOGE("replace GameProcess return: %d\n", ret);
 	
-	if (g_bCallWeaponCheat1)
+	pthread_mutex_lock(&cheat_mutex);
+	/* for (auto elem : g_cheatData)
 	{
-		f__ZN6CCheat12WeaponCheat1Ev();
-		g_bCallWeaponCheat1 = false;
+		if (true == elem.second.bCall)
+		{
+			LOGE("replaceGameProcess %s %d\n", elem.second.strCheatName, elem.second.bCall);
+			(elem.second.pfunCheat)();
+			elem.second.bCall = false;
+			LOGE("replaceGameProcess %s %d\n", elem.second.strCheatName, elem.second.bCall);
+		}
+		
+	} */
+	std::map<string, CheatUnit>::iterator item;
+	for (item = g_cheatData.begin(); item != g_cheatData.end(); item++)
+	{
+		if (item->second.bCall)
+		{
+			LOGE("replaceGameProcess %s %d\n", item->second.strCheatName, item->second.bCall);
+			(item->second.pfunCheat)();
+			item->second.bCall = false;
+		}
 	}
+	pthread_mutex_unlock(&cheat_mutex);
 
 	return ret;
 }
@@ -343,7 +425,6 @@ int unHook()
     return 0;
 }
 
-
 typedef union {
 	JNIEnv* env;
 	void* venv;
@@ -371,10 +452,9 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	appendToLogFile("target_pid %d.\n", target_pid);
 	LOGE("target_pid %d.\n", target_pid);
 	
-	void* dll = NULL;
 	char *error;
-	//dll = dlopen("/data/user/0/io.busniess.va/virtual/data/user/0/com.rockstargames.gtasa/app_Lib/libGTASA.so", RTLD_NOW);
-	dll = dlopen("libGTASA.so", RTLD_NOW);
+	//g_dllGTASA = dlopen("/data/user/0/io.busniess.va/virtual/data/user/0/com.rockstargames.gtasa/app_Lib/libGTASA.so", RTLD_NOW);
+	g_dllGTASA = dlopen("libGTASA.so", RTLD_NOW);
 	if ((error = (char*)dlerror()) != NULL)  
 	{
 		appendToLogFile("dlsym error dlopen:	%s\n", error);
@@ -387,7 +467,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 		LOGE("dlsym dlopen sucess\n");
 	}
 	
-	if(dll==NULL)
+	if(g_dllGTASA==NULL)
 	{
 		appendToLogFile("dlsym error dll == NULL\n");
 		LOGE("dlsym error dll == NULL\n");
@@ -398,9 +478,11 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 		appendToLogFile("dlsym dll != NULL\n");
 		LOGE("dlsym dll != NULL\n");
 	}
+	
+	initCheat();
 		
 //hook CCheat::WeaponCheat1----------------------------------------------------------------------------------------------------	
-	f__ZN6CCheat12WeaponCheat1Ev = (int(*)())dlsym(dll, "_ZN6CCheat12WeaponCheat1Ev");
+	f__ZN6CCheat12WeaponCheat1Ev = (int(*)())dlsym(g_dllGTASA, "_ZN6CCheat12WeaponCheat1Ev");
 	if (f__ZN6CCheat12WeaponCheat1Ev)
 	{
 		appendToLogFile("find _ZN6CCheat12WeaponCheat1Ev.\n");
@@ -427,7 +509,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	hookWeaponCheat1();
 	
 //hook CGame::Process----------------------------------------------------------------------------------------------------
-	f__ZN5CGame7ProcessEv = (int(*)())dlsym(dll, "_ZN5CGame7ProcessEv");
+	f__ZN5CGame7ProcessEv = (int(*)())dlsym(g_dllGTASA, "_ZN5CGame7ProcessEv");
 	if (f__ZN5CGame7ProcessEv)
 		LOGE("find _ZN5CGame7ProcessEv.\n");
 	else
@@ -448,6 +530,8 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
     pthread_create(&cheat_thread, &attr, threadProc, NULL);
+	
+	pthread_mutex_init(&cheat_mutex, NULL);
 
 	result = JNI_VERSION_1_4;
 	return result;
@@ -458,13 +542,16 @@ void printhelp()
 	fprintf(stderr, 
 		"####################################################\n"
 		"				Usage: input cmd\n"
-		"help\n"
-		"exit\n"
-		"1	(cheatWeapon1)\n"
+		"help	(print commands)\n"
+		"exit	(called when exit exe)\n"
+		"1 		(WEAPON1)\n"
+		"2 		(WEAPON2)\n"
+		"3 		(WEAPON3)\n"
+		"4 		(WEAPON4)\n"
 		"####################################################\n"
 		"\n");
 }
-
+map<int,string> callMap;
 int main(int argc, char** argv)
 {
 	struct sockaddr_in addr;
@@ -489,6 +576,10 @@ int main(int argc, char** argv)
 	fprintf(stderr, "connect socket sucess %d\n", g_socket);
 	
 	printhelp();
+	callMap[1] = "_ZN6CCheat12WeaponCheat1Ev";
+	callMap[2] = "_ZN6CCheat12WeaponCheat2Ev";
+	callMap[3] = "_ZN6CCheat12WeaponCheat3Ev";
+	callMap[4] = "_ZN6CCheat12WeaponCheat4Ev";
 	while (1)
 	{
 		fprintf(stderr, "input commonds>");
@@ -509,7 +600,7 @@ int main(int argc, char** argv)
 			sscanf(cmdBuf, "%d", &cheatIndex);
 			LOGE("cheat index %d\n", cheatIndex);
 			char cmd[80] = { 0 };
-			int io_length = snprintf(cmd, sizeof(cmd), "D %d\n", cheatIndex);
+			int io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", (callMap[cheatIndex]).c_str());
 			send(g_socket, cmd, io_length, 0);
 		}
 	}
