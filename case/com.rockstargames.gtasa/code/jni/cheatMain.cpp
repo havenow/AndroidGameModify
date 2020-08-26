@@ -39,7 +39,31 @@ vector <string> cheatNameData = {
 	"_ZN6CCheat12WeaponCheat1Ev",
 	"_ZN6CCheat12WeaponCheat2Ev",
 	"_ZN6CCheat12WeaponCheat3Ev",
-	"_ZN6CCheat12WeaponCheat4Ev"
+	"_ZN6CCheat11HealthCheatEv",
+	"_ZN6CCheat22MoneyArmourHealthCheatEv",
+	"_ZN6CCheat25TogglePlayerInvincibilityEv",
+	"_ZN6CCheat20WantedLevelDownCheatEv",
+	"_ZN6CCheat14NotWantedCheatEv",
+	"_ZN6CCheat12SuicideCheatEv",
+	"_ZN6CCheat17ShowMappingsCheatEv",
+	"_ZN6CCheat12StaminaCheatEv",
+	"_ZN6CCheat16ClearMissionSkipEv",
+	"_ZN6CCheat9TankCheatEv",
+	"_ZN6CCheat11ApacheCheatEv",
+	"_ZN6CCheat14ParachuteCheatEv",
+	"_ZN6CCheat12JetpackCheatEv",
+	"_ZN6CCheat15BlowUpCarsCheatEv",
+	"_ZN6CCheat11HearseCheatEv",
+	"_ZN6CCheat16TrashmasterCheatEv",
+	"_ZN6CCheat13GolfcartCheatEv",
+	"_ZN6CCheat10DozerCheatEv",
+	"_ZN6CCheat9DuskCheatEv",
+	"_ZN6CCheat10StormCheatEv",
+	"_ZN6CCheat14SandstormCheatEv",
+	"_ZN6CCheat13FastTimeCheatEv",
+	"_ZN6CCheat13SlowTimeCheatEv",
+	"_ZN6CCheat27EverybodyAttacksPlayerCheatEv",
+	"_ZN6CCheat20LoveConquersAllCheatEv"
 };
 void initCheat()
 {
@@ -544,10 +568,39 @@ void printhelp()
 		"				Usage: input cmd\n"
 		"help	(print commands)\n"
 		"exit	(called when exit exe)\n"
-		"1 		(WEAPON1)\n"
-		"2 		(WEAPON2)\n"
-		"3 		(WEAPON3)\n"
-		"4 		(WEAPON4)\n"
+		"1 		(武器套装1)\n"
+		"2 		(武器套装2)\n"
+		"3 		(武器套装3)\n"
+		"4 		(枪	??)\n"
+		"5 		(武士刀	??)\n"
+		"6 		(加满血)\n"
+		"7		(加钱)\n"
+		"8 		(人物无敌)\n"
+		"9 		(降低通缉级别（减少警星）)\n"
+		"10 	(提升通缉级别（增加警星）)\n"
+		"11 	(自杀)\n"
+		"12 	(地图解锁)\n"
+		"13 	(增强耐力)\n"
+		"14 	(跳过任务(在进行任务时用))\n"
+		"15		(坦克)\n"
+		"16 	(九头蛇战斗机	无)\n"
+		"17 	(阿帕奇直升机)\n"
+		"18 	(降落伞)\n"
+		"19 	(喷气背包)\n"
+		"20 	(车辆爆炸)\n"
+		"21 	(灵车)\n"
+		"22 	(怪物卡车)\n"
+		"23		(四轮车)\n"
+		"24 	(SUV	无)\n"
+		"25 	(推土机)\n"
+		"26 	(黄昏)\n"
+		"27 	(暴风雨)\n"
+		"28 	(沙尘暴)\n"
+		"29 	(时间加快)\n"
+		"30 	(时间变慢)\n"
+		"31 	(所有人攻击你)\n"
+		"32 	(所有人有武器	无)\n"
+		"33 	(吸引女性)\n"
 		"####################################################\n"
 		"\n");
 }
@@ -579,7 +632,36 @@ int main(int argc, char** argv)
 	callMap[1] = "_ZN6CCheat12WeaponCheat1Ev";
 	callMap[2] = "_ZN6CCheat12WeaponCheat2Ev";
 	callMap[3] = "_ZN6CCheat12WeaponCheat3Ev";
-	callMap[4] = "_ZN6CCheat12WeaponCheat4Ev";
+	callMap[4] = "NULL";
+	callMap[5] = "NULL";
+	callMap[6] = "_ZN6CCheat11HealthCheatEv";
+	callMap[7] = "_ZN6CCheat22MoneyArmourHealthCheatEv";
+	callMap[8] = "_ZN6CCheat25TogglePlayerInvincibilityEv";
+	callMap[9] = "_ZN6CCheat20WantedLevelDownCheatEv";
+	callMap[10] = "_ZN6CCheat14NotWantedCheatEv";
+	callMap[11] = "_ZN6CCheat12SuicideCheatEv";
+	callMap[12] = "_ZN6CCheat17ShowMappingsCheatEv";
+	callMap[13] = "_ZN6CCheat12StaminaCheatEv";
+	callMap[14] = "_ZN6CCheat16ClearMissionSkipEv";
+	callMap[15] = "_ZN6CCheat9TankCheatEv";
+	callMap[16] = "NULL";
+	callMap[17] = "_ZN6CCheat11ApacheCheatEv";
+	callMap[18] = "_ZN6CCheat14ParachuteCheatEv";
+	callMap[19] = "_ZN6CCheat12JetpackCheatEv";
+	callMap[20] = "_ZN6CCheat15BlowUpCarsCheatEv";
+	callMap[21] = "_ZN6CCheat11HearseCheatEv";
+	callMap[22] = "_ZN6CCheat16TrashmasterCheatEv";
+	callMap[23] = "_ZN6CCheat13GolfcartCheatEv";
+	callMap[24] = "NULL";
+	callMap[25] = "_ZN6CCheat10DozerCheatEv";
+	callMap[26] = "_ZN6CCheat9DuskCheatEv";
+	callMap[27] = "_ZN6CCheat10StormCheatEv";
+	callMap[28] = "_ZN6CCheat14SandstormCheatEv";
+	callMap[29] = "_ZN6CCheat13FastTimeCheatEv";
+	callMap[30] = "_ZN6CCheat13SlowTimeCheatEv";
+	callMap[31] = "_ZN6CCheat27EverybodyAttacksPlayerCheatEv";
+	callMap[32] = "NULL";
+	callMap[33] = "_ZN6CCheat20LoveConquersAllCheatEv";
 	while (1)
 	{
 		fprintf(stderr, "input commonds>");
