@@ -39,31 +39,76 @@ vector <string> cheatNameData = {
 	"_ZN6CCheat12WeaponCheat1Ev",
 	"_ZN6CCheat12WeaponCheat2Ev",
 	"_ZN6CCheat12WeaponCheat3Ev",
-	"_ZN6CCheat11HealthCheatEv",
-	"_ZN6CCheat22MoneyArmourHealthCheatEv",
-	"_ZN6CCheat25TogglePlayerInvincibilityEv",
-	"_ZN6CCheat20WantedLevelDownCheatEv",
-	"_ZN6CCheat14NotWantedCheatEv",
-	"_ZN6CCheat12SuicideCheatEv",
+	"_ZN6CCheat12WeaponCheat4Ev",
+	"_ZN6CCheat15TimeTravelCheatEv",
+	"_ZN6CCheat17ScriptBypassCheatEv",
 	"_ZN6CCheat17ShowMappingsCheatEv",
-	"_ZN6CCheat12StaminaCheatEv",
-	"_ZN6CCheat16ClearMissionSkipEv",
+	"_ZN6CCheat25TogglePlayerInvincibilityEv",
+	"_ZN6CCheat21ToggleShowTapToTargetEv",
+	"_ZN6CCheat19ToggleShowTargetingEv",
+	"_ZN6CCheat22MoneyArmourHealthCheatEv",
+	"_ZN6CCheat18WantedLevelUpCheatEv",
+	"_ZN6CCheat20WantedLevelDownCheatEv",
+	"_ZN6CCheat22ExtraSunnyWeatherCheatEv",
+	"_ZN6CCheat18CloudyWeatherCheatEv",
+	"_ZN6CCheat17RainyWeatherCheatEv",
+	"_ZN6CCheat17FoggyWeatherCheatEv",
+	"_ZN6CCheat13FastTimeCheatEv",
+	"_ZN6CCheat13SlowTimeCheatEv",
+	"_ZN6CCheat11MayhemCheatEv",
+	"_ZN6CCheat27EverybodyAttacksPlayerCheatEv",
 	"_ZN6CCheat9TankCheatEv",
-	"_ZN6CCheat11ApacheCheatEv",
-	"_ZN6CCheat14ParachuteCheatEv",
-	"_ZN6CCheat12JetpackCheatEv",
-	"_ZN6CCheat15BlowUpCarsCheatEv",
+	"_ZN6CCheat13StockCarCheatEv",
+	"_ZN6CCheat14StockCar2CheatEv",
+	"_ZN6CCheat14StockCar3CheatEv",
+	"_ZN6CCheat14StockCar4CheatEv",
 	"_ZN6CCheat11HearseCheatEv",
+	"_ZN6CCheat13LovefistCheatEv",
 	"_ZN6CCheat16TrashmasterCheatEv",
 	"_ZN6CCheat13GolfcartCheatEv",
-	"_ZN6CCheat10DozerCheatEv",
+	"_ZN6CCheat15BlowUpCarsCheatEv",
+	"_ZN6CCheat12SuicideCheatEv",
+	"_ZN6CCheat13PinkCarsCheatEv",
+	"_ZN6CCheat14BlackCarsCheatEv",
+	"_ZN6CCheat8FatCheatEv",
+	"_ZN6CCheat11MuscleCheatEv",
+	"_ZN6CCheat15TheGamblerCheatEv",
+	"_ZN6CCheat11SkinnyCheatEv",
+	"_ZN6CCheat15ElvisLivesCheatEv",
+	"_ZN6CCheat18VillagePeopleCheatEv",
+	"_ZN6CCheat15BeachPartyCheatEv",
+	"_ZN6CCheat10GangsCheatEv",
+	"_ZN6CCheat13GangLandCheatEv",
+	"_ZN6CCheat10NinjaCheatEv",
+	"_ZN6CCheat20LoveConquersAllCheatEv",
+	"_ZN6CCheat19AllCarsAreShitCheatEv",
+	"_ZN6CCheat20AllCarsAreGreatCheatEv",
+	"_ZN6CCheat11FlyboyCheatEv",
+	"_ZN6CCheat11VortexCheatEv",
+	"_ZN6CCheat13MidnightCheatEv",
 	"_ZN6CCheat9DuskCheatEv",
 	"_ZN6CCheat10StormCheatEv",
 	"_ZN6CCheat14SandstormCheatEv",
-	"_ZN6CCheat13FastTimeCheatEv",
-	"_ZN6CCheat13SlowTimeCheatEv",
-	"_ZN6CCheat27EverybodyAttacksPlayerCheatEv",
-	"_ZN6CCheat20LoveConquersAllCheatEv"
+	"_ZN6CCheat13PredatorCheatEv",
+	"_ZN6CCheat14ParachuteCheatEv",
+	"_ZN6CCheat12JetpackCheatEv",
+	"_ZN6CCheat14NotWantedCheatEv",
+	"_ZN6CCheat11WantedCheatEv",
+	"_ZN6CCheat9RiotCheatEv",
+	"_ZN6CCheat13FunhouseCheatEv",
+	"_ZN6CCheat15AdrenalineCheatEv",
+	"_ZN6CCheat12DrivebyCheatEv",
+	"_ZN6CCheat24CountrysideInvasionCheatEv",
+	"_ZN6CCheat12StaminaCheatEv",
+	"_ZN6CCheat17WeaponSkillsCheatEv",
+	"_ZN6CCheat18VehicleSkillsCheatEv",
+	"_ZN6CCheat11ApacheCheatEv",
+	"_ZN6CCheat9QuadCheatEv",
+	"_ZN6CCheat11TankerCheatEv",
+	"_ZN6CCheat10DozerCheatEv",
+	"_ZN6CCheat15StuntPlaneCheatEv",
+	"_ZN6CCheat17MonsterTruckCheatEv",
+	"_ZN6CCheat15xboxHelperCheatEv"
 };
 void initCheat()
 {
@@ -566,41 +611,81 @@ void printhelp()
 	fprintf(stderr, 
 		"####################################################\n"
 		"				Usage: input cmd\n"
-		"help	(print commands)\n"
-		"exit	(called when exit exe)\n"
-		"1 		(武器套装1)\n"
-		"2 		(武器套装2)\n"
-		"3 		(武器套装3)\n"
-		"4 		(枪	??)\n"
-		"5 		(武士刀	??)\n"
-		"6 		(加满血)\n"
-		"7		(加钱)\n"
-		"8 		(人物无敌)\n"
-		"9 		(降低通缉级别（减少警星）)\n"
-		"10 	(提升通缉级别（增加警星）)\n"
-		"11 	(自杀)\n"
-		"12 	(地图解锁)\n"
-		"13 	(增强耐力)\n"
-		"14 	(跳过任务(在进行任务时用))\n"
-		"15		(坦克)\n"
-		"16 	(九头蛇战斗机	无)\n"
-		"17 	(阿帕奇直升机)\n"
-		"18 	(降落伞)\n"
-		"19 	(喷气背包)\n"
-		"20 	(车辆爆炸)\n"
-		"21 	(灵车)\n"
-		"22 	(怪物卡车)\n"
-		"23		(四轮车)\n"
-		"24 	(SUV	无)\n"
-		"25 	(推土机)\n"
-		"26 	(黄昏)\n"
-		"27 	(暴风雨)\n"
-		"28 	(沙尘暴)\n"
-		"29 	(时间加快)\n"
-		"30 	(时间变慢)\n"
-		"31 	(所有人攻击你)\n"
-		"32 	(所有人有武器	无)\n"
-		"33 	(吸引女性)\n"
+		"help		(print commands)\n"
+		"exit		(server cannot exit normally if not call 'exit' commonds when exit exe)\n"
+		"1		(WEAPON1)\n"
+		"2		(WEAPON2)\n"
+		"3		(WEAPON3)\n"
+		"4		(WEAPON4)\n"
+		"5		(TIMETRAVEL)\n"
+		"6		(SCRIPTBYPASS??)\n"
+		"7		(SHOWMAPPINGS)\n"
+		"8		(INVINCIBILITY)\n"
+		"9		(SHOWTAPTOTARGET)\n"
+		"10		(SHOWTARGETING)\n"
+		"11		(MONEYARMOURHEALTH)\n"
+		"12		(WANTEDLEVELUP)\n"
+		"13		(WANTEDLEVELDOWN)\n"
+		"14		(SUNNYWEATHER)\n"
+		"15		(CLOUDYWEATHER)\n"
+		"16		(RAINYWEATHER)\n"
+		"17		(FOGGYWEATHER)\n"
+		"18		(FASTTIME)\n"
+		"19		(SLOWTIME)\n"
+		"20		(MAYHEM)\n"
+		"21		(EVERYBODYATTACKSPLAYER)\n"
+		"22		(TANK)\n"
+		"23		(STOCKCAR)\n"
+		"24		(STOCKCAR2)\n"
+		"25		(STOCKCAR3)\n"
+		"26		(STOCKCAR4)\n"
+		"27		(HEARSE)\n"
+		"28		(LOVEFIST)\n"
+		"29		(TRASHMASTER)\n"
+		"30		(GOLFCART)\n"
+		"31		(BLOWUPCARS)\n"
+		"32		(SUICIDE)\n"
+		"33		(PINKCARS)\n"
+		"34		(BLACKCARS)\n"
+		"35		(FAT)\n"
+		"36		(MUSCLE)\n"
+		"37		(THEGAMBLER)\n"
+		"38		(SKINNY)\n"
+		"39		(ELVISLIVES)\n"
+		"40		(VILLAGEPEOPLE)\n"
+		"41		(BEACHPARTY)\n"
+		"42		(GANGS)\n"
+		"43		(GANGLAND)\n"
+		"44		(NINJA)\n"
+		"45		(LOVECONQUERSALL)\n"
+		"46		(ALLCARSARESHIT)\n"
+		"47		(ALLCARSAREGREAT)\n"
+		"48		(FLYBOY)\n"
+		"49		(VORTEX)\n"
+		"50		(MIDNIGHT)\n"
+		"51		(DUSK)\n"
+		"52		(STORM)\n"
+		"53		(SANDSTORM)\n"
+		"54		(PREDATOR)\n"
+		"55		(PARACHUTE)\n"
+		"56		(JETPACK)\n"
+		"57		(NOTWANTED)\n"
+		"58		(WANTED)\n"
+		"59		(RIOT)\n"
+		"60		(FUNHOUSE)\n"
+		"61		(ADRENALINE)\n"
+		"62		(DRIVEBY)\n"
+		"63		(COUNTRYSIDEINVASION)\n"
+		"64		(STAMINA)\n"
+		"65		(WEAPONSKILLS)\n"
+		"66		(VEHICLESKILLS)\n"
+		"67		(APACHE)\n"
+		"68		(QUAD)\n"
+		"69		(TANKER)\n"
+		"70		(DOZER)\n"
+		"71		(STUNTPLANE)\n"
+		"72		(MONSTERTRUCK)\n"
+		"73		(XBOX_HELPER)\n"
 		"####################################################\n"
 		"\n");
 }
@@ -629,39 +714,79 @@ int main(int argc, char** argv)
 	fprintf(stderr, "connect socket sucess %d\n", g_socket);
 	
 	printhelp();
-	callMap[1] = "_ZN6CCheat12WeaponCheat1Ev";
-	callMap[2] = "_ZN6CCheat12WeaponCheat2Ev";
-	callMap[3] = "_ZN6CCheat12WeaponCheat3Ev";
-	callMap[4] = "NULL";
-	callMap[5] = "NULL";
-	callMap[6] = "_ZN6CCheat11HealthCheatEv";
-	callMap[7] = "_ZN6CCheat22MoneyArmourHealthCheatEv";
-	callMap[8] = "_ZN6CCheat25TogglePlayerInvincibilityEv";
-	callMap[9] = "_ZN6CCheat20WantedLevelDownCheatEv";
-	callMap[10] = "_ZN6CCheat14NotWantedCheatEv";
-	callMap[11] = "_ZN6CCheat12SuicideCheatEv";
-	callMap[12] = "_ZN6CCheat17ShowMappingsCheatEv";
-	callMap[13] = "_ZN6CCheat12StaminaCheatEv";
-	callMap[14] = "_ZN6CCheat16ClearMissionSkipEv";
-	callMap[15] = "_ZN6CCheat9TankCheatEv";
-	callMap[16] = "NULL";
-	callMap[17] = "_ZN6CCheat11ApacheCheatEv";
-	callMap[18] = "_ZN6CCheat14ParachuteCheatEv";
-	callMap[19] = "_ZN6CCheat12JetpackCheatEv";
-	callMap[20] = "_ZN6CCheat15BlowUpCarsCheatEv";
-	callMap[21] = "_ZN6CCheat11HearseCheatEv";
-	callMap[22] = "_ZN6CCheat16TrashmasterCheatEv";
-	callMap[23] = "_ZN6CCheat13GolfcartCheatEv";
-	callMap[24] = "NULL";
-	callMap[25] = "_ZN6CCheat10DozerCheatEv";
-	callMap[26] = "_ZN6CCheat9DuskCheatEv";
-	callMap[27] = "_ZN6CCheat10StormCheatEv";
-	callMap[28] = "_ZN6CCheat14SandstormCheatEv";
-	callMap[29] = "_ZN6CCheat13FastTimeCheatEv";
-	callMap[30] = "_ZN6CCheat13SlowTimeCheatEv";
-	callMap[31] = "_ZN6CCheat27EverybodyAttacksPlayerCheatEv";
-	callMap[32] = "NULL";
-	callMap[33] = "_ZN6CCheat20LoveConquersAllCheatEv";
+	callMap[1]  = "_ZN6CCheat12WeaponCheat1Ev";
+	callMap[2]  = "_ZN6CCheat12WeaponCheat2Ev";
+	callMap[3]  = "_ZN6CCheat12WeaponCheat3Ev";
+	callMap[4]  = "_ZN6CCheat12WeaponCheat4Ev";
+	callMap[5]  = "_ZN6CCheat15TimeTravelCheatEv";
+	callMap[6]  = "_ZN6CCheat17ScriptBypassCheatEv";
+	callMap[7]	= "_ZN6CCheat17ShowMappingsCheatEv";
+	callMap[8]  = "_ZN6CCheat25TogglePlayerInvincibilityEv";
+	callMap[9]  = "_ZN6CCheat21ToggleShowTapToTargetEv";
+	callMap[10] = "_ZN6CCheat19ToggleShowTargetingEv";
+	callMap[11] = "_ZN6CCheat22MoneyArmourHealthCheatEv";
+	callMap[12] = "_ZN6CCheat18WantedLevelUpCheatEv";
+	callMap[13] = "_ZN6CCheat20WantedLevelDownCheatEv";
+	callMap[14] = "_ZN6CCheat22ExtraSunnyWeatherCheatEv";
+	callMap[15] = "_ZN6CCheat18CloudyWeatherCheatEv";
+	callMap[16] = "_ZN6CCheat17RainyWeatherCheatEv";
+	callMap[17] = "_ZN6CCheat17FoggyWeatherCheatEv";
+	callMap[18] = "_ZN6CCheat13FastTimeCheatEv";
+	callMap[19] = "_ZN6CCheat13SlowTimeCheatEv";
+	callMap[20] = "_ZN6CCheat11MayhemCheatEv";
+	callMap[21] = "_ZN6CCheat27EverybodyAttacksPlayerCheatEv";
+	callMap[22] = "_ZN6CCheat9TankCheatEv";
+	callMap[23] = "_ZN6CCheat13StockCarCheatEv";
+	callMap[24] = "_ZN6CCheat14StockCar2CheatEv";
+	callMap[25] = "_ZN6CCheat14StockCar3CheatEv";
+	callMap[26] = "_ZN6CCheat14StockCar4CheatEv";
+	callMap[27] = "_ZN6CCheat11HearseCheatEv";
+	callMap[28] = "_ZN6CCheat13LovefistCheatEv";
+	callMap[29] = "_ZN6CCheat16TrashmasterCheatEv";
+	callMap[30] = "_ZN6CCheat13GolfcartCheatEv";
+	callMap[31] = "_ZN6CCheat15BlowUpCarsCheatEv";
+	callMap[32] = "_ZN6CCheat12SuicideCheatEv";
+	callMap[33] = "_ZN6CCheat13PinkCarsCheatEv";
+	callMap[34] = "_ZN6CCheat14BlackCarsCheatEv";
+	callMap[35] = "_ZN6CCheat8FatCheatEv";
+	callMap[36] = "_ZN6CCheat11MuscleCheatEv";
+	callMap[37] = "_ZN6CCheat15TheGamblerCheatEv";
+	callMap[38] = "_ZN6CCheat11SkinnyCheatEv";
+	callMap[39] = "_ZN6CCheat15ElvisLivesCheatEv";
+	callMap[40] = "_ZN6CCheat18VillagePeopleCheatEv";
+	callMap[41] = "_ZN6CCheat15BeachPartyCheatEv";
+	callMap[42] = "_ZN6CCheat10GangsCheatEv";
+	callMap[43] = "_ZN6CCheat13GangLandCheatEv";
+	callMap[44] = "_ZN6CCheat10NinjaCheatEv";
+	callMap[45] = "_ZN6CCheat20LoveConquersAllCheatEv";
+	callMap[46] = "_ZN6CCheat19AllCarsAreShitCheatEv";
+	callMap[47] = "_ZN6CCheat20AllCarsAreGreatCheatEv";
+	callMap[48] = "_ZN6CCheat11FlyboyCheatEv";
+	callMap[49] = "_ZN6CCheat11VortexCheatEv";
+	callMap[50] = "_ZN6CCheat13MidnightCheatEv";
+	callMap[51] = "_ZN6CCheat9DuskCheatEv";
+	callMap[52] = "_ZN6CCheat10StormCheatEv";
+	callMap[53] = "_ZN6CCheat14SandstormCheatEv";
+	callMap[54] = "_ZN6CCheat13PredatorCheatEv";
+	callMap[55] = "_ZN6CCheat14ParachuteCheatEv";
+	callMap[56] = "_ZN6CCheat12JetpackCheatEv";
+	callMap[57] = "_ZN6CCheat14NotWantedCheatEv";
+	callMap[58] = "_ZN6CCheat11WantedCheatEv";
+	callMap[59] = "_ZN6CCheat9RiotCheatEv";
+	callMap[60] = "_ZN6CCheat13FunhouseCheatEv";
+	callMap[61] = "_ZN6CCheat15AdrenalineCheatEv";
+	callMap[62] = "_ZN6CCheat12DrivebyCheatEv";
+	callMap[63] = "_ZN6CCheat24CountrysideInvasionCheatEv";
+	callMap[64] = "_ZN6CCheat12StaminaCheatEv";
+	callMap[65] = "_ZN6CCheat17WeaponSkillsCheatEv";
+	callMap[66] = "_ZN6CCheat18VehicleSkillsCheatEv";
+	callMap[67] = "_ZN6CCheat11ApacheCheatEv";
+	callMap[68] = "_ZN6CCheat9QuadCheatEv";
+	callMap[69] = "_ZN6CCheat11TankerCheatEv";
+	callMap[70] = "_ZN6CCheat10DozerCheatEv";
+	callMap[71] = "_ZN6CCheat15StuntPlaneCheatEv";
+	callMap[72] = "_ZN6CCheat17MonsterTruckCheatEv";
+	callMap[73] = "_ZN6CCheat15xboxHelperCheatEv";
 	while (1)
 	{
 		fprintf(stderr, "input commonds>");
