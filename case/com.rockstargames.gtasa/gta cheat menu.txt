@@ -55,7 +55,7 @@ data:00686184                 EXPORT _ZN6CCheat17m_aCheatFunctionsE
 51	"DUSK"						一直黄昏			_ZN6CCheat9DuskCheatEv
 52	"STORM"						暴风雨				_ZN6CCheat10StormCheatEv
 53	"SANDSTORM"					沙暴风雨			_ZN6CCheat14SandstormCheatEv
-54	"PREDATOR"					晚上九点			_ZN6CCheat13PredatorCheatEv
+54	"PREDATOR"					警用船只			_ZN6CCheat13PredatorCheatEv
 55	"PARACHUTE" 					降落伞				_ZN6CCheat14ParachuteCheatEv
 56	"JETPACK"					飞行器				_ZN6CCheat12JetpackCheatEv
 57	"NOTWANTED"					没有通缉			_ZN6CCheat14NotWantedCheatEv
