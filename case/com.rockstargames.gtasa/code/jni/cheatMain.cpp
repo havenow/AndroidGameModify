@@ -2,11 +2,9 @@
 #include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <android/log.h>
 #include <pthread.h>
 #include <map>
 #include <vector>
-#include <dlfcn.h>
 
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -20,127 +18,16 @@
 
 using namespace std;
 
-#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"inlinehook",__VA_ARGS__)
+#include "common.h"
+#include "cheatSDK.h"
 
-void* g_dllGTASA = NULL;
-#ifndef _TAG_CHEAT_UNIT_
-#define _TAG_CHEAT_UNIT_
-typedef struct tagCheatUnit
-{
-	char strCheatName[128];
-	int (*pfunCheat)();
-	bool bCall;
-} CheatUnit;
-#endif
-
+GAME_NAME g_game = _GAME_GTAVC;
+void* g_dll = NULL;
 pthread_mutex_t cheat_mutex ;
-map<string, CheatUnit> g_cheatData;
-vector <string> cheatNameData = {
-	"_ZN6CCheat12WeaponCheat1Ev",
-	"_ZN6CCheat12WeaponCheat2Ev",
-	"_ZN6CCheat12WeaponCheat3Ev",
-	"_ZN6CCheat12WeaponCheat4Ev",
-	"_ZN6CCheat15TimeTravelCheatEv",
-	"_ZN6CCheat17ScriptBypassCheatEv",
-	"_ZN6CCheat17ShowMappingsCheatEv",
-	"_ZN6CCheat25TogglePlayerInvincibilityEv",
-	"_ZN6CCheat21ToggleShowTapToTargetEv",
-	"_ZN6CCheat19ToggleShowTargetingEv",
-	"_ZN6CCheat22MoneyArmourHealthCheatEv",
-	"_ZN6CCheat18WantedLevelUpCheatEv",
-	"_ZN6CCheat20WantedLevelDownCheatEv",
-	"_ZN6CCheat22ExtraSunnyWeatherCheatEv",
-	"_ZN6CCheat18CloudyWeatherCheatEv",
-	"_ZN6CCheat17RainyWeatherCheatEv",
-	"_ZN6CCheat17FoggyWeatherCheatEv",
-	"_ZN6CCheat13FastTimeCheatEv",
-	"_ZN6CCheat13SlowTimeCheatEv",
-	"_ZN6CCheat11MayhemCheatEv",
-	"_ZN6CCheat27EverybodyAttacksPlayerCheatEv",
-	"_ZN6CCheat9TankCheatEv",
-	"_ZN6CCheat13StockCarCheatEv",
-	"_ZN6CCheat14StockCar2CheatEv",
-	"_ZN6CCheat14StockCar3CheatEv",
-	"_ZN6CCheat14StockCar4CheatEv",
-	"_ZN6CCheat11HearseCheatEv",
-	"_ZN6CCheat13LovefistCheatEv",
-	"_ZN6CCheat16TrashmasterCheatEv",
-	"_ZN6CCheat13GolfcartCheatEv",
-	"_ZN6CCheat15BlowUpCarsCheatEv",
-	"_ZN6CCheat12SuicideCheatEv",
-	"_ZN6CCheat13PinkCarsCheatEv",
-	"_ZN6CCheat14BlackCarsCheatEv",
-	"_ZN6CCheat8FatCheatEv",
-	"_ZN6CCheat11MuscleCheatEv",
-	"_ZN6CCheat15TheGamblerCheatEv",
-	"_ZN6CCheat11SkinnyCheatEv",
-	"_ZN6CCheat15ElvisLivesCheatEv",
-	"_ZN6CCheat18VillagePeopleCheatEv",
-	"_ZN6CCheat15BeachPartyCheatEv",
-	"_ZN6CCheat10GangsCheatEv",
-	"_ZN6CCheat13GangLandCheatEv",
-	"_ZN6CCheat10NinjaCheatEv",
-	"_ZN6CCheat20LoveConquersAllCheatEv",
-	"_ZN6CCheat19AllCarsAreShitCheatEv",
-	"_ZN6CCheat20AllCarsAreGreatCheatEv",
-	"_ZN6CCheat11FlyboyCheatEv",
-	"_ZN6CCheat11VortexCheatEv",
-	"_ZN6CCheat13MidnightCheatEv",
-	"_ZN6CCheat9DuskCheatEv",
-	"_ZN6CCheat10StormCheatEv",
-	"_ZN6CCheat14SandstormCheatEv",
-	"_ZN6CCheat13PredatorCheatEv",
-	"_ZN6CCheat14ParachuteCheatEv",
-	"_ZN6CCheat12JetpackCheatEv",
-	"_ZN6CCheat14NotWantedCheatEv",
-	"_ZN6CCheat11WantedCheatEv",
-	"_ZN6CCheat9RiotCheatEv",
-	"_ZN6CCheat13FunhouseCheatEv",
-	"_ZN6CCheat15AdrenalineCheatEv",
-	"_ZN6CCheat12DrivebyCheatEv",
-	"_ZN6CCheat24CountrysideInvasionCheatEv",
-	"_ZN6CCheat12StaminaCheatEv",
-	"_ZN6CCheat17WeaponSkillsCheatEv",
-	"_ZN6CCheat18VehicleSkillsCheatEv",
-	"_ZN6CCheat11ApacheCheatEv",
-	"_ZN6CCheat9QuadCheatEv",
-	"_ZN6CCheat11TankerCheatEv",
-	"_ZN6CCheat10DozerCheatEv",
-	"_ZN6CCheat15StuntPlaneCheatEv",
-	"_ZN6CCheat17MonsterTruckCheatEv",
-	"_ZN6CCheat15xboxHelperCheatEv"
-};
-void initCheat()
-{
-	for (auto elem : cheatNameData)
-	{
-		string cheat = elem;
-
-		CheatUnit obj;
-		strcpy(obj.strCheatName, cheat.c_str());
-		if (g_dllGTASA)
-		{
-			obj.pfunCheat = (int(*)())dlsym(g_dllGTASA, obj.strCheatName);
-			if (obj.pfunCheat)
-				LOGE("find %s.\n", obj.strCheatName);
-			else
-				LOGE("can not find %s.\n", obj.strCheatName);
-			char *error;	
-			if ((error = (char*)dlerror()) != NULL)  
-				LOGE("dlsym %s:	%s\n", obj.strCheatName, error);
-		}
-		else
-			obj.pfunCheat = nullptr;
-
-		obj.bCall = false;
-		g_cheatData[cheat] = obj;
-	}
-}
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;
 int g_port = 1166;
-bool g_bCallWeaponCheat1 = false;
 
 int start_server(char* sockname)
 {
@@ -191,26 +78,8 @@ void process_cmd(char* io_buffer)
 			memset(strCheatCmd, '0', 128);
 			sscanf(io_buffer, "D: %s", strCheatCmd);
  			pthread_mutex_lock(&cheat_mutex);
-			auto pItem = g_cheatData.find(strCheatCmd);
-			if (pItem != g_cheatData.end())
-			{
-				(*pItem).second.bCall = true;
-				LOGE("process_cmd: %s", (*pItem).second.strCheatName);
-			}
-			else
-				LOGE("cant find process_cmd: %s", strCheatCmd); 
+			CCheatMgr::getInstance()->setCallFunFlag(strCheatCmd);
 			pthread_mutex_unlock(&cheat_mutex); 
-/* 			pthread_mutex_lock(&cheat_mutex);
-			for (auto elem : g_cheatData)
-			{
-				if (0 == strcmp(elem.second.strCheatName, strCheatCmd))
-				{
-					elem.second.bCall = true;	//没有赋值给g_cheatData elem应该是引用
-					LOGE("process_cmd: %s", elem.second.strCheatName);
-					break;
-				}
-			}
-			pthread_mutex_unlock(&cheat_mutex); */
 		}
 		break;
 	default:
@@ -406,7 +275,7 @@ int find_pid_of(const char *process_name)
     return pid;    
 }    
 
-#include "inlineHook.h"
+#include "include\inlineHook.h"
 //enum ele7en_status registerInlineHook(uint32_t target_addr, uint32_t new_addr, uint32_t **proto_addr)
 
 int (*old_WeaponCheat1)(/*void* CCheatThis*/) = NULL;
@@ -443,27 +312,7 @@ int replaceGameProcess()
 	//LOGE("replace GameProcess return: %d\n", ret);
 	
 	pthread_mutex_lock(&cheat_mutex);
-	/* for (auto elem : g_cheatData)
-	{
-		if (true == elem.second.bCall)
-		{
-			LOGE("replaceGameProcess %s %d\n", elem.second.strCheatName, elem.second.bCall);
-			(elem.second.pfunCheat)();
-			elem.second.bCall = false;
-			LOGE("replaceGameProcess %s %d\n", elem.second.strCheatName, elem.second.bCall);
-		}
-		
-	} */
-	std::map<string, CheatUnit>::iterator item;
-	for (item = g_cheatData.begin(); item != g_cheatData.end(); item++)
-	{
-		if (item->second.bCall)
-		{
-			LOGE("replaceGameProcess %s %d\n", item->second.strCheatName, item->second.bCall);
-			(item->second.pfunCheat)();
-			item->second.bCall = false;
-		}
-	}
+	CCheatMgr::getInstance()->callFunByFlag();
 	pthread_mutex_unlock(&cheat_mutex);
 
 	return ret;
@@ -522,8 +371,17 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	LOGE("target_pid %d.\n", target_pid);
 	
 	char *error;
-	//g_dllGTASA = dlopen("/data/user/0/io.busniess.va/virtual/data/user/0/com.rockstargames.gtasa/app_Lib/libGTASA.so", RTLD_NOW);
-	g_dllGTASA = dlopen("libGTASA.so", RTLD_NOW);
+	//g_dll = dlopen("/data/user/0/io.busniess.va/virtual/data/user/0/com.rockstargames.gtasa/app_Lib/libGTASA.so", RTLD_NOW);
+	switch (g_game)
+	{
+	case _GAME_GTASA:
+		g_dll = dlopen("libGTASA.so", RTLD_NOW);
+		break;
+	case _GAME_GTAVC:
+		g_dll = dlopen("libGTAVC.so", RTLD_NOW);
+		break;
+	}
+	
 	if ((error = (char*)dlerror()) != NULL)  
 	{
 		appendToLogFile("dlsym error dlopen:	%s\n", error);
@@ -536,7 +394,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 		LOGE("dlsym dlopen sucess\n");
 	}
 	
-	if(g_dllGTASA==NULL)
+	if(g_dll==NULL)
 	{
 		appendToLogFile("dlsym error dll == NULL\n");
 		LOGE("dlsym error dll == NULL\n");
@@ -548,37 +406,12 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 		LOGE("dlsym dll != NULL\n");
 	}
 	
-	initCheat();
-		
-//hook CCheat::WeaponCheat1----------------------------------------------------------------------------------------------------	
-	f__ZN6CCheat12WeaponCheat1Ev = (int(*)())dlsym(g_dllGTASA, "_ZN6CCheat12WeaponCheat1Ev");
-	if (f__ZN6CCheat12WeaponCheat1Ev)
-	{
-		appendToLogFile("find _ZN6CCheat12WeaponCheat1Ev.\n");
-		LOGE("find _ZN6CCheat12WeaponCheat1Ev.\n");
-	}
-	else
-	{
-		appendToLogFile("can not find _ZN6CCheat12WeaponCheat1Ev.\n");
-		LOGE("can not find _ZN6CCheat12WeaponCheat1Ev.\n");
-	}
-		
-	if ((error = (char*)dlerror()) != NULL)  
-	{
-		appendToLogFile("dlsym _ZN6CCheat12WeaponCheat1Ev:	%s\n", error);
-		LOGE("dlsym _ZN6CCheat12WeaponCheat1Ev:	%s\n", error);
-	}
-	
-	Dl_info info;
-	dladdr((void*)f__ZN6CCheat12WeaponCheat1Ev, &info);
-	appendToLogFile("f__ZN6CCheat12WeaponCheat1Ev          Dl_info: %x	%x\n", info.dli_fbase, info.dli_saddr);
-	LOGE("f__ZN6CCheat12WeaponCheat1Ev          Dl_info: %x	%x\n", (unsigned int)(long)(info.dli_fbase), (unsigned int)(long)(info.dli_saddr));
+	CCheatMgr::getInstance()->createCheatPtr(g_game);
+	CCheatMgr::getInstance()->initCallMap();
+	CCheatMgr::getInstance()->initCheat(g_dll);
 
-	funWeaponCheat1Addr = (long)(info.dli_saddr);
-	hookWeaponCheat1();
-	
 //hook CGame::Process----------------------------------------------------------------------------------------------------
-	f__ZN5CGame7ProcessEv = (int(*)())dlsym(g_dllGTASA, "_ZN5CGame7ProcessEv");
+	f__ZN5CGame7ProcessEv = (int(*)())dlsym(g_dll, "_ZN5CGame7ProcessEv");
 	if (f__ZN5CGame7ProcessEv)
 		LOGE("find _ZN5CGame7ProcessEv.\n");
 	else
@@ -587,6 +420,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	if ((error = (char*)dlerror()) != NULL)  
 		LOGE("dlsym _ZN5CGame7ProcessEv:	%s\n", error);
 	
+	Dl_info info;
 	dladdr((void*)f__ZN5CGame7ProcessEv, &info);
 	LOGE("f__ZN5CGame7ProcessEv Dl_info: %x	%x\n", (unsigned int)(long)(info.dli_fbase), (unsigned int)(long)(info.dli_saddr));
 
@@ -606,90 +440,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	return result;
 }
 
-void printhelp()
-{
-	fprintf(stderr, 
-		"####################################################\n"
-		"				Usage: input cmd\n"
-		"help		(print commands)\n"
-		"exit		(server cannot exit normally if not call 'exit' commonds when exit exe)\n"
-		"1		(WEAPON1)\n"
-		"2		(WEAPON2)\n"
-		"3		(WEAPON3)\n"
-		"4		(WEAPON4)\n"
-		"5		(TIMETRAVEL)\n"
-		"6		(SCRIPTBYPASS??)\n"
-		"7		(SHOWMAPPINGS)\n"
-		"8		(INVINCIBILITY)\n"
-		"9		(SHOWTAPTOTARGET)\n"
-		"10		(SHOWTARGETING)\n"
-		"11		(MONEYARMOURHEALTH)\n"
-		"12		(WANTEDLEVELUP)\n"
-		"13		(WANTEDLEVELDOWN)\n"
-		"14		(SUNNYWEATHER)\n"
-		"15		(CLOUDYWEATHER)\n"
-		"16		(RAINYWEATHER)\n"
-		"17		(FOGGYWEATHER)\n"
-		"18		(FASTTIME)\n"
-		"19		(SLOWTIME)\n"
-		"20		(MAYHEM)\n"
-		"21		(EVERYBODYATTACKSPLAYER)\n"
-		"22		(TANK)\n"
-		"23		(STOCKCAR)\n"
-		"24		(STOCKCAR2)\n"
-		"25		(STOCKCAR3)\n"
-		"26		(STOCKCAR4)\n"
-		"27		(HEARSE)\n"
-		"28		(LOVEFIST)\n"
-		"29		(TRASHMASTER)\n"
-		"30		(GOLFCART)\n"
-		"31		(BLOWUPCARS)\n"
-		"32		(SUICIDE)\n"
-		"33		(PINKCARS)\n"
-		"34		(BLACKCARS)\n"
-		"35		(FAT)\n"
-		"36		(MUSCLE)\n"
-		"37		(THEGAMBLER)\n"
-		"38		(SKINNY)\n"
-		"39		(ELVISLIVES)\n"
-		"40		(VILLAGEPEOPLE)\n"
-		"41		(BEACHPARTY)\n"
-		"42		(GANGS)\n"
-		"43		(GANGLAND)\n"
-		"44		(NINJA)\n"
-		"45		(LOVECONQUERSALL)\n"
-		"46		(ALLCARSARESHIT)\n"
-		"47		(ALLCARSAREGREAT)\n"
-		"48		(FLYBOY)\n"
-		"49		(VORTEX)\n"
-		"50		(MIDNIGHT)\n"
-		"51		(DUSK)\n"
-		"52		(STORM)\n"
-		"53		(SANDSTORM)\n"
-		"54		(PREDATOR)\n"
-		"55		(PARACHUTE)\n"
-		"56		(JETPACK)\n"
-		"57		(NOTWANTED)\n"
-		"58		(WANTED)\n"
-		"59		(RIOT)\n"
-		"60		(FUNHOUSE)\n"
-		"61		(ADRENALINE)\n"
-		"62		(DRIVEBY)\n"
-		"63		(COUNTRYSIDEINVASION)\n"
-		"64		(STAMINA)\n"
-		"65		(WEAPONSKILLS)\n"
-		"66		(VEHICLESKILLS)\n"
-		"67		(APACHE)\n"
-		"68		(QUAD)\n"
-		"69		(TANKER)\n"
-		"70		(DOZER)\n"
-		"71		(STUNTPLANE)\n"
-		"72		(MONSTERTRUCK)\n"
-		"73		(XBOX_HELPER)\n"
-		"####################################################\n"
-		"\n");
-}
-map<int,string> callMap;
+
 int main(int argc, char** argv)
 {
 	struct sockaddr_in addr;
@@ -713,80 +464,17 @@ int main(int argc, char** argv)
 	}
 	fprintf(stderr, "connect socket sucess %d\n", g_socket);
 	
-	printhelp();
-	callMap[1]  = "_ZN6CCheat12WeaponCheat1Ev";
-	callMap[2]  = "_ZN6CCheat12WeaponCheat2Ev";
-	callMap[3]  = "_ZN6CCheat12WeaponCheat3Ev";
-	callMap[4]  = "_ZN6CCheat12WeaponCheat4Ev";
-	callMap[5]  = "_ZN6CCheat15TimeTravelCheatEv";
-	callMap[6]  = "_ZN6CCheat17ScriptBypassCheatEv";
-	callMap[7]	= "_ZN6CCheat17ShowMappingsCheatEv";
-	callMap[8]  = "_ZN6CCheat25TogglePlayerInvincibilityEv";
-	callMap[9]  = "_ZN6CCheat21ToggleShowTapToTargetEv";
-	callMap[10] = "_ZN6CCheat19ToggleShowTargetingEv";
-	callMap[11] = "_ZN6CCheat22MoneyArmourHealthCheatEv";
-	callMap[12] = "_ZN6CCheat18WantedLevelUpCheatEv";
-	callMap[13] = "_ZN6CCheat20WantedLevelDownCheatEv";
-	callMap[14] = "_ZN6CCheat22ExtraSunnyWeatherCheatEv";
-	callMap[15] = "_ZN6CCheat18CloudyWeatherCheatEv";
-	callMap[16] = "_ZN6CCheat17RainyWeatherCheatEv";
-	callMap[17] = "_ZN6CCheat17FoggyWeatherCheatEv";
-	callMap[18] = "_ZN6CCheat13FastTimeCheatEv";
-	callMap[19] = "_ZN6CCheat13SlowTimeCheatEv";
-	callMap[20] = "_ZN6CCheat11MayhemCheatEv";
-	callMap[21] = "_ZN6CCheat27EverybodyAttacksPlayerCheatEv";
-	callMap[22] = "_ZN6CCheat9TankCheatEv";
-	callMap[23] = "_ZN6CCheat13StockCarCheatEv";
-	callMap[24] = "_ZN6CCheat14StockCar2CheatEv";
-	callMap[25] = "_ZN6CCheat14StockCar3CheatEv";
-	callMap[26] = "_ZN6CCheat14StockCar4CheatEv";
-	callMap[27] = "_ZN6CCheat11HearseCheatEv";
-	callMap[28] = "_ZN6CCheat13LovefistCheatEv";
-	callMap[29] = "_ZN6CCheat16TrashmasterCheatEv";
-	callMap[30] = "_ZN6CCheat13GolfcartCheatEv";
-	callMap[31] = "_ZN6CCheat15BlowUpCarsCheatEv";
-	callMap[32] = "_ZN6CCheat12SuicideCheatEv";
-	callMap[33] = "_ZN6CCheat13PinkCarsCheatEv";
-	callMap[34] = "_ZN6CCheat14BlackCarsCheatEv";
-	callMap[35] = "_ZN6CCheat8FatCheatEv";
-	callMap[36] = "_ZN6CCheat11MuscleCheatEv";
-	callMap[37] = "_ZN6CCheat15TheGamblerCheatEv";
-	callMap[38] = "_ZN6CCheat11SkinnyCheatEv";
-	callMap[39] = "_ZN6CCheat15ElvisLivesCheatEv";
-	callMap[40] = "_ZN6CCheat18VillagePeopleCheatEv";
-	callMap[41] = "_ZN6CCheat15BeachPartyCheatEv";
-	callMap[42] = "_ZN6CCheat10GangsCheatEv";
-	callMap[43] = "_ZN6CCheat13GangLandCheatEv";
-	callMap[44] = "_ZN6CCheat10NinjaCheatEv";
-	callMap[45] = "_ZN6CCheat20LoveConquersAllCheatEv";
-	callMap[46] = "_ZN6CCheat19AllCarsAreShitCheatEv";
-	callMap[47] = "_ZN6CCheat20AllCarsAreGreatCheatEv";
-	callMap[48] = "_ZN6CCheat11FlyboyCheatEv";
-	callMap[49] = "_ZN6CCheat11VortexCheatEv";
-	callMap[50] = "_ZN6CCheat13MidnightCheatEv";
-	callMap[51] = "_ZN6CCheat9DuskCheatEv";
-	callMap[52] = "_ZN6CCheat10StormCheatEv";
-	callMap[53] = "_ZN6CCheat14SandstormCheatEv";
-	callMap[54] = "_ZN6CCheat13PredatorCheatEv";
-	callMap[55] = "_ZN6CCheat14ParachuteCheatEv";
-	callMap[56] = "_ZN6CCheat12JetpackCheatEv";
-	callMap[57] = "_ZN6CCheat14NotWantedCheatEv";
-	callMap[58] = "_ZN6CCheat11WantedCheatEv";
-	callMap[59] = "_ZN6CCheat9RiotCheatEv";
-	callMap[60] = "_ZN6CCheat13FunhouseCheatEv";
-	callMap[61] = "_ZN6CCheat15AdrenalineCheatEv";
-	callMap[62] = "_ZN6CCheat12DrivebyCheatEv";
-	callMap[63] = "_ZN6CCheat24CountrysideInvasionCheatEv";
-	callMap[64] = "_ZN6CCheat12StaminaCheatEv";
-	callMap[65] = "_ZN6CCheat17WeaponSkillsCheatEv";
-	callMap[66] = "_ZN6CCheat18VehicleSkillsCheatEv";
-	callMap[67] = "_ZN6CCheat11ApacheCheatEv";
-	callMap[68] = "_ZN6CCheat9QuadCheatEv";
-	callMap[69] = "_ZN6CCheat11TankerCheatEv";
-	callMap[70] = "_ZN6CCheat10DozerCheatEv";
-	callMap[71] = "_ZN6CCheat15StuntPlaneCheatEv";
-	callMap[72] = "_ZN6CCheat17MonsterTruckCheatEv";
-	callMap[73] = "_ZN6CCheat15xboxHelperCheatEv";
+	fprintf(stderr, "choose game:\n"
+					"0:	gtasa\n"
+					"1:	gtavc\n"
+					">\n");
+	char game[128] = {};
+	scanf("%s", game);
+	GAME_NAME gameIndex = GAME_NAME(atoi(game));
+	CCheatMgr::getInstance()->createCheatPtr(gameIndex);
+	CCheatMgr::getInstance()->initCallMap();
+	CCheatMgr::getInstance()->printHelp();
+		
 	while (1)
 	{
 		fprintf(stderr, "input commonds>");
@@ -799,7 +487,7 @@ int main(int argc, char** argv)
 		}
 		else if (0 == strcmp(cmdBuf, "help"))
 		{
-			printhelp();
+			CCheatMgr::getInstance()->printHelp();
 		}
 		else
 		{
@@ -807,7 +495,8 @@ int main(int argc, char** argv)
 			sscanf(cmdBuf, "%d", &cheatIndex);
 			LOGE("cheat index %d\n", cheatIndex);
 			char cmd[80] = { 0 };
-			int io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", (callMap[cheatIndex]).c_str());
+			string gameFunSym = CCheatMgr::getInstance()->getFunSymByIndex(cheatIndex);
+			int io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", gameFunSym.c_str());
 			send(g_socket, cmd, io_length, 0);
 		}
 	}

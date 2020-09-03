@@ -8,7 +8,12 @@ include $(BUILD_STATIC_LIBRARY)
 #--------------------------------------------------------
 include $(CLEAR_VARS)
 LOCAL_MODULE    := inlineHook
-LOCAL_SRC_FILES := cheatMain.cpp
+LOCAL_SRC_FILES := cheatMain.cpp \
+					cheatI.cpp \
+					cheatGTASA.cpp \
+					cheatGTAVC.cpp \
+					cheatMgr.cpp \
+					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
 #LOCAL_CFLAGS := -funwind-tables
@@ -18,7 +23,12 @@ include $(BUILD_SHARED_LIBRARY)
 #--------------------------------------------------------
 include $(CLEAR_VARS)
 LOCAL_MODULE    := cheatJ
-LOCAL_SRC_FILES := cheatMain.cpp
+LOCAL_SRC_FILES :=  cheatMain.cpp \
+					cheatI.cpp \
+					cheatGTASA.cpp \
+					cheatGTAVC.cpp \
+					cheatMgr.cpp \
+					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
 #LOCAL_CFLAGS := -funwind-tables
