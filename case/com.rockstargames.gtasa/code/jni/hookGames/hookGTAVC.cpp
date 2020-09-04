@@ -15,7 +15,6 @@ hookGTAVC::~hookGTAVC()
 	unHook();
 }
 
-extern int(*_Z12WeaponCheat1v)();
 void hookGTAVC::calFunAddr(void* dll)
 {
 	LOGE("hookGTAVC::calFunAddr.\n");
@@ -31,7 +30,7 @@ void hookGTAVC::calFunAddr(void* dll)
 	
 	Dl_info info;
 	dladdr((void*)f__ZN5CGame7ProcessEv, &info);
-	LOGE("f__ZN5CGame7ProcessEv Dl_info: %x	%x %x\n", (unsigned int)(long)(info.dli_fbase), (unsigned int)(long)(info.dli_saddr), (unsigned int)dlopen);
+	LOGE("f__ZN5CGame7ProcessEv Dl_info: %x	%x\n", (unsigned int)(long)(info.dli_fbase), (unsigned int)(long)(info.dli_saddr));
 
 	funGameProcessdAddr = (long)(info.dli_saddr);
 }
@@ -40,7 +39,7 @@ int hookGTAVC::replaceGameProcess()
 {
 	int ret = old_GameProcessGTAVC();
 
-	CCheatMgr::getInstance()->callFunByFlag();
+	CCheatSDK::getInstance()->callFunByFlag();
 	return ret;
 }
 

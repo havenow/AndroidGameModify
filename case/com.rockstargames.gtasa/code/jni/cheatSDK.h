@@ -1,81 +1,21 @@
-#ifndef _CHEAT_INTERFACE_H
-#define _CHEAT_INTERFACE_H
+#ifndef _CHEAT_SDK_H
+#define _CHEAT_SDK_H
 
 #include <string>
 #include <map>
+#include <mutex>
+
+#include "cheatGames\cheatI.h"
+#include "hookGames\hookStrategy.h"
+
 using namespace std;
 
-enum GAME_NAME
-{
-	_GAME_NONE 	= -1,
-	_GAME_GTASA = 0,
-	_GAME_GTAVC = 1,
-};
-
-#ifndef _TAG_CHEAT_UNIT_
-#define _TAG_CHEAT_UNIT_
-typedef struct tagCheatUnit
-{
-	char strCheatName[128];
-	int (*pfunCheat)();
-	int (*pfunCheat2)(int);
-	int (*pfunCheat3)(const char*);
-	bool bCall;
-} CheatUnit;
-#endif
-
-class CCheatI
+class CCheatSDK
 {
 public:
-	CCheatI(){};
-	virtual ~CCheatI(){};
-	
-	string& getFunSymByIndex(int index); 
-	void setCallFunFlag(const string& funSym);
-	
-	virtual void printHelp() = 0;
-	virtual void initCallMap() = 0;
-	virtual void initCheat(void* dll) = 0;
-	virtual void callFunByFlag() = 0;
-
-protected:	
-	map<int, string> _callMap;
-	map<string, CheatUnit> _cheatData;
-};
-
-class CCheatGTASA : public CCheatI
-{
-public:
-	CCheatGTASA() {};
-	virtual ~CCheatGTASA() {};
-	
-	virtual void printHelp();
-	virtual void initCallMap();
-	virtual void initCheat(void* dll);
-	virtual void callFunByFlag();
-};
-
-
-class CCheatGTAVC : public CCheatI
-{
-public:
-	CCheatGTAVC() {};
-	virtual ~CCheatGTAVC() {};
-
-	virtual void printHelp();
-	virtual void initCallMap();
-	virtual void initCheat(void* dll);
-	virtual void callFunByFlag();
-};
-
-#include "hookStrategy.h"
-#include <mutex>
-class CCheatMgr
-{
-public:
-	static CCheatMgr* getInstance()
+	static CCheatSDK* getInstance()
 	{
-		static CCheatMgr obj;
+		static CCheatSDK obj;
 		return &obj;
 	}
 	void loadSo(GAME_NAME game);
@@ -94,10 +34,10 @@ public:
 	void DoHook(){ _hookInstance.DoHook(); }
 
 protected:
-	CCheatMgr() {};
-	~CCheatMgr();
-	CCheatMgr(const CCheatMgr&) = delete;
-	CCheatMgr& operator= (const CCheatMgr&) = delete;
+	CCheatSDK() {};
+	~CCheatSDK();
+	CCheatSDK(const CCheatSDK&) = delete;
+	CCheatSDK& operator= (const CCheatSDK&) = delete;
 	
 private:
 	CCheatI* _pCheat = nullptr;

@@ -1,7 +1,7 @@
 #include "cheatSDK.h"
 #include "common.h"
 
-CCheatMgr::~CCheatMgr()
+CCheatSDK::~CCheatSDK()
 {
 	if (_pCheat)
 	{
@@ -15,7 +15,7 @@ CCheatMgr::~CCheatMgr()
 	}
 };
 
-void CCheatMgr::loadSo(GAME_NAME game)
+void CCheatSDK::loadSo(GAME_NAME game)
 {
 	pid_t target_pid = 0; 
 	char *error;
@@ -60,7 +60,7 @@ void CCheatMgr::loadSo(GAME_NAME game)
 	}
 }
 
-CCheatI* CCheatMgr::chooseCheatGame(GAME_NAME game)
+CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 {
 	switch (game)
 	{
@@ -74,7 +74,7 @@ CCheatI* CCheatMgr::chooseCheatGame(GAME_NAME game)
 	return _pCheat;
 };
 
-void CCheatMgr::chooseHookStrategy(GAME_NAME game)
+void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 {
 	switch (game)
 	{
@@ -88,7 +88,7 @@ void CCheatMgr::chooseHookStrategy(GAME_NAME game)
 	_hookInstance.setStrategy(_hookStrategy);
 }
 
-void CCheatMgr::setCallFunFlag(const string& funSym) 
+void CCheatSDK::setCallFunFlag(const string& funSym) 
 { 
 	if (_pCheat) 
 	{
@@ -98,7 +98,7 @@ void CCheatMgr::setCallFunFlag(const string& funSym)
 		
 }
 
-void CCheatMgr::callFunByFlag() 
+void CCheatSDK::callFunByFlag() 
 { 
 	if (_pCheat)
 	{

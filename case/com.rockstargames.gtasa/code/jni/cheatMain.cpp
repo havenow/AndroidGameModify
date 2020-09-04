@@ -21,7 +21,7 @@ using namespace std;
 #include "common.h"
 #include "cheatSDK.h"
 
-GAME_NAME g_game = _GAME_GTAVC;
+GAME_NAME g_game = _GAME_GTASA;
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;
@@ -75,7 +75,7 @@ void process_cmd(char* io_buffer)
 			char strCheatCmd[128];
 			memset(strCheatCmd, '0', 128);
 			sscanf(io_buffer, "D: %s", strCheatCmd);
-			CCheatMgr::getInstance()->setCallFunFlag(strCheatCmd);
+			CCheatSDK::getInstance()->setCallFunFlag(strCheatCmd);
 		}
 		break;
 	default:
@@ -174,15 +174,15 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	}
 	env = uenv.env;
 	
-	CCheatMgr::getInstance()->loadSo(g_game);
+	CCheatSDK::getInstance()->loadSo(g_game);
 	
-	CCheatMgr::getInstance()->chooseCheatGame(g_game);
-	CCheatMgr::getInstance()->initCallMap();
-	CCheatMgr::getInstance()->initCheat();
+	CCheatSDK::getInstance()->chooseCheatGame(g_game);
+	CCheatSDK::getInstance()->initCallMap();
+	CCheatSDK::getInstance()->initCheat();
 	
-	CCheatMgr::getInstance()->chooseHookStrategy(g_game);
-	CCheatMgr::getInstance()->setStrategyDll();
-	CCheatMgr::getInstance()->DoHook();
+	CCheatSDK::getInstance()->chooseHookStrategy(g_game);
+	CCheatSDK::getInstance()->setStrategyDll();
+	CCheatSDK::getInstance()->DoHook();
 
 //create cheat thread-------------------------------------------------------------------------------------------------------	
 	LOGE("create cheat thread.\n");
@@ -226,9 +226,9 @@ int main(int argc, char** argv)
 	char game[128] = {};
 	scanf("%s", game);
 	GAME_NAME gameIndex = GAME_NAME(atoi(game));
-	CCheatMgr::getInstance()->chooseCheatGame(gameIndex);
-	CCheatMgr::getInstance()->initCallMap();
-	CCheatMgr::getInstance()->printHelp();
+	CCheatSDK::getInstance()->chooseCheatGame(gameIndex);
+	CCheatSDK::getInstance()->initCallMap();
+	CCheatSDK::getInstance()->printHelp();
 		
 	while (1)
 	{
@@ -242,7 +242,7 @@ int main(int argc, char** argv)
 		}
 		else if (0 == strcmp(cmdBuf, "help"))
 		{
-			CCheatMgr::getInstance()->printHelp();
+			CCheatSDK::getInstance()->printHelp();
 		}
 		else
 		{
@@ -250,7 +250,7 @@ int main(int argc, char** argv)
 			sscanf(cmdBuf, "%d", &cheatIndex);
 			LOGE("cheat index %d\n", cheatIndex);
 			char cmd[80] = { 0 };
-			string gameFunSym = CCheatMgr::getInstance()->getFunSymByIndex(cheatIndex);
+			string gameFunSym = CCheatSDK::getInstance()->getFunSymByIndex(cheatIndex);
 			int io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", gameFunSym.c_str());
 			send(g_socket, cmd, io_length, 0);
 		}

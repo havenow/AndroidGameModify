@@ -1,4 +1,4 @@
-#include "cheatSDK.h"
+#include "cheatI.h"
 #include "common.h"
 
 void CCheatI::setCallFunFlag(const string& funSym)

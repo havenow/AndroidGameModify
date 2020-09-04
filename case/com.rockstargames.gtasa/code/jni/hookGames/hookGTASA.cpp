@@ -3,8 +3,6 @@
 #include "include\inlineHook.h"
 #include "cheatSDK.h"
 
-#include <pthread.h>
-
 int (*old_GameProcessGTASA)();
 
 hookGTASA::hookGTASA()
@@ -41,7 +39,7 @@ int hookGTASA::replaceGameProcess()
 {
 	int ret = old_GameProcessGTASA();
 	
-	CCheatMgr::getInstance()->callFunByFlag();
+	CCheatSDK::getInstance()->callFunByFlag();
 	return ret;
 }
 

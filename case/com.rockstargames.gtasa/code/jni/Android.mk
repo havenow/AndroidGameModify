@@ -8,14 +8,14 @@ include $(BUILD_STATIC_LIBRARY)
 #--------------------------------------------------------
 include $(CLEAR_VARS)
 LOCAL_MODULE    := inlineHook
-LOCAL_SRC_FILES := cheatMain.cpp \
-					cheatI.cpp \
-					cheatGTASA.cpp \
-					cheatGTAVC.cpp \
-					cheatMgr.cpp \
+LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
+					cheatGames\cheatGTASA.cpp \
+					cheatGames\cheatGTAVC.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
+					cheatSDK.cpp \
 					common.cpp \
+					cheatMain.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
@@ -26,14 +26,14 @@ include $(BUILD_SHARED_LIBRARY)
 #--------------------------------------------------------
 include $(CLEAR_VARS)
 LOCAL_MODULE    := cheatJ
-LOCAL_SRC_FILES :=  cheatMain.cpp \
-					cheatI.cpp \
-					cheatGTASA.cpp \
-					cheatGTAVC.cpp \
-					cheatMgr.cpp \
+LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
+					cheatGames\cheatGTASA.cpp \
+					cheatGames\cheatGTAVC.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
+					cheatSDK.cpp \
 					common.cpp \
+					cheatMain.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
