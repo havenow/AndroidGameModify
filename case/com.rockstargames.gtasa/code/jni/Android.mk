@@ -13,6 +13,9 @@ LOCAL_SRC_FILES := cheatMain.cpp \
 					cheatGTASA.cpp \
 					cheatGTAVC.cpp \
 					cheatMgr.cpp \
+					hookGames\hookGTASA.cpp \
+					hookGames\hookGTAVC.cpp \
+					common.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
@@ -28,6 +31,9 @@ LOCAL_SRC_FILES :=  cheatMain.cpp \
 					cheatGTASA.cpp \
 					cheatGTAVC.cpp \
 					cheatMgr.cpp \
+					hookGames\hookGTASA.cpp \
+					hookGames\hookGTAVC.cpp \
+					common.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook

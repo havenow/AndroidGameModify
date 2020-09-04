@@ -68,6 +68,8 @@ public:
 	virtual void callFunByFlag();
 };
 
+#include "hookStrategy.h"
+#include <mutex>
 class CCheatMgr
 {
 public:
@@ -76,15 +78,20 @@ public:
 		static CCheatMgr obj;
 		return &obj;
 	}
-	CCheatI* createCheatPtr(GAME_NAME game);
+	void loadSo(GAME_NAME game);
+	CCheatI* chooseCheatGame(GAME_NAME game);
 	
 	string& getFunSymByIndex(int index) {if (_pCheat) return _pCheat->getFunSymByIndex(index);}
-	void setCallFunFlag(const string& funSym) { if (_pCheat) _pCheat->setCallFunFlag(funSym);}
+	void setCallFunFlag(const string& funSym);
 	
 	void printHelp() {if (_pCheat) _pCheat->printHelp();}
 	void initCallMap() {if (_pCheat) _pCheat->initCallMap();}
-	void initCheat(void* dll) {if (_pCheat) _pCheat->initCheat(dll);}
-	void callFunByFlag() { if (_pCheat) _pCheat->callFunByFlag();}
+	void initCheat() {if (_pCheat) _pCheat->initCheat(_dll);}
+	void callFunByFlag();
+	
+	void chooseHookStrategy(GAME_NAME game);
+	void setStrategyDll()	{ _hookInstance.setDll(_dll); }
+	void DoHook(){ _hookInstance.DoHook(); }
 
 protected:
 	CCheatMgr() {};
@@ -94,6 +101,10 @@ protected:
 	
 private:
 	CCheatI* _pCheat = nullptr;
+	hookStrategy* _hookStrategy = nullptr;
+	hookGame _hookInstance;
+	mutex _cheatMutex;
+	void* _dll = nullptr;
 };
 
 #endif
