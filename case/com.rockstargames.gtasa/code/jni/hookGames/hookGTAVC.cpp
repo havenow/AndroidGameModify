@@ -1,6 +1,6 @@
 #include "hookStrategy.h"
 #include "common.h"
-#include "include\inlineHook.h"
+#include "inlinehook\inlineHook.h"
 #include "cheatSDK.h"
 
 int (*old_GameProcessGTAVC)();

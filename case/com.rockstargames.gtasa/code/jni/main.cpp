@@ -21,7 +21,7 @@ using namespace std;
 #include "common.h"
 #include "cheatSDK.h"
 
-GAME_NAME g_game = _GAME_GTASA;
+GAME_NAME g_game = _GAME_GTAVC;
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;

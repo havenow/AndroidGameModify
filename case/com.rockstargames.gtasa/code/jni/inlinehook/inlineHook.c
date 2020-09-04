@@ -18,7 +18,7 @@ created time: 2015-11-30
 #include <sys/ptrace.h>
 
 #include "relocate.h"
-#include "include/inlineHook.h"
+#include "inlinehook/inlineHook.h"
 
 #ifndef PAGE_SIZE
 #define PAGE_SIZE 4096

@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := hook
-LOCAL_SRC_FILES := inlineHook.c relocate.c
+LOCAL_SRC_FILES := inlinehook\inlineHook.c inlinehook\relocate.c
 include $(BUILD_STATIC_LIBRARY)
 
 #--------------------------------------------------------
@@ -15,7 +15,7 @@ LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					hookGames\hookGTAVC.cpp \
 					cheatSDK.cpp \
 					common.cpp \
-					cheatMain.cpp \
+					main.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
@@ -33,7 +33,7 @@ LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					hookGames\hookGTAVC.cpp \
 					cheatSDK.cpp \
 					common.cpp \
-					cheatMain.cpp \
+					main.cpp \
 					
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_STATIC_LIBRARIES := libhook
