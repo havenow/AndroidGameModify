@@ -47,6 +47,23 @@ protected:
 	
 };
 
+class hookGTALCS : public hookStrategy
+{
+public:
+	hookGTALCS();
+	virtual ~hookGTALCS();
+	
+	void calFunAddr(void* dll);
+	virtual void DoHook();
+	
+protected:
+	static int replaceGameProcess(float arg);
+	int hookGameProcess();
+	int unHook();
+	long funGameProcessdAddr;
+	int (*f__ZN5CGame7ProcessEf)(float); 
+};
+
 class hookGame
 {
 public:

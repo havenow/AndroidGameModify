@@ -33,6 +33,12 @@ void CCheatSDK::loadSo(GAME_NAME game)
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libGTAVC.so", RTLD_NOW);
 		break;
+	case _GAME_GTALCS:
+		target_pid = find_pid_of("com.rockstargames.gtalcs");
+		appendToLogFile("target_pid %d.\n", target_pid);
+		LOGE("target_pid %d.\n", target_pid);
+		_dll = dlopen("libGTALcs.so", RTLD_NOW);
+		break;
 	}
 	
 	if ((error = (char*)dlerror()) != NULL)  
@@ -69,6 +75,8 @@ CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 		break;
 	case _GAME_GTAVC:
 		_pCheat = new CCheatGTAVC();
+	case _GAME_GTALCS:
+		_pCheat = new CCheatGTALCS();
 		break;
 	}
 	return _pCheat;
@@ -83,6 +91,8 @@ void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 		break;
 	case _GAME_GTAVC:
 		_hookStrategy = new hookGTAVC();
+	case _GAME_GTALCS:
+		_hookStrategy = new hookGTALCS();
 		break;
 	}
 	_hookInstance.setStrategy(_hookStrategy);

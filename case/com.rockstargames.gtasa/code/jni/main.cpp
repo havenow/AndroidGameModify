@@ -21,7 +21,7 @@ using namespace std;
 #include "common.h"
 #include "cheatSDK.h"
 
-GAME_NAME g_game = _GAME_GTAVC;
+GAME_NAME g_game = _GAME_GTALCS;
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;
@@ -222,6 +222,7 @@ int main(int argc, char** argv)
 	fprintf(stderr, "choose game:\n"
 					"0:	gtasa\n"
 					"1:	gtavc\n"
+					"2:	tgalcs\n"
 					">\n");
 	char game[128] = {};
 	scanf("%s", game);

@@ -198,7 +198,12 @@ void CCheatGTASA::callFunByFlag()
 		if (item->second.bCall)
 		{
 			LOGE("replaceGameProcess %s %d\n", item->second.strCheatName, item->second.bCall);
-			(item->second.pfunCheat)();
+			
+			if (item->second.pfunCheat)
+				(item->second.pfunCheat)();
+			else
+				LOGE("item->second.pfunCheat is null\n");
+			
 			item->second.bCall = false;
 		}
 	}

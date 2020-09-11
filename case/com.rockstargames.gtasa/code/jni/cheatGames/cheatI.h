@@ -10,6 +10,7 @@ enum GAME_NAME
 	_GAME_NONE 	= -1,
 	_GAME_GTASA = 0,
 	_GAME_GTAVC = 1,
+	_GAME_GTALCS = 2,
 };
 
 
@@ -68,4 +69,17 @@ public:
 	virtual void initCheat(void* dll);
 	virtual void callFunByFlag();
 };
+
+class CCheatGTALCS : public CCheatI
+{
+public:
+	CCheatGTALCS() {};
+	virtual ~CCheatGTALCS(){};
+	
+	virtual void printHelp();
+	virtual void initCallMap();
+	virtual void initCheat(void* dll);
+	virtual void callFunByFlag();
+};
+
 #endif

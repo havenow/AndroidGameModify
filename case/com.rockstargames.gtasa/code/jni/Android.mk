@@ -11,8 +11,10 @@ LOCAL_MODULE    := inlineHook
 LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					cheatGames\cheatGTASA.cpp \
 					cheatGames\cheatGTAVC.cpp \
+					cheatGames\cheatGTALCS.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
+					hookGames\hookGTALCS.cpp \
 					cheatSDK.cpp \
 					common.cpp \
 					main.cpp \
@@ -29,8 +31,10 @@ LOCAL_MODULE    := cheatJ
 LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					cheatGames\cheatGTASA.cpp \
 					cheatGames\cheatGTAVC.cpp \
+					cheatGames\cheatGTALCS.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
+					hookGames\hookGTALCS.cpp \
 					cheatSDK.cpp \
 					common.cpp \
 					main.cpp \
