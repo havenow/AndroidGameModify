@@ -12,7 +12,7 @@ void CCheatGTAVC::printHelp()
 		"2		_Z16FannyMagnetCheatv\n"
 		"3		_Z12WeaponCheat2v\n"
 		"4		_Z12WeaponCheat3v\n"
-		"5		_Z11HealthCheath"
+		"5		_Z11HealthCheath\n"
 		"6		_Z15FlyingFishCheatv\n"
 		"7		_Z12VehicleCheati	(int a1)\n"
 		"8		_Z17PickUpChicksCheatv\n"
@@ -166,7 +166,12 @@ void CCheatGTAVC::callFunByFlag()
 				//(item->second.pfunCheat3)("play2");
 			}
 			else
-				(item->second.pfunCheat)();
+			{
+				if (item->second.pfunCheat)
+					(item->second.pfunCheat)();
+				else
+					LOGE("item->second.pfunCheat is null\n");
+			}
 			item->second.bCall = false;
 		}
 	}
