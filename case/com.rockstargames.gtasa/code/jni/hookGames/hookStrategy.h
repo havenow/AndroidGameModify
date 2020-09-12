@@ -64,6 +64,23 @@ protected:
 	int (*f__ZN5CGame7ProcessEf)(float); 
 };
 
+class hookGTA3 : public hookStrategy
+{
+public:
+	hookGTA3();
+	virtual ~hookGTA3();
+	
+	void calFunAddr(void* dll);
+	virtual void DoHook();
+
+protected:
+	static int replaceGameProcess();
+	int hookGameProcess();
+	int unHook();
+	long funGameProcessdAddr;
+	int (*f__ZN5CGame7ProcessEv)();	
+};
+
 class hookGame
 {
 public:

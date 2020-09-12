@@ -38,6 +38,11 @@ void CCheatSDK::loadSo(GAME_NAME game)
 		appendToLogFile("target_pid %d.\n", target_pid);
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libGTALcs.so", RTLD_NOW);
+	case _GAME_GTA3:
+		target_pid = find_pid_of("com.rockstargames.gta3");
+		appendToLogFile("target_pid %d.\n", target_pid);
+		LOGE("target_pid %d.\n", target_pid);
+		_dll = dlopen("libR1.so", RTLD_NOW);
 		break;
 	}
 	
@@ -77,6 +82,8 @@ CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 		_pCheat = new CCheatGTAVC();
 	case _GAME_GTALCS:
 		_pCheat = new CCheatGTALCS();
+	case _GAME_GTA3:
+		_pCheat = new CCheatGTA3();
 		break;
 	}
 	return _pCheat;
@@ -93,6 +100,8 @@ void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 		_hookStrategy = new hookGTAVC();
 	case _GAME_GTALCS:
 		_hookStrategy = new hookGTALCS();
+	case _GAME_GTA3:
+		_hookStrategy = new hookGTA3();
 		break;
 	}
 	_hookInstance.setStrategy(_hookStrategy);

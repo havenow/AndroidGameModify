@@ -11,6 +11,7 @@ enum GAME_NAME
 	_GAME_GTASA = 0,
 	_GAME_GTAVC = 1,
 	_GAME_GTALCS = 2,
+	_GAME_GTA3 = 3,
 };
 
 
@@ -75,6 +76,18 @@ class CCheatGTALCS : public CCheatI
 public:
 	CCheatGTALCS() {};
 	virtual ~CCheatGTALCS(){};
+	
+	virtual void printHelp();
+	virtual void initCallMap();
+	virtual void initCheat(void* dll);
+	virtual void callFunByFlag();
+};
+
+class CCheatGTA3 : public CCheatI
+{
+public:
+	CCheatGTA3() {};
+	virtual ~CCheatGTA3(){};
 	
 	virtual void printHelp();
 	virtual void initCallMap();
