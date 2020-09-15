@@ -103,6 +103,7 @@ int ptrace_writedata(pid_t pid, uint8_t *dest, uint8_t *data, size_t size)
 #if defined(__arm__)    
 int ptrace_call(pid_t pid, uint32_t addr, long *params, uint32_t num_params, struct pt_regs* regs)    
 {    
+	printf("begin ptrace_call %x\n", addr);
     uint32_t i;    
     for (i = 0; i < num_params && i < 4; i ++) {    
         regs->uregs[i] = params[i];    
@@ -143,7 +144,7 @@ int ptrace_call(pid_t pid, uint32_t addr, long *params, uint32_t num_params, str
         }  
         waitpid(pid, &stat, WUNTRACED);  
     }  
-    
+    printf("end ptrace_call %x\n", addr);
     return 0;    
 }    
     
@@ -425,7 +426,7 @@ int inject_remote_process(pid_t target_pid, const char *library_path, const char
         goto exit;    
     
     void * sohandle = ptrace_retval(&regs);    
-/*
+///*
 #define FUNCTION_NAME_ADDR_OFFSET       0x100    
     ptrace_writedata(target_pid, map_base + FUNCTION_NAME_ADDR_OFFSET, function_name, strlen(function_name) + 1);    
     parameters[0] = sohandle;       
@@ -450,7 +451,7 @@ int inject_remote_process(pid_t target_pid, const char *library_path, const char
     
     if (ptrace_call_wrapper(target_pid, "dlclose", dlclose, parameters, 1, &regs) == -1)    
         goto exit;    
-*/
+//*/
     
     /* restore */    
     ptrace_setregs(target_pid, &original_regs);    
@@ -463,7 +464,7 @@ exit:
     
 int main(int argc, char** argv) {    
     pid_t target_pid;    
-    target_pid = find_pid_of("com.and.games505.TerrariaPaid");    
+    target_pid = find_pid_of("com.knight.union.aligames");    
 	//target_pid = find_pid_of("com.khg.actionsquad");    
     if (-1 == target_pid) {  
         printf("Can't find the process\n");  
