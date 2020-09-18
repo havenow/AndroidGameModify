@@ -22,7 +22,8 @@ public:
 	CCheatI* chooseCheatGame(GAME_NAME game);
 	
 	string& getFunSymByIndex(int index) {if (_pCheat) return _pCheat->getFunSymByIndex(index);}
-	void setCallFunFlag(const string& funSym);
+	void setCallFunFlag(const string& funSym, bool bOpen = true);
+	bool getFunCalllFlag(const string& funSym){if (_pCheat) return _pCheat->getFunCalllFlag(funSym);};
 	
 	void printHelp() {if (_pCheat) _pCheat->printHelp();}
 	void initCallMap() {if (_pCheat) _pCheat->initCallMap();}
@@ -33,6 +34,7 @@ public:
 	void setStrategyDll()	{ _hookInstance.setDll(_dll); }
 	void DoHook(){ _hookInstance.DoHook(); }
 
+	void cheatSDKFinish();
 protected:
 	CCheatSDK() {};
 	~CCheatSDK();

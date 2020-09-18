@@ -13,10 +13,12 @@ LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					cheatGames\cheatGTAVC.cpp \
 					cheatGames\cheatGTALCS.cpp \
 					cheatGames\cheatGTA3.cpp \
+					cheatGames\cheatDadNMe.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
 					hookGames\hookGTALCS.cpp \
 					hookGames\hookGTA3.cpp \
+					hookGames\hookDadNMe.cpp \
 					cheatSDK.cpp \
 					common.cpp \
 					main.cpp \
@@ -35,10 +37,12 @@ LOCAL_SRC_FILES :=  cheatGames\cheatI.cpp \
 					cheatGames\cheatGTAVC.cpp \
 					cheatGames\cheatGTALCS.cpp \
 					cheatGames\cheatGTA3.cpp \
+					cheatGames\cheatDadNMe.cpp \
 					hookGames\hookGTASA.cpp \
 					hookGames\hookGTAVC.cpp \
 					hookGames\hookGTALCS.cpp \
 					hookGames\hookGTA3.cpp \
+					hookGames\hookDadNMe.cpp \
 					cheatSDK.cpp \
 					common.cpp \
 					main.cpp \

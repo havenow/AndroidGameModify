@@ -21,11 +21,12 @@ using namespace std;
 #include "common.h"
 #include "cheatSDK.h"
 
-GAME_NAME g_game = _GAME_GTA3;
+GAME_NAME g_game = _GAME_DADNME;
 
 char g_szDefaultSocketName[64] = "cheat";
 int g_socket = 0;
 int g_port = 1166;
+bool g_cheatSDKFinish = false;
 
 int start_server(char* sockname)
 {
@@ -78,6 +79,21 @@ void process_cmd(char* io_buffer)
 			CCheatSDK::getInstance()->setCallFunFlag(strCheatCmd);
 		}
 		break;
+	case 'E':
+		{
+			char strCheatCmd[128];
+			int bOpen = 0;
+			memset(strCheatCmd, '0', 128);
+			sscanf(io_buffer, "E: %s %d", strCheatCmd, &bOpen);
+			CCheatSDK::getInstance()->setCallFunFlag(strCheatCmd, bOpen);
+		}
+		break;
+	case 'Z':
+		{
+			g_cheatSDKFinish = true;
+			CCheatSDK::getInstance()->cheatSDKFinish();
+		}
+		break;
 	default:
 		break;
 	}
@@ -101,6 +117,8 @@ void* threadProc(void* param)
 	LOGE( "start server succeeded\n");
 	while (1)
 	{
+		if (g_cheatSDKFinish)
+			break;
 		int client_fd = accept(server_fd, (struct sockaddr*) NULL, NULL);
 
 		if (client_fd < 0)
@@ -174,6 +192,13 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	}
 	env = uenv.env;
 	
+	if (getuid() != 0)
+        LOGE("*** RUNNING AS unROOT. ***\n");
+	else
+		LOGE("*** RUNNING AS ROOT. ***\n");
+	
+	g_cheatSDKFinish = false;
+	
 	CCheatSDK::getInstance()->loadSo(g_game);
 	
 	CCheatSDK::getInstance()->chooseCheatGame(g_game);
@@ -198,6 +223,12 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 
 int main(int argc, char** argv)
 {
+	if (getuid() != 0)
+        fprintf(stderr, "*** RUNNING AS unROOT. ***\n");
+	else
+		fprintf(stderr, "*** RUNNING AS ROOT. ***\n");
+	
+	bool bForTest[2] = {false, false};
 	struct sockaddr_in addr;
 	g_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (g_socket < 0)
@@ -223,7 +254,8 @@ int main(int argc, char** argv)
 					"0:	gtasa\n"
 					"1:	gtavc\n"
 					"2:	gtalcs\n"
-					"3:	gta3"
+					"3:	gta3\n"
+					"4:	dadnme\n"
 					">\n");
 	char game[128] = {};
 	scanf("%s", game);
@@ -246,6 +278,16 @@ int main(int argc, char** argv)
 		{
 			CCheatSDK::getInstance()->printHelp();
 		}
+		else if (0 == strcmp(cmdBuf, "sdkFinish"))
+		{
+			char cmd[80] = { 0 };
+			int io_length;
+			io_length = snprintf(cmd, sizeof(cmd), "Z\n");
+			send(g_socket, cmd, io_length, 0);
+			
+			fprintf(stderr, "exit cmd\n");
+			break;
+		}
 		else
 		{
 			int cheatIndex = 0;
@@ -253,7 +295,16 @@ int main(int argc, char** argv)
 			LOGE("cheat index %d\n", cheatIndex);
 			char cmd[80] = { 0 };
 			string gameFunSym = CCheatSDK::getInstance()->getFunSymByIndex(cheatIndex);
-			int io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", gameFunSym.c_str());
+			int io_length;
+			if (gameIndex == _GAME_DADNME)
+			{
+				io_length = snprintf(cmd, sizeof(cmd), "E: %s %d\n", gameFunSym.c_str(), !bForTest[cheatIndex]);
+				bForTest[cheatIndex] = !bForTest[cheatIndex];
+			}
+			else
+			{
+				io_length = snprintf(cmd, sizeof(cmd), "D: %s\n", gameFunSym.c_str());
+			}
 			send(g_socket, cmd, io_length, 0);
 		}
 	}

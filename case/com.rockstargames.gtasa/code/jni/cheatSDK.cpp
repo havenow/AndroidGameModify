@@ -44,6 +44,12 @@ void CCheatSDK::loadSo(GAME_NAME game)
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libR1.so", RTLD_NOW);
 		break;
+	case _GAME_DADNME:
+		target_pid = find_pid_of("com.lakegame.dadnme");
+		appendToLogFile("target_pid %d.\n", target_pid);
+		LOGE("target_pid %d.\n", target_pid);
+		_dll = dlopen("libc.so", RTLD_NOW);
+		break;
 	}
 	
 	if ((error = (char*)dlerror()) != NULL)  
@@ -85,6 +91,9 @@ CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 	case _GAME_GTA3:
 		_pCheat = new CCheatGTA3();
 		break;
+	case _GAME_DADNME:
+		_pCheat = new CCheatDadNMe();
+		break;
 	}
 	return _pCheat;
 };
@@ -103,16 +112,19 @@ void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 	case _GAME_GTA3:
 		_hookStrategy = new hookGTA3();
 		break;
+	case _GAME_DADNME:
+		_hookStrategy = new hookDadNMe();
+		break;
 	}
 	_hookInstance.setStrategy(_hookStrategy);
 }
 
-void CCheatSDK::setCallFunFlag(const string& funSym) 
+void CCheatSDK::setCallFunFlag(const string& funSym, bool bOpen) 
 { 
 	if (_pCheat) 
 	{
 		lock_guard<mutex> lock(_cheatMutex);
-		_pCheat->setCallFunFlag(funSym);
+		_pCheat->setCallFunFlag(funSym, bOpen);
 	}
 		
 }
@@ -123,5 +135,19 @@ void CCheatSDK::callFunByFlag()
 	{
 		lock_guard<mutex> lock(_cheatMutex);
 		_pCheat->callFunByFlag();
+	}
+}
+
+void CCheatSDK::cheatSDKFinish()
+{
+	if (_pCheat)
+	{
+		delete _pCheat;
+		_pCheat = nullptr;
+	}
+	if (_hookStrategy)
+	{
+		delete _hookStrategy;
+		_hookStrategy = nullptr;
 	}
 }

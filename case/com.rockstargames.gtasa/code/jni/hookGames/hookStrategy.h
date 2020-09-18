@@ -1,5 +1,6 @@
 #ifndef _HOOKSTRATEGY_H
 #define _HOOKSTRATEGY_H
+#include "../timestamp.hpp"
 
 class hookStrategy
 {
@@ -79,6 +80,32 @@ protected:
 	int unHook();
 	long funGameProcessdAddr;
 	int (*f__ZN5CGame7ProcessEv)();	
+};
+
+class hookDadNMe : public hookStrategy
+{
+public:
+	hookDadNMe();
+	virtual ~hookDadNMe();
+	
+	void calFunAddr(void* dll);
+	virtual void DoHook();
+	
+	static void* _bloodAddr;
+	static void* _crazyAddr;
+	static void* _alternativeBaseAddr;
+	static pid_t _curPid;
+
+protected:
+	static void* replaceMalloc(unsigned long size);
+	int hookDadNMeMalloc();
+	int unHook();
+	long funMallocdAddr;
+	void* (*f_malloc)(unsigned long size);//typedef  unsigned long size_t; size_t在32位架构上是4字节，在64位架构上是8字节	
+	
+	static void* threadProc(void* param);
+	static bool _bEixtThread;
+	static CTimestamp _timeStamp;
 };
 
 class hookGame

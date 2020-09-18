@@ -12,6 +12,7 @@ enum GAME_NAME
 	_GAME_GTAVC = 1,
 	_GAME_GTALCS = 2,
 	_GAME_GTA3 = 3,
+	_GAME_DADNME = 4,
 };
 
 
@@ -34,7 +35,8 @@ public:
 	virtual ~CCheatI(){};
 	
 	string& getFunSymByIndex(int index); 
-	void setCallFunFlag(const string& funSym);
+	virtual void setCallFunFlag(const string& funSym, bool bCall = true);
+	virtual bool getFunCalllFlag(const string& funSym){};
 	
 	virtual void printHelp() = 0;
 	virtual void initCallMap() = 0;
@@ -93,6 +95,21 @@ public:
 	virtual void initCallMap();
 	virtual void initCheat(void* dll);
 	virtual void callFunByFlag();
+};
+
+class CCheatDadNMe : public CCheatI
+{
+public:
+	CCheatDadNMe() {};
+	virtual ~CCheatDadNMe(){};
+	
+	virtual void setCallFunFlag(const string& funSym, bool bCall = true);
+	virtual bool getFunCalllFlag(const string& funSym);
+	
+	virtual void printHelp();
+	virtual void initCallMap();
+	virtual void initCheat(void* dll);
+	virtual void callFunByFlag(){};
 };
 
 #endif

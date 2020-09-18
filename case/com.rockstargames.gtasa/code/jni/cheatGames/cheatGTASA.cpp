@@ -8,6 +8,7 @@ void CCheatGTASA::printHelp()
 		"				Usage: input cmd\n"
 		"help		(print commands)\n"
 		"exit		(server cannot exit normally if not call 'exit' commonds when exit exe)\n"
+		"sdkFinish	(clear cheat sdk)\n"
 		"1		(WEAPON1)\n"
 		"2		(WEAPON2)\n"
 		"3		(WEAPON3)\n"

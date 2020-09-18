@@ -1,7 +1,7 @@
 #include "cheatI.h"
 #include "common.h"
 
-void CCheatI::setCallFunFlag(const string& funSym)
+void CCheatI::setCallFunFlag(const string& funSym, bool bCall)
 {
 	auto pItem = _cheatData.find(funSym);
 	if (pItem != _cheatData.end())

@@ -8,6 +8,7 @@ void CCheatGTALCS::printHelp()
 		"				Usage: input cmd\n"
 		"help		(print commands)\n"
 		"exit		(server cannot exit normally if not call 'exit' commonds when exit exe)\n"
+		"sdkFinish	(clear cheat sdk)\n"
 		"1		_Z12WeaponCheat1v\n"
 		"2		_Z12WeaponCheat2v\n"
 		"3		_Z12WeaponCheat3v\n"

@@ -8,6 +8,7 @@ void CCheatGTA3::printHelp()
 		"				Usage: input cmd\n"
 		"help		(print commands)\n"
 		"exit		(server cannot exit normally if not call 'exit' commonds when exit exe)\n"
+		"sdkFinish	(clear cheat sdk)\n"
 		"1		_Z11WeaponCheatv\n"//bad
 		"2		_Z11HealthCheatv\n"
 		"3		_Z9TankCheatv\n"
