@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="funk dlsym"
+    />
+    <Button android:id="@+id/btn_loadso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="加载so"
+    />
+        <Button android:id="@+id/btn_callJni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="调用so中的方法"
+    />
+        <Button android:id="@+id/btn_callJni2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="调用so中的方法2"
+    />
+</LinearLayout>
