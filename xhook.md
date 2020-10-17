@@ -53,3 +53,14 @@ p0 - p1 即为该 ELF 当前的基地址。
 
 可以在 Android linker 的源码中搜索“load_bias”，可以找到很多详细的注释说明，也可以参考 linker 中对 load_bias_ 变量的赋值程序逻辑。
 ```
+
+#hook 时遇到偶发的段错误如何处理？
+```
+解决方案：
+
+当 hook 逻辑进入我们认为的危险区域（直接计算内存地址进行读写）之前，通过一个全局 flag 来进行标记，离开危险区域后将 flag 复位。
+注册我们自己的 signal handler，只捕获段错误。在 signal handler 中，通过判断 flag 的值，来判断当前线程逻辑是否在危险区域中。如果是，就用 siglongjmp 跳出 signal handler，直接跳到我们预先设置好的“危险区域以外的下一行代码处”；如果不是，就恢复之前加载器向我们注入的 signal handler，然后直接返回，这时系统会再次向我们的线程发送段错误信号，由于已经恢复了之前的 signal handler，这时会进入默认的系统 signal handler 中走正常逻辑。
+我们把这种机制简称为：SFP (segmentation fault protection，段错误保护)
+注意：SFP需要一个开关，让我们随时能够开启和关闭它。在 APP 开发调试阶段，SFP 应该始终被关闭，这样就不会错过由于编码失误导致的段错误，这些错误是应该被修复的；在正式上线后 SFP 应该被开启，这样能保证 APP 不会崩溃。（当然，以采样的形式部分关闭 SFP，用以观察和分析 hook 机制本身导致的崩溃，也是可以考虑的）
+具体代码可以参考 xhook 中的实现，在源码中搜索 siglongjmp 和 sigsetjmp。
+```
