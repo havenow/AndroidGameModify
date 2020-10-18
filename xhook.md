@@ -64,3 +64,23 @@ p0 - p1 即为该 ELF 当前的基地址。
 注意：SFP需要一个开关，让我们随时能够开启和关闭它。在 APP 开发调试阶段，SFP 应该始终被关闭，这样就不会错过由于编码失误导致的段错误，这些错误是应该被修复的；在正式上线后 SFP 应该被开启，这样能保证 APP 不会崩溃。（当然，以采样的形式部分关闭 SFP，用以观察和分析 hook 机制本身导致的崩溃，也是可以考虑的）
 具体代码可以参考 xhook 中的实现，在源码中搜索 siglongjmp 和 sigsetjmp。
 ```
+
+# ELF 内部函数之间的调用能 xhook 吗？
+```
+我们这里介绍的 hook 方式为 PLT hook，不能做 ELF 内部函数之间调用的 hook。
+
+inline hook 可以做到，你需要先知道想要 hook 的内部函数符号名（symbol name）或者地址，然后可以 hook。
+
+有很多开源和非开源的 inline hook 实现，比如：
+
+substrate：http://www.cydiasubstrate.com/
+frida：https://www.frida.re/
+inline hook 方案强大的同时可能带来以下的问题：
+
+由于需要直接解析和修改 ELF 中的机器指令（汇编码），对于不同架构的处理器、处理器指令集、编译器优化选项、操作系统版本可能存在不同的兼容性和稳定性问题。
+发生问题后可能难以分析和定位，一些知名的 inline hook 方案是闭源的。
+实现起来相对复杂，难度也较大。
+未知的坑相对较多，这个可以自行 google。
+建议如果 PLT hook 够用的话，就不必尝试 inline hook 了。
+
+```
