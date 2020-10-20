@@ -39,7 +39,7 @@ void CCheatSDK::loadSo(GAME_NAME game)
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libGTALcs.so", RTLD_NOW);
 	case _GAME_GTA3:
-		target_pid = find_pid_of("com.rockstargames.gta3");
+		target_pid = find_pid_of("com.rockstar.gta3");
 		appendToLogFile("target_pid %d.\n", target_pid);
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libR1.so", RTLD_NOW);
