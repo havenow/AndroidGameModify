@@ -86,8 +86,10 @@ CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 		break;
 	case _GAME_GTAVC:
 		_pCheat = new CCheatGTAVC();
+		break;
 	case _GAME_GTALCS:
 		_pCheat = new CCheatGTALCS();
+		break;
 	case _GAME_GTA3:
 		_pCheat = new CCheatGTA3();
 		break;
@@ -107,8 +109,10 @@ void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 		break;
 	case _GAME_GTAVC:
 		_hookStrategy = new hookGTAVC();
+		break;
 	case _GAME_GTALCS:
 		_hookStrategy = new hookGTALCS();
+		break;
 	case _GAME_GTA3:
 		_hookStrategy = new hookGTA3();
 		break;
