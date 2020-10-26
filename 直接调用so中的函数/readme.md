@@ -25,3 +25,14 @@ LOCAL_CONLYFLAGS        := -std=c11
 LOCAL_LDLIBS            += -fPIE -pie
 include $(BUILD_EXECUTABLE)
 ```
+
+# 编译
+```
+libxhook下面的工程编译需要用  Android NDK r16b
+如果使用 Android NDK r10e，会报错
+[armeabi-v7a] Compile thumb  : xhook <= xh_elf.c
+jni/xh_elf.c: In function 'xh_elf_init':
+jni/xh_elf.c:848:14: error: 'DT_ANDROID_REL' undeclared (first use in this function)
+         case DT_ANDROID_REL:
+              ^
+```
