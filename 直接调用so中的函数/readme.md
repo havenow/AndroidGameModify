@@ -42,13 +42,17 @@ jni/xh_elf.c:848:14: error: 'DT_ANDROID_REL' undeclared (first use in this funct
 libxhook/jni/xhook.h
 
 1. Register hook info
-int xhook_register(const char  *pathname_regex_str,  
-                   const char  *symbol,  
-                   void        *new_func,  
-                   void       **old_func);
+int xhook_register(const char* pathname_regex_str, const char* symbol, void* new_func, void** old_func);
 				   
-Return:					zero if successful, non-zero otherwise.
-pathname_regex_str:		In current process's memory space, in every loaded ELF which pathname matches regular expression pathname_regex_str, every PLT entries to symbol will be replaced with new_func. The original one will be saved in old_func.
+Return:			zero if successful, non-zero otherwise.
+args:			In current process's memory space, in every loaded ELF which pathname matches regular expression pathname_regex_str, every PLT entries to symbol will be replaced with new_func. The original one will be saved in old_func.
 The new_func must have the same function declaration as the original one.
 The regular expression for pathname_regex_str only support POSIX BRE (Basic Regular Expression).
+
+2. Ignore some hook info
+int xhook_ignore(const char *pathname_regex_str, const char *symbol);
+				 
+Return:			zero if successful, non-zero otherwise.
+args:			Ignore some hook info according to pathname_regex_str and symbol, from registered hooks by xhook_register. If symbol is NULL, xhook will ignore all symbols from ELF which pathname matches pathname_regex_str.
+The regular expression for pathname_regex_str only support POSIX BRE.
 ```
