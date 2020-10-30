@@ -81,4 +81,14 @@ xhook will keep a global cache for saving the last ELF loading info from /proc/s
 成功返回 0，失败返回 非0。
 xhook 在内部维护了一个全局的缓存，用于保存最后一次从 /proc/self/maps 读取到的 ELF 加载信息。每次一调用 xhook_refresh 函数，这个缓存都将被更新。xhook 使用这个缓存来判断哪些 ELF 是这次新被加载到内存中的。我们每次只需要针对这些新加载的 ELF 做 hook 就可以了。
 
+4. Clear cache
+void xhook_clear();
+Clear all cache owned by xhook, reset all global flags to default value.
+If you confirm that all PLT entries you want have been hooked, you could call this function to save some memory.
+
+清除缓存
+清除 xhook 的缓存，重置所有的全局标示。
+如果你确定你需要的所有 PLT 入口点都已经被替换了，你可以调用这个函数来释放和节省一些内存空间。
+
+
 ```
