@@ -90,5 +90,14 @@ If you confirm that all PLT entries you want have been hooked, you could call th
 清除 xhook 的缓存，重置所有的全局标示。
 如果你确定你需要的所有 PLT 入口点都已经被替换了，你可以调用这个函数来释放和节省一些内存空间。
 
+5. Enable/Disable debug info
+void xhook_enable_debug(int flag);
+Pass 1 to flag for enable debug info. Pass 0 to flag for disable. (disabled by default)
+Debug info will be sent to logcat with tag xhook.
+
+启用/禁用 调试信息
+给 flag 参数传 1 表示启用调试信息，传 0 表示禁用调试信息。 (默认为：禁用)
+调试信息将被输出到 logcat，对应的 TAG 为：xhook。
+
 
 ```
