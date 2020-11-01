@@ -99,5 +99,21 @@ Debug info will be sent to logcat with tag xhook.
 给 flag 参数传 1 表示启用调试信息，传 0 表示禁用调试信息。 (默认为：禁用)
 调试信息将被输出到 logcat，对应的 TAG 为：xhook。
 
+6. Enable/Disable SFP (segmentation fault protection)
+void xhook_enable_sigsegv_protection(int flag);
+
+Pass 1 to flag for enable SFP. Pass 0 to flag for disable. (enabled by default)
+
+xhook is NOT a compliant business layer library. We have to calculate the value of some pointers directly. Reading or writing the memory pointed to by these pointers will cause a segmentation fault in some unusual situations and environment. The APP crash rate increased which caused by xhook is about one ten-millionth (0.0000001) according to our test. (The increased crash rate is also related to the ELFs and symbols you need to hook). Finally, we have to use some trick to prevent this harmless crashing. We called it SFP (segmentation fault protection) which consists of: sigaction(), SIGSEGV, siglongjmp() and sigsetjmp().
+
+You should always enable SFP for release-APP, this will prevent your app from crashing. On the other hand, you should always disable SFP for debug-APP, so you can't miss any common coding mistakes that should be fixed.
+
+ 启用/禁用 SFP (段错误保护)
+ 给 flag 参数传 1 表示启用 SFP，传 0 表示禁用 SFP。 (默认为：启用)
+
+xhook 并不是一个常规的业务层的动态库。在 xhook 中，我们不得不直接计算一些内存指针的值。在一些极端的情况和环境下，读或者写这些指针指向的内存会发生段错误。根据我们的测试，xhook 的行为将导致 APP 崩溃率增加 “一千万分之一” (0.0000001)。（具体崩溃率可能会增加多少，也和你想要 hook 的库和符号有关）。最终，我们不得不使用某些方法来防止这些无害的崩溃。我们叫它SFP (段错误保护)，它是由这些调用和值组成的：sigaction()， SIGSEGV， siglongjmp() 和 sigsetjmp()。
+
+在 release 版本的 APP 中，你应该始终启用 SFP，这能防止你的 APP 因为 xhook 而崩溃。在 debug 版本的 APP 中，你应该始终禁用 SFP，这样你就不会丢失那些一般性的编码失误导致的段错误，这些段错误是应该被修复的。
+
 
 ```
