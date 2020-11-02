@@ -101,7 +101,6 @@ Debug info will be sent to logcat with tag xhook.
 
 6. Enable/Disable SFP (segmentation fault protection)
 void xhook_enable_sigsegv_protection(int flag);
-
 Pass 1 to flag for enable SFP. Pass 0 to flag for disable. (enabled by default)
 
 xhook is NOT a compliant business layer library. We have to calculate the value of some pointers directly. Reading or writing the memory pointed to by these pointers will cause a segmentation fault in some unusual situations and environment. The APP crash rate increased which caused by xhook is about one ten-millionth (0.0000001) according to our test. (The increased crash rate is also related to the ELFs and symbols you need to hook). Finally, we have to use some trick to prevent this harmless crashing. We called it SFP (segmentation fault protection) which consists of: sigaction(), SIGSEGV, siglongjmp() and sigsetjmp().
@@ -115,5 +114,6 @@ xhook 并不是一个常规的业务层的动态库。在 xhook 中，我们不�
 
 在 release 版本的 APP 中，你应该始终启用 SFP，这能防止你的 APP 因为 xhook 而崩溃。在 debug 版本的 APP 中，你应该始终禁用 SFP，这样你就不会丢失那些一般性的编码失误导致的段错误，这些段错误是应该被修复的。
 
-
+https://www.v2ex.com/t/449601
+https://gitee.com/caikelun/xHook?utm_source=alading&utm_campaign=repo
 ```
