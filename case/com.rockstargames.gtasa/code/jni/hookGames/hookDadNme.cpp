@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <sys/ptrace.h> 
 #include <sys/wait.h>
+#include <deque>
+#include <mutex>
 
 void* (*old_DadNMe_malloc)(unsigned long);
 
@@ -16,6 +18,22 @@ void* hookDadNMe::_bloodAddr = nullptr;
 void* hookDadNMe::_crazyAddr = nullptr;
 void* hookDadNMe::_alternativeBaseAddr = nullptr;
 pid_t hookDadNMe::_curPid = 0;
+
+class CheatAddr 
+{
+public:
+	CheatAddr(void* blood, void* crazy)
+	{
+		_bloodAddr = blood;
+		_crazyAddr = crazy;
+	}
+	void* _bloodAddr = nullptr;
+	void* _crazyAddr = nullptr;
+};
+
+deque<CheatAddr> _addrData;
+mutex _mAddr;
+bool _bAddNewAddr = false;
 
 int keep_blood()
 {
@@ -76,6 +94,55 @@ int keep_crazy()
 	return 0;
 }
 
+void updateAddr()
+{
+	if (!_bAddNewAddr)
+		return;
+	lock_guard<mutex> lg(_mAddr);
+	//查找满足条件的地址	初始条件：血是满的、 气是空的
+	bool bFindAddrSucess = false;
+	deque<CheatAddr>::iterator itor;
+	for (itor = _addrData.begin(); itor != _addrData.end(); *itor++)
+	{
+		CheatAddr tmp = *itor;
+		unsigned int* addrTmp1 = static_cast<unsigned int*>(tmp._bloodAddr);
+		unsigned int* addrTmp2 = static_cast<unsigned int*>(tmp._crazyAddr);
+		if ((1079083008 == (*addrTmp1)) && (0 == (*addrTmp2)))
+		{
+			if (hookDadNMe::_bloodAddr != tmp._bloodAddr || hookDadNMe::_crazyAddr != tmp._crazyAddr)
+				LOGE("+++update DadNMe _bloodAddr _crazyAddr: %x %x %d %d\n", tmp._bloodAddr, tmp._crazyAddr, 
+				*(static_cast<unsigned int*>(tmp._bloodAddr)), *(static_cast<unsigned int*>(tmp._crazyAddr)));
+			hookDadNMe::_bloodAddr = tmp._bloodAddr;
+			hookDadNMe::_crazyAddr = tmp._crazyAddr;
+			bFindAddrSucess = true;	
+			break;
+		}
+	}
+
+
+	//删除老的地址
+	if (true == bFindAddrSucess)
+	{
+		bool bGogogo = true;
+		do
+		{
+			if (_addrData.empty())
+			{
+				break;
+			}
+			CheatAddr reddd = _addrData.back();
+			if (hookDadNMe::_bloodAddr == reddd._bloodAddr &&
+				hookDadNMe::_crazyAddr == reddd._crazyAddr)
+			{
+				bGogogo = false;
+			}
+			else
+				_addrData.pop_back();
+		} while (bGogogo);
+	}
+	_bAddNewAddr = false;
+}
+
 
 void* hookDadNMe::threadProc(void* param)
 {
@@ -83,6 +150,8 @@ void* hookDadNMe::threadProc(void* param)
 	while(!_bEixtThread)
 	{
 		_timeStamp.update();
+		
+		updateAddr();
 		
 		string strCheat = "keep_blood";
 		if (CCheatSDK::getInstance()->getFunCalllFlag(strCheat))
@@ -141,58 +210,25 @@ void* hookDadNMe::replaceMalloc(unsigned long size)
 	if (8 == nLen)
 	{
 		if (0x1408 == size)
-		{
-			if (ret != _alternativeBaseAddr)
-			{
-				_alternativeBaseAddr = ret;
-				LOGE("alternatvie DadNMe _bloodAddr _crazyAddr: %x %x\n", ret + nDeltaBlood64, ret + nDeltaCrazy64);
-				unsigned int* addrTmp1 = static_cast<unsigned int*>(ret + nDeltaBlood64);
-				unsigned int* addrTmp2 = static_cast<unsigned int*>(ret + nDeltaCrazy64);
-				if ((0 == (*addrTmp1)) && (-13434625 == (*addrTmp2)))//ff3300ff(-13434625)
-				{
-					_bloodAddr = ret + nDeltaBlood64;
-					_crazyAddr = ret + nDeltaCrazy64;
-					LOGE("+++update DadNMe(alternative) _bloodAddr _crazyAddr\n");
-				}
-			}
-			else
-			{
-				_bloodAddr = ret + nDeltaBlood64;
-				_crazyAddr = ret + nDeltaCrazy64;
-				LOGE("+++update DadNMe _bloodAddr _crazyAddr: %x %x\n", _bloodAddr, _crazyAddr);
-			}
+		{	
+			LOGE("DadNMe _bloodAddr _crazyAddr: %x %x %d %d\n", ret + nDeltaBlood64, ret + nDeltaCrazy64, 
+				*(static_cast<unsigned int*>(ret + nDeltaBlood64)), *(static_cast<unsigned int*>(ret + nDeltaCrazy64)));
+			lock_guard<mutex> lg(_mAddr);
+			CheatAddr obj(ret + nDeltaBlood64, ret + nDeltaCrazy64);
+			_addrData.push_front(obj);
+			_bAddNewAddr = true;
 		}
 	}
 	else
 	{
 		if (0x1008 == size)
 		{
-			if (ret != _alternativeBaseAddr)
-			{
-				_alternativeBaseAddr = ret;
-				LOGE("alternatvie DadNMe _bloodAddr _crazyAddr: %x %x %d %d\n", ret + nDeltaBlood32, ret + nDeltaCrazy32, 
+			LOGE("DadNMe _bloodAddr _crazyAddr: %x %x %d %d\n", ret + nDeltaBlood32, ret + nDeltaCrazy32, 
 				*(static_cast<unsigned int*>(ret + nDeltaBlood32)), *(static_cast<unsigned int*>(ret + nDeltaCrazy32)));
-				unsigned int* addrTmp1 = static_cast<unsigned int*>(ret + nDeltaBlood32);
-				unsigned int* addrTmp2 = static_cast<unsigned int*>(ret + nDeltaCrazy32);
-				//LOGE("value: %d %d\n", (int)(*addrTmp1), (int)(*addrTmp2));
-				if ((1065353216 == (*addrTmp1)) && (1146129076 == (*addrTmp2)))
-				{
-					_bloodAddr = ret + nDeltaBlood32;
-					_crazyAddr = ret + nDeltaCrazy32;
-					LOGE("+++update DadNMe(alternative) _bloodAddr _crazyAddr\n");
-				}
-			}
-			else//连续两次出现时
-			{
-				//1065353216 1146129076
-				_bloodAddr = ret + nDeltaBlood32;
-				_crazyAddr = ret + nDeltaCrazy32;
-				LOGE("+++update DadNMe _bloodAddr _crazyAddr: %x %x %d %d\n", _bloodAddr, _crazyAddr, 
-				*(static_cast<unsigned int*>(_bloodAddr)), *(static_cast<unsigned int*>(_crazyAddr)));
-				/*unsigned int* addrTmp1 = static_cast<unsigned int*>(_bloodAddr);
-				unsigned int* addrTmp2 = static_cast<unsigned int*>(_crazyAddr);
-				LOGE("value: %d %d\n", (int)(*addrTmp1), (int)(*addrTmp2));*/
-			}
+			lock_guard<mutex> lg(_mAddr);
+			CheatAddr obj(ret + nDeltaBlood32, ret + nDeltaCrazy32);
+			_addrData.push_front(obj);
+			_bAddNewAddr = true;
 		}
 	}
 
