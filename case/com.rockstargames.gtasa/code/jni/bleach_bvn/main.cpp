@@ -44,6 +44,7 @@ public:
 vector<AddrBlock> _addrBlock;
 int const _deltaBlue = 0xC8;
 int const _deltaSp = 0xB8;
+int const _deltaAssist = 0xD8;
 bool _bFindBlockDone = false;
 AddrBlock _confirmBlock(nullptr, nullptr);
 array<void*, 6> _addrBlood = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}; 
