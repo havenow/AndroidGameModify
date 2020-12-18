@@ -160,6 +160,43 @@ int start_server(char* sockname)
 	return fd;
 }
 
+void process_cheat(int arg0, int arg1)
+{
+	if (0 == _curPid)
+		return;
+
+	if (nullptr == _addrBase[0])
+		return;
+	
+	unsigned long addrTmp = 0;
+	int value = 1;
+	switch (arg0)
+	{
+	case 1://keep_blood
+		addrTmp = reinterpret_cast<unsigned long >(_addrBase[0]) + 0xC;
+		if (arg1 != 1)
+			value = 20;
+		break;
+	case 2://keep_sp
+		addrTmp = reinterpret_cast<unsigned long >(_addrBase[0]) + 0x10;
+		if (arg1 != 1)
+			value = 21;
+		break;
+	case 3://keep_blue
+		addrTmp = reinterpret_cast<unsigned long >(_addrBase[0]) + 0x14;
+		if (arg1 != 1)
+			value = 22;
+		break;		
+	case 4://keep_assist
+		addrTmp = reinterpret_cast<unsigned long >(_addrBase[0]) + 0x18;
+		if (arg1 != 1)
+			value = 23;
+		break;		
+	}
+	unsigned int* addr = reinterpret_cast<unsigned int*>(addrTmp);
+	*addr = value;
+}
+
 void process_cmd(char* io_buffer)
 {
 	LOGE("process_cmd io_buffer:	%s\n", io_buffer);
@@ -188,6 +225,18 @@ void process_cmd(char* io_buffer)
 			memset(strCheatCmd, '0', 128);
 			sscanf(io_buffer, "E: %s %d", strCheatCmd, &bOpen);
 			_blenchBvn.setCallFunFlag(strCheatCmd, bOpen);
+			
+			int index = 0;
+			if (strcmp("keep_blood", strCheatCmd) == 0){
+				index = 1;
+			} else if (strcmp("keep_sp", strCheatCmd) == 0){
+				index = 2;
+			} else if (strcmp("keep_blue", strCheatCmd) == 0){
+				index = 3;
+			} else if (strcmp("keep_assist", strCheatCmd) == 0){
+				index = 4;
+			} 
+			process_cheat(index, bOpen);
 		}
 		break;
 	case 'Z':
@@ -470,7 +519,8 @@ void updateAddr()
 			{
 				//LOGE("---updateAddr() find: %x\n", obj._startAddr+ index);
 				
-				addrBase[nCount] = obj._startAddr + index;
+				unsigned long addrTmp =  reinterpret_cast<unsigned long >(obj._startAddr) + index;
+				addrBase[nCount] = reinterpret_cast<void*>(addrTmp);//obj._startAddr + index;
 				nCount++;
 			}
 		}
@@ -581,42 +631,17 @@ int keep_assist(int value)
 	return 0;
 }
 
-bool _bEixtThread = false;
 void* threadHookBlenchBvnProc(void* param)
 {
 	_timeStampFindByBlock.update();
-	while(!_bEixtThread)
+	while(!g_findAddrBase)
 	{
 		_timeStampHook.update();
 		
 		updateAddr_safe();
 		
-		string strCheat = "keep_blood";
-		if (_blenchBvn.getFunCalllFlag(strCheat))
-			keep_blood(1);
-		else
-			keep_blood(20);
-		
-		string strCheat2 = "keep_sp";
-		if (_blenchBvn.getFunCalllFlag(strCheat2))
-			keep_sp(1);
-		else
-			keep_sp(21);
-		
-		string strCheat3 = "keep_blue";
-		if (_blenchBvn.getFunCalllFlag(strCheat3))
-			keep_blue(1);
-		else
-			keep_blue(22);
-		
-		string strCheat4 = "keep_assist";
-		if (_blenchBvn.getFunCalllFlag(strCheat4))
-			keep_assist(1);
-		else
-			keep_assist(23);
-		
-		if (_timeStampHook.getElapsedSecond() < 0.033)
-			usleep(33000); 
+		if (_timeStampHook.getElapsedSecond() < 0.25)
+			usleep(250000); 
 	}
 	LOGE("exit hookBlenchBvn thread\n");
 	return NULL;
