@@ -5,6 +5,8 @@
 #include <pthread.h>
 #include <map>
 #include <vector>
+#include <queue>
+#include <mutex>
 
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -42,8 +44,22 @@ public:
 	void* _endAddr = nullptr;
 };
 
+class CheatCache
+{
+public:
+	CheatCache(int index, int open)
+	{
+		_index = index;
+		_open = open;
+	}
+	int _index = 0;
+	int _open = 0;
+};
+
 vector<AddrBlock> _addrBlock;
 array<void*, 6> _addrBase = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}; 
+queue<CheatCache> _cheatCache;
+mutex _cheatCacheMutex;
 
 #include <stdarg.h>
 void dumpMem(long data)
@@ -166,7 +182,12 @@ void process_cheat(int arg0, int arg1)
 		return;
 
 	if (nullptr == _addrBase[0])
+	{
+		lock_guard<mutex> lock(_cheatCacheMutex);
+		CheatCache obj(arg0, arg1);
+		_cheatCache.push(obj);
 		return;
+	}
 	
 	unsigned long addrTmp = 0;
 	int value = 1;
@@ -642,6 +663,16 @@ void* threadHookBlenchBvnProc(void* param)
 		
 		if (_timeStampHook.getElapsedSecond() < 0.25)
 			usleep(250000); 
+	}
+	if (nullptr != _addrBase[0])
+	{
+		lock_guard<mutex> lock(_cheatCacheMutex);
+		while (!_cheatCache.empty())
+		{
+			CheatCache tmp = _cheatCache.front();
+			process_cheat(tmp._index, tmp._open);
+			_cheatCache.pop();
+		}
 	}
 	LOGE("exit hookBlenchBvn thread\n");
 	return NULL;
