@@ -1,0 +1,120 @@
+package net.play5d.game.bvn.interfaces
+//-----------------------
+loseHp()
+
+寄存器 localcount 是2的时候，改为localcount 3
+
+pushbyte 0
+setlocal 2
+getlex Qname(PrivateNamespace("net.play5d.game.bvn.interfaces:BaseGameSprite"),"_team")
+getproperty Qname(PackageNamespace(""),"id")
+convert_i
+setlocal 2
+getlocal 2
+pushbyte 1
+ifne ofs002e
+getlex Qname(PackageNamespace("net.play5d.game.bvn.data"),"GameMode")
+getproperty Qname(PackageNamespace(""),"SINGLE_ACRADE")
+pushbyte 1
+ifne ofs002e
+pushshort 1000
+findproperty Qname(PackageNamespace(""),"hp")
+swap
+setproperty Qname(PackageNamespace(""),"hp")
+returnvoid
+ofs002e:
+
+寄存器 localcount 是4的时候，改为localcount 5
+pushbyte 0
+setlocal 4
+getlex Qname(PrivateNamespace("net.play5d.game.bvn.interfaces:BaseGameSprite"),"_team")
+getproperty Qname(PackageNamespace(""),"id")
+convert_i
+setlocal 4
+getlocal 4
+pushbyte 1
+ifne ofs002e
+getlex Qname(PackageNamespace("net.play5d.game.bvn.data"),"GameMode")
+getproperty Qname(PackageNamespace(""),"SINGLE_ACRADE")
+pushbyte 1
+ifne ofs002e
+pushshort 1000
+findproperty Qname(PackageNamespace(""),"hp")
+swap
+setproperty Qname(PackageNamespace(""),"hp")
+returnvoid
+ofs002e:
+
+
+package net.play5d.game.bvn.fighter	三个函数
+//-----------------------
+renderFzQi()
+
+pushbyte 0
+setlocal 1
+getlex Qname(PrivateNamespace("net.play5d.game.bvn.interfaces:BaseGameSprite"),"_team")
+getproperty Qname(PackageNamespace(""),"id")
+convert_i
+setlocal 1
+getlocal 1
+pushbyte 1
+ifne ofs002d
+getlex Qname(PackageNamespace("net.play5d.game.bvn.data"),"GameMode")
+getproperty Qname(PackageNamespace(""),"SURVIVOR")
+pushbyte 1
+ifne ofs002d
+pushbyte 100
+findproperty Qname(PackageNamespace(""),"fzqi")
+swap
+setproperty Qname(PackageNamespace(""),"fzqi")
+returnvoid
+ofs002d:
+
+
+//-----------------------
+useEnergy()
+
+pushbyte 0
+setlocal 2
+getlex Qname(PrivateNamespace("net.play5d.game.bvn.interfaces:BaseGameSprite"),"_team")
+getproperty Qname(PackageNamespace(""),"id")
+convert_i
+setlocal 2
+getlocal 2
+pushbyte 1
+ifne ofs002d
+getlex Qname(PackageNamespace("net.play5d.game.bvn.data"),"GameMode")
+getproperty Qname(PackageNamespace(""),"SINGLE_VS_PEOPLE")
+pushbyte 1
+ifne ofs002d
+pushbyte 100
+findproperty Qname(PackageNamespace(""),"energy")
+swap
+setproperty Qname(PackageNamespace(""),"energy")
+returnvoid
+ofs002d:
+
+
+//-----------------------
+useQi()
+
+pushbyte 0
+setlocal 2
+getlex Qname(PrivateNamespace("net.play5d.game.bvn.interfaces:BaseGameSprite"),"_team")
+getproperty Qname(PackageNamespace(""),"id")
+convert_i
+setlocal 2
+getlocal 2
+pushbyte 1
+ifne ofs002f
+getlex Qname(PackageNamespace("net.play5d.game.bvn.data"),"GameMode")
+getproperty Qname(PackageNamespace(""),"SINGLE_VS_CPU")
+pushbyte 1
+ifne ofs002f
+pushshort 300
+findproperty Qname(PackageNamespace(""),"qi")
+swap
+setproperty Qname(PackageNamespace(""),"qi")
+pushtrue
+returnvalue
+ofs002f:
