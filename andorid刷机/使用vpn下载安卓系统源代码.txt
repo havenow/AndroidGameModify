@@ -1,0 +1,3 @@
+Windows安装了vpn client管理器，设置好，保证可以访问google
+Ubuntu虚拟机网卡的配置，要配置成NAT模式：用于共享主机的IP地址，这样虚拟机才能范围google
+如果设置成桥接模式：直接连接物理网络，这个时候windows系统和Ubuntu虚拟机其实是两台主机，windows可以访问google，Ubuntu是访问不了的。
