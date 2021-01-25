@@ -49,25 +49,32 @@ Memory.protect(ptr('0xB582CF44'), 4, 'rw-');	frida的Memory.protect()函数第�
 function set_read_write_break()
 {
 	var soAddr = Module.findBaseAddress("libpvz.so");
-    console.log(soAddr);
+    //console.log(soAddr);
 	console.log("set_read_write_break---------------------------------begin");
-	Process.setExceptionHandler(function(exp) {
-		console.log('address libpvz.so base:               ' + soAddr);//app运行的时候，libpvz.so在系统中的基地址
-		console.log('address where the exception occurred: ' + exp.address);//发生写内存时，哪一行代码做了写操作
-		console.log('address where called in libpvz.so   : ' + ptr(exp.address - soAddr));//根据这个地址偏移，可以在IDA中跳转到libpvz.so对应的行
-		console.log('address that was accessed:            ' + exp.memory.address);//实际发生写操作的内存地址(有一个问题：和Memory.protect指定的内存地址不一样)
+	Process.setExceptionHandler(function(exp) {//当写内存的时候进入Handler，打印相关信息之后，将内存属性改为可读可写
+		console.log("ExceptionHandler");
+		if (exp.memory.address == 0xC0698B24){
+			console.log('address libpvz.so base:               ' + soAddr);//app运行的时候，libpvz.so在系统中的基地址
+			console.log('address where the exception occurred: ' + exp.address);//发生写内存时，哪一行代码做了写操作
+			console.log('address where called in libpvz.so   : ' + ptr(exp.address - soAddr));//根据这个地址偏移，可以在IDA中跳转到libpvz.so对应的行
+			console.log('address that was accessed:            ' + exp.memory.address);//实际发生写操作的内存地址(有一个问题：和Memory.protect指定的内存地址不一样)
 		
-		console.warn(JSON.stringify(Object.assign(exp, { _lr: DebugSymbol.fromAddress(exp.context.lr), _pc: DebugSymbol.fromAddress(exp.context.pc) }), null, 2));
+			console.warn(JSON.stringify(Object.assign(exp, { _lr: DebugSymbol.fromAddress(exp.context.lr), _pc: DebugSymbol.fromAddress(exp.context.pc) }), null, 2));
+		}
+		else
+			;//console.log('address that was accessed:            ' + exp.memory.address);
+		
 		//Memory.protect(exp.memory.address, Process.pointerSize, 'rw-');
-		Memory.protect(ptr('0xB582CF44'), 4, 'rw-');
+		Memory.protect(ptr('0xC0698B24'), 4, 'rw-');
 		// can also use `new NativeFunction(Module.findExportByName(null, 'mprotect'), 'int', ['pointer', 'uint', 'int'])(parseInt(this.context.x2), 2, 0)`
 		return true; // goto PC 
 	});
 	//制造异常 <--> 设置读写断点		rx:设置一个写断点	wx:设置一个4字节的读断点	rw:设置一个执行断点,可以代替F2软断点，可以过断点crc校验
     //Memory.protect(addr, size, pattern);
-	console.log('set one time watchpoint', JSON.stringify({
-      mprotect_ret: Memory.protect(ptr('0xB582CF44'), 4, 'r-x'),
-    }, null, 2));
+	/*console.log('set one time watchpoint', JSON.stringify({
+      mprotect_ret: Memory.protect(ptr('0xA8C9730C'), 4, 'r-x'),
+    }, null, 2));*/
+	 Memory.protect(ptr('0xC0698B24'), 4, 'r-x');
 	//0x9D5FBC84 太阳	定位到的是0x9D5FBC74
 	//0xB582CF44 金币	定位到的是0xb582cd64 0xb582cd6c
 	//Memory.protect(addr, size, 'r-x');
@@ -81,13 +88,46 @@ function set_read_write_break()
 	console.log("set_read_write_break---------------------------------end");
 }
 
+function sleep(numberMillis) {  
+    var now = new Date();  
+    var exitTime = now.getTime() + numberMillis;  
+    while (true) {  
+        now = new Date();  
+        if (now.getTime() > exitTime)  
+        return;  
+        }  
+}
+
 function main(){
 	console.log("main---------------------------------begin");
+
+	//One time watchpoint	只能使用一次？
 	set_read_write_break();
+	/*for (var i=0; i<2; i++)
+	{
+      set_read_write_break();
+	  sleep(1000);
+	}*/
+	/*do{
+		set_read_write_break();
+		sleep(10000);
+	}while(1)*/
+	
 	console.log("main---------------------------------end");
 }
 
 setImmediate(main);
+/*for (var i=0; i < 100000000; i++)
+{
+  setImmediate(main);
+  sleep(100);
+}*/
+/*do{
+  setImmediate(main);
+  sleep(100);
+}while(1)*/
+//setImmediate(main);
+//setImmediate(main);
 """
 
 def on_message(message ,data):
