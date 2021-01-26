@@ -1,0 +1,93 @@
+//---------------------------------------------------
+查找9990 
+
+获取阳光：
+int __fastcall sub_1659B0(int result, int a2)
+{
+  *(_DWORD *)(result + 22204) += a2;
+  if ( *(_DWORD *)(result + 22204) > 9990 )
+    *(_DWORD *)(result + 22204) = 9990;
+  if ( *(_DWORD *)(result + 22204) >= 8000 && *(_DWORD *)(*(_DWORD *)(result + 176) + 2104) != 23 )
+    result = sub_1617F4(result, 9, 1);
+  return result;
+}
+
+
+
+.text:001659D8                 ADD     R1, R2, R3	03 10 82 E0
+改为：
+				ADD R1,R2,R3, LSL #2	03 11 82 E0 
+
+//---------------------------------------------------
+查找0x56BC
+
+关键点：
+.text:0016582C	sub_162F54	MOV     R3, #0x56BC
+case 45:
+                    *(_DWORD *)(v19 + 22204) -= 100;
+                    if ( *(_DWORD *)(v19 + 22204) < 0 )
+                      *(_DWORD *)(v19 + 22204) = 0;
+                    break;
+
+修改
+text:00165838                 SUB     R1, R3, #0x64	64 10 43 E2
+改为				SUB     R1, R3, #0x0	00 10 43 E2
+
+                    v19[5551] = v19[5551];
+                    if ( v19[5551] < 0 )
+                      v19[5551] = 0;
+                    break;
+
+
+关键点：
+.text:00165BEC	sub_165BCC	MOV     R3, #0x56BC
+signed int __fastcall sub_165BCC(int a1, int a2)
+{
+  int v2; // r5
+  signed int v3; // r3
+  int v5; // [sp+0h] [bp-14h]
+  int v6; // [sp+4h] [bp-10h]
+
+  v6 = a1;
+  v5 = a2;
+  v2 = *(_DWORD *)(a1 + 22204);
+  if ( v2 + sub_165A68(a1) >= a2 )
+  {
+    *(_DWORD *)(v6 + 22204) -= v5;
+    v3 = 1;
+  }
+  else
+  {
+    (*(void (__fastcall **)(_DWORD, int))(**(_DWORD **)(v6 + 176) + 224))(*(_DWORD *)(v6 + 176), dword_CF8250);
+    *(_DWORD *)(v6 + 22228) = 70;
+    v3 = 0;
+  }
+  return v3;
+}
+
+修改
+text:00165C34                 LDR     R3, [R11,#var_14]		14 30 1B E5	改为MOV R3, #0  00 30 A0 E3
+text:00165C38                 RSB     R1, R3, R2		RSB指令bai称为逆向减法指令 R2是data的指针
+
+
+signed int __fastcall sub_165BCC(int a1, int a2)
+{
+  int v2; // r5
+  signed int v3; // r3
+  int v5; // [sp+4h] [bp-10h]
+
+  v5 = a1;
+  v2 = *(_DWORD *)(a1 + 22204);
+  if ( v2 + sub_165A68(a1) >= a2 )
+  {
+    *(_DWORD *)(v5 + 22204) = *(_DWORD *)(v5 + 22204);
+    v3 = 1;
+  }
+  else
+  {
+    (*(void (__fastcall **)(_DWORD, int))(**(_DWORD **)(v5 + 176) + 224))(*(_DWORD *)(v5 + 176), dword_CF8250);
+    *(_DWORD *)(v5 + 22228) = 70;
+    v3 = 0;
+  }
+  return v3;
+}
