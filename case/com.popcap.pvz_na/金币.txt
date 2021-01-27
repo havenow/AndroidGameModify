@@ -1,0 +1,111 @@
+搜索 9999
+
+.text:0021D8DC	sub_21D88C	MOV     R3, #0x270F
+int __fastcall sub_21D88C(int result)
+{
+  int v1; // r0
+  int v2; // r0
+  int v3; // [sp+Ch] [bp-40h]
+  char v4; // [sp+14h] [bp-38h]
+  int i; // [sp+18h] [bp-34h]
+  int v6; // [sp+1Ch] [bp-30h]
+  float v7; // [sp+20h] [bp-2Ch]
+  int v8; // [sp+24h] [bp-28h]
+  int v9; // [sp+28h] [bp-24h]
+  int v10; // [sp+2Ch] [bp-20h]
+  char v11; // [sp+30h] [bp-1Ch]
+
+  v3 = result;
+  if ( *(_DWORD *)(*(_DWORD *)result + 1992) && !*(_BYTE *)(*(_DWORD *)(*(_DWORD *)result + 1992) + 704) )
+  {
+    if ( *(_DWORD *)(result + 264) <= 9999 && *(_DWORD *)(result + 264) > 0 )
+    {
+ 	result = sub_1E3030(*(_DWORD *)result, 1);
+      v3[66] -= result;		//这里应该是消耗金币   估计是购买商品时调用
+      if ( v3[66] <= 0 )
+      {
+        if ( v3[264] )
+        {
+          result = (**(int (__fastcall ***)(_DWORD))v3[264])(v3[264]);
+          v3[264] = 0;
+        }
+
+
+.text:0021D910                 MOV     R3, R0
+.text:0021D914                 LDR     R2, [R11,#var_40]
+.text:0021D918                 LDR     R2, [R2,#0x108]
+.text:0021D91C                 RSB     R2, R3, R2
+
+
+
+接着搜索 264
+
+
+  sub_16B400(v28 + 180, 1024, "zombies");
+  sub_16B4DC(v28 + 208, 1024, "plants");
+  sub_16B5B8(v28 + 236, 1024, "projectiles");
+  sub_16B694(v28 + 264, 1024, "coins");			264应该是coins的偏移
+  sub_16B770(v28 + 292, 32, "lawnmowers");
+  sub_16B84C(v28 + 320, 128, "griditems");
+
+
+
+.text:001F36F4	sub_1F36B8	LDR     R3, [R3,#0x108]
+.text:001F36F0                 LDR     R3, [R11,#var_C8]
+.text:001F36F4                 LDR     R3, [R3,#0x108]
+.text:001F36F8                 ADD     R2, R2, R3
+
+
+text:001943E4 sub_193614 ADD     R3, R3, #0x108 maybe  收阳光 金钱时会调用
+
+
+对于金币来讲eax=1时，代表小金币，
+eax=2时，代表大金币（43C109处，eax+0x3，让edx=5，大金币一个增加50），
+eax=3，代表钻石（43C116，43C117两处会让edx=0x64，一个钻石增加1000）。
+
+//1，代表小金币（银币），=1，小金币一个增加10  
+//2，代表大金币,=5，大金币一个增加50 
+//3，代表钻石,=0x64，一个钻石增加1000
+//金币的数值在内存中应该是少了一个0进行存储的
+
+sub_193614/sub_F8644/sub_F904C
+
+
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//关键函数
+通过搜索999999（这个值是通过GG修改器，定位到金币的内存地址，发现最大值是9999990（内存里面的值是界面的值除10））
+在函数
+sub_24C07C
+有下面的代码
+  if ( v4[1] <= 999999 )
+  {
+    if ( v4[1] < 0 )
+      v4[1] = 0;
+  }
+  else
+  {
+    v4[1] = 999999;//金币数量大于9999990时
+  }
+
+
+var_15          = -0x15
+var_14          = -0x14
+var_10          = -0x10
+
+_DWORD *__fastcall sub_24C07C(_DWORD *result, int a2, char a3)//a2是增加的金币数量
+{
+    if ( a3 )
+      *result += a2;
+    else
+      result[1] += a2;//金币增加
+
+
+.text:0024C0CC 10 30 1B E5                 LDR     R3, [R11,#var_10]	获取result的地址，存到寄存器R3中
+.text:0024C0D0 04 20 93 E5                 LDR     R2, [R3,#4]		获取result[1]的值，存到R2寄存器中
+.text:0024C0D4 14 30 1B E5                 LDR     R3, [R11,#var_14]	获取第二个参数a2的值，存到R3寄存器中		增加的金币
+.text:0024C0D8 03 20 82 E0                 ADD     R2, R2, R3		ADD R2,R2,R3, LSL #2（03 21 82 E0）
+.text:0024C0DC 10 30 1B E5                 LDR     R3, [R11,#var_10]	获取result的地址，存到寄存器R3中
+.text:0024C0E0 04 20 83 E5                 STR     R2, [R3,#4]		将R2寄存器中的值，存到R3+4的地址中
