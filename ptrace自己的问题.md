@@ -54,3 +54,31 @@ int keep_blood()
 }
 
 ```
+
+```
+在游戏进程中开一个子进程，然后做ptrace
+在老的va代码中，是可以ptrace的
+集成到平台后，ptrace失败，没找到原因
+后来改成在va中，对游戏ptrace，是可以的
+
+	pid_t fpid;
+	fpid = fork();
+	if (fpid < 0){
+		LOGE("fork error");
+	}
+	else if(0 == fpid){
+		LOGE("child process %d", getpid());
+		dealCheat(arg0, arg1);
+		_exit(0);
+		LOGE("child process exit");
+	}
+	else{
+		LOGE("parent process %d", getpid());
+	}
+	
+	
+	int dealCheat(int index, int open)
+{
+		if (ptrace(PTRACE_ATTACH, _curPid, NULL, NULL) == -1L)
+}
+```
