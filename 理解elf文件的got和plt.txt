@@ -1,0 +1,119 @@
+//https://mp.weixin.qq.com/s/MaHTvtk-hQn_JEGJ-D73Bw
+//https://blog.csdn.net/Ruger008/article/details/107062608
+//https://www.cnblogs.com/fellow1988/p/6159926.html
+//http://www.360doc.com/content/17/1204/19/7377734_709908406.shtml
+
+在Linux平台下，elf文件中的got节和plt节在动态链接过程中起着非常重要的作用
+got（全局偏移表）	.data节的一部分
+got表是Linux平台用来解决对全局数据，外部函数引用的表，当在程序中引用外部的数据，函数时，通过got表来实现对相关数据符号的解析。
+plt（过程链接表）	位于.text节
+在动态链接过程中， 函数在加载共享库之后，会对got节中的函数地址进行填充，所以，调用的时候利用plt跳转到got表中项指定的地址即可。
+
+//foo.c
+//gcc -shared -fPIC foo.c -o foo.so
+extern int foo();
+extern int test;
+int foo()
+{
+	return test;
+}
+
+//main.c
+//使用如下的命令，链接foo.so
+//gcc -g -nostdlib -o a.out mian.c foo.so
+int test;
+_start()
+{
+	foo(test);
+	return 0;
+}
+
+
+//---------------使用objdump查看生成的foo.so共享库的foo函数的反汇编代码
+ objdump -s -d foo.so > foo.txt
+ 
+ 0000000000000680 <foo>:
+ 680:	55                   	push   %rbp
+ 681:	48 89 e5             	mov    %rsp,%rbp
+ 684:	48 8b 05 6d 09 20 00 	mov    0x20096d(%rip),%rax        # 200ff8 <_DYNAMIC+0x1b8>
+ 68b:	8b 00                	mov    (%rax),%eax
+ 68d:	5d                   	pop    %rbp
+ 68e:	c3                   	retq   
+
+ readelf -S foo.so
+[19] .got              PROGBITS         0000000000200fd0  00000fd0
+       0000000000000030  0000000000000008  WA       0     0     8
+[20] .got.plt          PROGBITS         0000000000201000  00001000
+       0000000000000018  0000000000000008  WA       0     0     8
+
+IDA打开foo.so之后查看
+.got:0000000000200FF8 test_ptr        dq offset test          ; DATA XREF: foo+4↑r
+
+全局变量在got表中的解析过程
+foo函数对test变量的查找是通过当前的rip+0x20096d(需要配合重定位表实现) rip 是 68b
+0x20096d + 68b = 200FF8
+200FF8 位于got表中
+
+//------------------函数在got表在函数调用过程中的解析过程
+ readelf -s a.out > main.txt
+ 
+Disassembly of section .plt:(plt节 位于.text)
+
+0000000000400390 <foo@plt-0x10>:
+  400390:	ff 35 72 0c 20 00    	pushq  0x200c72(%rip)        # 601008 <_GLOBAL_OFFSET_TABLE_+0x8>		将got表的第二个条目数据压栈
+  400396:	ff 25 74 0c 20 00    	jmpq   *0x200c74(%rip)        # 601010 <_GLOBAL_OFFSET_TABLE_+0x10>		跳转到got表的第三个条目指向的地址
+  40039c:	0f 1f 40 00          	nopl   0x0(%rax)
+  
+00000000004003a0 <foo@plt>:
+  4003a0:	ff 25 72 0c 20 00    	jmpq   *0x200c72(%rip)        # 601018 <_GLOBAL_OFFSET_TABLE_+0x18>		0x200c72 + 4003a6 = 601018（got中的条目）地址指向的地址 
+  4003a6:	68 00 00 00 00       	pushq  $0x0																
+  4003ab:	e9 e0 ff ff ff       	jmpq   400390 <foo@plt-0x10>
+  
+  
+  Disassembly of section .text:
+
+00000000004003b0 <_start>:
+  4003b0:	55                   	push   %rbp
+  4003b1:	48 89 e5             	mov    %rsp,%rbp
+  4003b4:	8b 05 66 0c 20 00    	mov    0x200c66(%rip),%eax        # 601020 <_edata>
+  4003ba:	89 c7                	mov    %eax,%edi
+  4003bc:	b8 00 00 00 00       	mov    $0x0,%eax
+  4003c1:	e8 da ff ff ff       	callq  4003a0 <foo@plt>		看到_start函数在调用foo函数时，call的地址为 4003a0
+  4003c6:	b8 00 00 00 00       	mov    $0x0,%eax
+  4003cb:	5d                   	pop    %rbp
+  4003cc:	c3                   	retq   
+
+readelf -S a.out  (查看got节 位于.data)
+   [12] .got.plt          PROGBITS         0000000000601000  00001000
+       0000000000000020  0000000000000008  WA       0     0     8
+
+  
+  
+  动态链接器默认采用延迟链接方式时，动态链接器不会在程序加载时解析每一个函数，
+  而是在调用时通过plt和got来对函数进行解析，然后会将解析获得函数地址存放在got中，
+  下一次调用时会直接使用got中的函数地址对函数进行调用。
+
+在ELF将GOT拆分成两个表“.got”和".got.plt"，前者用来保存全局变量引用的地址，后者用来保存函数引用的地址。
+也就是说，所有对于外部函数的引用被分离出来放到了“.got.plt”中。
+
+PLT表(Procedure Linkage Table)，又称过程链接表，位于.text节(PLT表中每一项都对应一个代码块)
+GOT表作为.data节的一部分，开始的三项是固定的，含义如下：
+         GOT[0]: 记录.dynamic节首地址，该节中记录了动态链接器所需的基本信息，如符号表位置，重定位表位置等。
+         GOT[1]: 记录动态链接器的标示信息。
+         GOT[2]：记录动态链接器延迟绑定代码的入口地址。
+		 
+		 .got.plt的前三项是.dynamic地址、本模块的ID、_dl_runtime_resolve的地址。
+		 _dl_runtime_resolve是动态连接器函数，用来完成符号解析和重定位，将函数的真正地址放到.got表对用的项中
+
+//----------------------------		 调用foo函数
+callq  4003a0 <foo@plt>		跳转到foo@plt
+																			_GLOBAL_OFFSET_TABLE_(GOT表)
+00000000004003a0 <foo@plt>:
+  4003a0:	ff 25 72 0c 20 00    	jmpq   *0x200c72(%rip)        # 601018 <_GLOBAL_OFFSET_TABLE_+0x18>		跳转到got表的第一个条目指向的地址 .dynamic节首地址
+  4003a6:	68 00 00 00 00       	pushq  $0x0																
+  4003ab:	e9 e0 ff ff ff       	jmpq   400390 <foo@plt-0x10>	跳转到foo@plt-0x10
+  
+0000000000400390 <foo@plt-0x10>:
+  400390:	ff 35 72 0c 20 00    	pushq  0x200c72(%rip)        # 601008 <_GLOBAL_OFFSET_TABLE_+0x8>		将got表的第二个条目数据压栈	本模块的ID
+  400396:	ff 25 74 0c 20 00    	jmpq   *0x200c74(%rip)        # 601010 <_GLOBAL_OFFSET_TABLE_+0x10>		跳转到got表的第三个条目指向的地址 _dl_runtime_resolve的地址 将函数的真正地址放到.got表对用的项中
+  40039c:	0f 1f 40 00          	nopl   0x0(%rax)
