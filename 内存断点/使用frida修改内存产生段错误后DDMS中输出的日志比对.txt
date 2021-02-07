@@ -1,0 +1,106 @@
+01-18 21:32:21.237: A/DEBUG(13223): *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+01-18 21:32:21.237: A/DEBUG(13223): Build fingerprint: 'Xiaomi/dipper/dipper:10/QKQ1.190828.002/9.12.11:user/release-keys'
+01-18 21:32:21.238: A/DEBUG(13223): Revision: '0'
+01-18 21:32:21.238: A/DEBUG(13223): ABI: 'arm'
+01-18 21:32:21.239: A/DEBUG(13223): Timestamp: 2021-01-18 21:32:21+0800
+01-18 21:32:21.239: A/DEBUG(13223): pid: 12897, tid: 12983, name: GLThread 1136  >>> com.popcap.pvz_na <<<
+01-18 21:32:21.239: A/DEBUG(13223): uid: 10408
+01-18 21:32:21.239: A/DEBUG(13223): signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0xb518cacc
+01-18 21:32:21.239: A/DEBUG(13223):     r0  0000061a  r1  00000925  r2  b5187400  r3  000056cc
+01-18 21:32:21.239: A/DEBUG(13223):     r4  b4a32520  r5  00000000  r6  13c87298  r7  13c87298
+01-18 21:32:21.239: A/DEBUG(13223):     r8  00000000  r9  bc1df600  r10 b434c960  r11 b434c2bc
+01-18 21:32:21.239: A/DEBUG(13223):     ip  00000017  sp  b434c298  lr  b5b6b314  pc  b5b6b40c
+01-18 21:32:21.393: A/DEBUG(13223): backtrace:
+01-18 21:32:21.393: A/DEBUG(13223):       #00 pc 0016140c  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #01 pc 00751550  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #02 pc 00753c90  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #03 pc 00375c5c  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #04 pc 00765bec  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #05 pc 008bc3cc  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #06 pc 00905e68  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #07 pc 00905fc8  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #08 pc 00907194  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #09 pc 008e523c  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so
+01-18 21:32:21.393: A/DEBUG(13223):       #10 pc 008e5ac0  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/lib/arm/libpvz.so (Java_com_ea_blast_AndroidRenderer_NativeOnDrawFrame+68)
+01-18 21:32:21.393: A/DEBUG(13223):       #11 pc 0002e8e3  /data/app/com.popcap.pvz_na-Kk2_kRcyL70lF2yp-ixZGw==/oat/arm/base.odex (art_jni_trampoline+74)
+01-18 21:32:21.393: A/DEBUG(13223):       #12 pc 02034727  /memfd:/jit-cache (deleted) (com.ea.blast.AndroidRenderer.onDrawFrame+38)
+01-18 21:32:21.393: A/DEBUG(13223):       #13 pc 000d7bc5  /apex/com.android.runtime/lib/libart.so (art_quick_invoke_stub_internal+68) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #14 pc 0043a005  /apex/com.android.runtime/lib/libart.so (art_quick_invoke_stub+252) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #15 pc 000dffeb  /apex/com.android.runtime/lib/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+178) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #16 pc 002137c9  /apex/com.android.runtime/lib/libart.so (art::interpreter::ArtInterpreterToCompiledCodeBridge(art::Thread*, art::ArtMethod*, art::ShadowFrame*, unsigned short, art::JValue*)+280) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #17 pc 0020f0e1  /apex/com.android.runtime/lib/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+716) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #18 pc 004306df  /apex/com.android.runtime/lib/libart.so (MterpInvokeInterface+814) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #19 pc 000d2a14  /apex/com.android.runtime/lib/libart.so (mterp_op_invoke_interface+20) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #20 pc 002f84dc  /system/framework/framework.jar (android.opengl.GLSurfaceView$GLThread.guardedRun+1096)
+01-18 21:32:21.393: A/DEBUG(13223):       #21 pc 004312e3  /apex/com.android.runtime/lib/libart.so (MterpInvokeDirect+962) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #22 pc 000d2914  /apex/com.android.runtime/lib/libart.so (mterp_op_invoke_direct+20) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #23 pc 002f8ab8  /system/framework/framework.jar (android.opengl.GLSurfaceView$GLThread.run+48)
+01-18 21:32:21.393: A/DEBUG(13223):       #24 pc 001eea61  /apex/com.android.runtime/lib/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEbb.llvm.6078130102404447026+192) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #25 pc 001f3253  /apex/com.android.runtime/lib/libart.so (art::interpreter::EnterInterpreterFromEntryPoint(art::Thread*, art::CodeItemDataAccessor const&, art::ShadowFrame*)+126) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #26 pc 00423ae9  /apex/com.android.runtime/lib/libart.so (artQuickToInterpreterBridge+852) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #27 pc 000dc5a1  /apex/com.android.runtime/lib/libart.so (art_quick_to_interpreter_bridge+32) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #28 pc 000d7bc5  /apex/com.android.runtime/lib/libart.so (art_quick_invoke_stub_internal+68) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #29 pc 0043a005  /apex/com.android.runtime/lib/libart.so (art_quick_invoke_stub+252) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.393: A/DEBUG(13223):       #30 pc 000dffeb  /apex/com.android.runtime/lib/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+178) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.394: A/DEBUG(13223):       #31 pc 00377b23  /apex/com.android.runtime/lib/libart.so (art::(anonymous namespace)::InvokeWithArgArray(art::ScopedObjectAccessAlreadyRunnable const&, art::ArtMethod*, art::(anonymous namespace)::ArgArray*, art::JValue*, char const*)+54) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.394: A/DEBUG(13223):       #32 pc 0037881d  /apex/com.android.runtime/lib/libart.so (art::InvokeVirtualOrInterfaceWithJValues(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, jvalue const*)+304) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.394: A/DEBUG(13223):       #33 pc 003ac227  /apex/com.android.runtime/lib/libart.so (art::Thread::CreateCallback(void*)+962) (BuildId: d5d65313bc98a85b62339369beb1758c)
+01-18 21:32:21.394: A/DEBUG(13223):       #34 pc 000a109b  /apex/com.android.runtime/lib/bionic/libc.so!libc.so (offset 0x9f000) (__pthread_start(void*)+20) (BuildId: 21ece86427ccb892a7d044a6b4b4babb)
+01-18 21:32:21.394: A/DEBUG(13223):       #35 pc 00058113  /apex/com.android.runtime/lib/bionic/libc.so!libc.so (offset 0x58000) (__start_thread+30) (BuildId: 21ece86427ccb892a7d044a6b4b4babb)
+
+--------------------------------------------------------------------------------------------------
+main---------------------------------begin
+0xb5a0a000
+set_read_write_break---------------------------------begin
+set one time watchpoint {
+  "mprotect_ret": true
+}
+set_read_write_break---------------------------------end
+main---------------------------------end
+address libpvz.so base:               0xb5a0a000
+address where the exception occurred: 0xb5b6b40c
+address where called in libpvz.so   : 0x16140c
+address that was accessed:            0xb518cacc
+{
+  "type": "access-violation",
+  "address": "0xb5b6b40c",
+  "memory": {
+    "operation": "write",
+    "address": "0xb518cacc"
+  },
+  "context": {
+    "pc": "0xb5b6b40c",
+    "sp": "0xb434c298",
+    "r0": "0x1365",
+    "r1": "0x738",
+    "r2": "0xb5187400",
+    "r3": "0x56cc",
+    "r4": "0xb4a32520",
+    "r5": "0x0",
+    "r6": "0x13c87298",
+    "r7": "0x13c87298",
+    "r8": "0x0",
+    "r9": "0xbc1df600",
+    "r10": "0xb434c960",
+    "r11": "0xb434c2bc",
+    "r12": "0x19",
+    "lr": "0xb5b6b314"
+  },
+  "nativeContext": "0xb434bfa8",
+  "_lr": {
+    "address": "0xb5b6b314",
+    "name": "_ZNSt11__copy_moveILb0ELb0ESt26random_access_iterator_tagE8__copy_mIPN2EA6Nimble3MTX14M
+TXTransactionES7_EET0_T_S9_S8_+0x7d630",
+    "moduleName": "libpvz.so",
+    "fileName": "",
+    "lineNumber": 0
+  },
+  "_pc": {
+    "address": "0xb5b6b40c",
+    "name": "_ZNSt11__copy_moveILb0ELb0ESt26random_access_iterator_tagE8__copy_mIPN2EA6Nimble3MTX14M
+TXTransactionES7_EET0_T_S9_S8_+0x7d728",
+    "moduleName": "libpvz.so",
+    "fileName": "",
+    "lineNumber": 0
+  }
+}
