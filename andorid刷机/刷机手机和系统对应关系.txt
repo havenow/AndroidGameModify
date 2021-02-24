@@ -1,0 +1,5 @@
+ROM包下载地址：https://developers.google.com/android/images
+
+Nexus 6		支持刷5.0--7.1.1	("shamu" for Nexus 6)
+Pixel		支持刷7.1.0--10.0	("sailfish" for Pixel)
+Pixel 3 XL	支持刷9.0.0-11.0.0	("crosshatch" for Pixel 3 XL)
