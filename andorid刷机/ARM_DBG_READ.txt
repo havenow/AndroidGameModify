@@ -1,0 +1,14 @@
+G:\ank\msm\arch\arm\include\asm\hw_breakpoint.h
+
+ARM_DBG_READ和ARM_DBG_WRITE其实是一组宏，用来读取和写入调试寄存器，
+它们在ARM上就是一条汇编，通过mrc和mcr操作协处理器CP14来完成调试功能，其定义如下：
+
+/* Accessor macros for the debug registers. */
+#define ARM_DBG_READ(N, M, OP2, VAL) do {\
+	asm volatile("mrc p14, 0, %0, " #N "," #M ", " #OP2 : "=r" (VAL));\
+} while (0)
+
+#define ARM_DBG_WRITE(N, M, OP2, VAL) do {\
+	asm volatile("mcr p14, 0, %0, " #N "," #M ", " #OP2 : : "r" (VAL));\
+} while (0)
+
