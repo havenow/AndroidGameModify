@@ -1,0 +1,8 @@
+android sdk中的platform-tools版本过高
+因此需要下载低于或者等于版本26的platform-tools暂时替换掉新版的platform-tools
+
+我的电脑里面有两个版本的sdk，默认使用的是新版本的
+
+解决：
+fastboot命令可以带上老sdk的目录
+F:\android-sdk-new\platform-tools\fastboot -w update image-angler-n2g47h.zip
