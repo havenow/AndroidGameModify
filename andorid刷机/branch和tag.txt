@@ -1,0 +1,58 @@
+git branch命令
+
+git branch [--color[=<when>] | --no-color] [-r | -a] [--list] [-v [--abbrev=<length> | --no-abbrev]]
+	[--column[=<options>] | --no-column] [--sort=<key>]
+	[(--merged | --no-merged) [<commit>]]
+	[--contains [<commit]] [--no-contains [<commit>]]
+	[--points-at <object>] [--format=<format>] [<pattern>…?] // 列出分支（这个用法有点复杂）
+	
+
+git branch [--track | --no-track] [-l] [-f] <branchname> [<start-point>] // 设置分支本地和远程的关系（上流）
+
+git branch (--set-upstream-to=<upstream> | -u <upstream>) [<branchname>] // 设置分支上流
+
+git branch --unset-upstream [<branchname>] // 取消分支上流的设置
+
+git branch (-m | -M) [<oldbranch>] <newbranch> // 重命名分支
+
+git branch (-c | -C) [<oldbranch>] <newbranch> // 拷贝分支
+
+git branch (-d | -D) [-r] <branchname>…? // 删除分支
+
+git branch --edit-description [<branchname>] //修改分支描述
+————————————————
+
+git branch 展示分支
+git branch -v 较为详细的形式
+git branch -vv 更为详细的形式
+git branch -a 查看所有分支（包括远程的）
+git branch -r 查看远程所有分支列表 -r的意思是remote，显示远程的分支情况
+
+git branch --contains my_branch
+git branch -r --contains my_branch
+
+
+
+列出当前仓库的所有标签：git tag
+列出所有标签及说明：git tag -n
+搜索符合条件的标签：git tag -l "1.0.*"
+查看标签信息：git show v1.0.1
+
+
+git操作---显示SHA-1值（commit id）
+1、显示当前分支哈希值：git rev-parse HEAD
+2、显示当前分支哈希值的简短形式：git rev-parse --short HEAD
+
+
+git checkout tagname #切换到某个tag，不在任何branch
+
+SHA-1: eec2459384835d85318caddbd8245876afc1933b
+tag android-5.1.0_r0.7
+git checkout eec2459
+
+
+//---------------------------------
+git branch -r --contains eec2459 
+对每一个分支输出
+git show tagname
+
