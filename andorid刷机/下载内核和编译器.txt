@@ -1,0 +1,106 @@
+git clone https://android.googlesource.com/kernel/msm
+git branch -a 					查看所有分支列表
+git branch -r --contains eec2459		查到的结果：origin/android-msm-shamu-3.10-lollipop-mr1
+# git chekout -b 本地分支名 远程分支名		取远程分支并分化一个新分支
+git checkout -b android-msm-shamu-3.10-lollipop-mr1 origin/android-msm-shamu-3.10-lollipop-mr1
+
+
+git branch -r --contains c7ebca13933
+  origin/android-msm-shamu-3.10-nougat-mr1.5
+  origin/android-msm-shamu-3.10-nougat-mr1.6
+  origin/android-msm-shamu-3.10-nougat-mr1.7
+
+git checkout -b android-msm-shamu-3.10-nougat-mr1.7 origin/android-msm-shamu-3.10-nougat-mr1.7
+
+git checkout -b android-msm-angler-3.10-nougat-mr1.1 origin/android-msm-angler-3.10-nougat-mr1.1
+
+
+
+
+创建分支： 			$ git branch mybranch
+切换分支： 			$ git checkout mybranch
+创建并切换分支： 		$ git checkout -b mybranch
+取远程分支并分化一个新分支：	$ git checkout -b mybranch origin/mybranch
+
+git config --global user.name "havenow"
+git config --global user.email "715667426@qq.com"
+
+
+
+
+
+  remotes/origin/android-msm-shamu-3.10-lollipop-mr1
+  remotes/origin/android-msm-shamu-3.10-lollipop-release
+  remotes/origin/android-msm-shamu-3.10-m-preview
+  remotes/origin/android-msm-shamu-3.10-marshmallow
+  remotes/origin/android-msm-shamu-3.10-marshmallow-mr1
+  remotes/origin/android-msm-shamu-3.10-marshmallow-mr1-r0.15
+  remotes/origin/android-msm-shamu-3.10-marshmallow-mr2
+  remotes/origin/android-msm-shamu-3.10-n-preview-1
+  remotes/origin/android-msm-shamu-3.10-n-preview-2
+  remotes/origin/android-msm-shamu-3.10-n-preview-3
+  remotes/origin/android-msm-shamu-3.10-n-preview-4
+  remotes/origin/android-msm-shamu-3.10-n-preview-5
+  remotes/origin/android-msm-shamu-3.10-nougat-mr0.5
+  remotes/origin/android-msm-shamu-3.10-nougat-mr1.2
+  remotes/origin/android-msm-shamu-3.10-nougat-mr1.5
+  remotes/origin/android-msm-shamu-3.10-nougat-mr1.6
+  remotes/origin/android-msm-shamu-3.10-nougat-mr1.7
+
+lollipop 5.0
+marshmallow6.0
+nougat 7.0
+
+
+安卓分支后缀中，mr = "maintenance release", fr = "factory rom"
+
+
+git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9
+git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.8
+git checkout -b lollipop-mr1-release origin/lollipop-mr1-release
+
+虚拟机重启，需要重新export
+#export PATH=<你clone的gcc编译根目录>/bin:$PATH
+export PATH=~/gcc/aarch64-linux-android-4.9/bin:$PATH
+
+export PATH=$PATH:/home/wangfeng/androidKernel/arm-linux-androideabi-4.8/bin
+export PATH=$PATH:/home/wangfeng/androidKernel64/aarch64-linux-android-4.9/bin
+echo $PATH
+cd msm
+#设置环境遍历arch编译器类型  这里 可能是 arm、arm64、x86 等
+export ARCH=arm
+#指定编译器
+export CROSS_COMPILE=arm-linux-androideabi-
+#初始化配置
+make shamu_defconfig
+#编译源码
+make
+
+
+
+ERROR: modpost: Found 2 section mismatch(es).
+To see full details build your kernel with:
+'make CONFIG_DEBUG_SECTION_MISMATCH=y'
+To build the kernel despite the mismatches, build with:
+'make CONFIG_NO_ERROR_ON_MISMATCH=y'
+(NOTE: This is not recommended)
+/home/wangfeng/androidKernel/kernel/msm/scripts/Makefile.modpost:95: recipe for target 'vmlinux.o' failed
+make[1]: *** [vmlinux.o] Error 1
+Makefile:785: recipe for target 'vmlinux' failed
+make: *** [vmlinux] Error 2
+
+
+
+(make CONFIG_NO_ERROR_ON_MISMATCH=y)
+
+msm\arch\arm\configs\shamu_defconfig
+
+
+fastboot flash boot G:\downloads\android_kernel\boo
+< waiting for any device >
+
+more /proc/cpuinfo
+
+Android系统内核编译及刷机实战 （修改反调试标志位）
+https://blog.csdn.net/u012417380/article/details/73353670
+

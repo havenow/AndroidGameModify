@@ -1,0 +1,13 @@
+编译安卓内核
+https://www.jianshu.com/p/00602e083258
+
+https://source.android.com/setup/build/building-kernels-deprecated
+
+尝试绕过TracePID反调试二——从源码入手
+https://se8s0n.github.io/2019/04/19/%E5%B0%9D%E8%AF%95%E7%BB%95%E8%BF%87TracePID%E5%8F%8D%E8%B0%83%E8%AF%95%E4%BA%8C%E2%80%94%E2%80%94%E4%BB%8E%E6%BA%90%E7%A0%81%E5%85%A5%E6%89%8B/
+
+gdb 系列(1) (hwbreakpoint\watchpoint)
+https://blog.csdn.net/green369258/article/details/55510650
+
+
+https://blog.csdn.net/u011649400/article/details/78705594

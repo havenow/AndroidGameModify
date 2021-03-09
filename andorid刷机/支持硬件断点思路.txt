@@ -1,0 +1,57 @@
+1、下载内核代码，编译好之后，替换掉官方的内核，看启动是否正常
+编译安卓Kernel内核
+https://www.jianshu.com/p/00602e083258	******************************************** 非常好
+
+手动构建内核（官方）
+https://source.android.com/setup/build/building-kernels-deprecated
+
+基于nexus6修改android内核
+https://blog.csdn.net/u011649400/article/details/78705594
+
+编译内核(官方)
+https://source.android.google.cn/source/building-kernels?hl=zh-cn
+
+
+2、修改内核代码，打开硬件断点相关的代码，编译后，替换掉官方的内核，看启动是否正常
+
+
+程序中如何给自己设置硬件断点（通过程序代码设置数据断点而不使用JTAG）
+https://blog.csdn.net/_xiao/article/details/40619797
+
+gdb 系列(1) (hwbreakpoint\watchpoint)
+https://blog.csdn.net/green369258/article/details/55510650	******************************************** 非常好
+
+gdb 系列(2) (build&debug gdb)
+https://blog.csdn.net/green369258/article/details/56017335?spm=1001.2014.3001.5501
+
+gdb调试原理
+https://blog.csdn.net/xuchenhuics/article/details/79680435
+
+怎样修改安卓bootimg内核
+https://blog.csdn.net/bfboys/article/details/52562201
+
+
+
+尝试绕过TracerPID反调试
+https://www.52pojie.cn/thread-917096-1-1.html
+
+Android 系统编译之内核编译（小米）
+https://blog.csdn.net/u014418171/article/details/82659887
+
+Factory images
+https://developers.google.com/android/images#angler
+
+解决编译kernel出现WARNING:Section mismatch(es)
+https://blog.csdn.net/flfihpv259/article/details/51889445?utm_source=blogxgwz0
+https://blog.csdn.net/flfihpv259/article/details/51889445
+
+
+确定内核版本
+https://blog.csdn.net/jlspypxa1/article/details/76152986
+
+3、使用IDA验证是否可以启动硬件断点
+
+参考价值：
+尝试绕过TracePID反调试二——从源码入手
+https://se8s0n.github.io/2019/04/19/%E5%B0%9D%E8%AF%95%E7%BB%95%E8%BF%87TracePID%E5%8F%8D%E8%B0%83%E8%AF%95%E4%BA%8C%E2%80%94%E2%80%94%E4%BB%8E%E6%BA%90%E7%A0%81%E5%85%A5%E6%89%8B/
+

@@ -1,0 +1,21 @@
+构建内核
+Pixel (sailfish)
+Pixel XL (marlin)
+以及高版本
+https://source.android.com/setup/build/building-kernels
+
+系统映像中的内核版本
+如需确定系统映像中使用的内核版本，请对内核文件运行以下命令：
+file kernel
+对于 Image.lz4-dtb 文件，请运行以下命令：
+grep -a 'Linux version' Image.lz4-dtb
+
+
+构建旧版内核的说明。
+https://source.android.com/setup/build/building-kernels
+https://source.android.com/source/building-kernels
+
+
+论坛
+https://groups.google.com/g/android-building
+

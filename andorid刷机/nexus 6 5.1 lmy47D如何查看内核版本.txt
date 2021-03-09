@@ -1,0 +1,59 @@
+https://blog.csdn.net/jlspypxa1/article/details/76152986
+
+shamu-lmy47d-factory-228e9d64.zip解压
+image-shamu-lmy47d.zip解压
+boot.img解包（bootimg --unpack-bootimg）
+
+linux环境下命令：
+dd if=kernel bs=1 skip=$(LC_ALL=C grep -a -b -o $'\x1f\x8b\x08\x00\x00\x00\x00\x00' kernel | cut -d ':' -f 1) | zgrep -a 'Linux version'
+输出：
+Linux version 3.10.40-geec2459 (android-build@vpbs1.mtv.corp.google.com) (gcc version 4.8 (GCC) ) #1 SMP PREEMPT Wed Jan 28 22:14:35 UTC 2015
+7177922+0 records in
+7177922+0 records out
+7177922 bytes (7.2 MB, 6.8 MiB) copied, 33.2462 s, 216 kB/s
+手机：设置/关于手机/内核版本 可以看到 3.10.40-geec2459 android-build@vpbs1.mtv.corp.google.com #1 Wed Jan 28 22:14:35 UTC 2015
+
+自己编译的内核，内核文件是zImage-dtb
+
+dd if=zImage-dtb bs=1 skip=$(LC_ALL=C grep -a -b -o $'\x1f\x8b\x08\x00\x00\x00\x00\x00' zImage-dtb | cut -d ':' -f 1) | zgrep -a 'Linux version'
+Linux version 3.10.40-g235436d-dirty (wangfeng@wangfeng-virtual-machine) (gcc version 4.8 (GCC) ) #4 SMP PREEMPT Mon Mar 1 20:33:15 CST 2021
+7778570+0 records in
+7778570+0 records out
+7778570 bytes (7.8 MB, 7.4 MiB) copied, 35.5793 s, 219 kB/s
+
+自己编译的内核手机系统启动失败
+
+//---------------------------------------------------------------------------------------------------------
+git操作---显示SHA-1值（commit id）
+1、显示当前分支哈希值：git rev-parse HEAD
+2、显示当前分支哈希值的简短形式：git rev-parse --short HEAD
+
+在Git中，每个commit ID的信息（如cc127537978af35e2f502da7e8d22e340ed810e5）就是一个SHA-1 Hash值，
+它是对那个commit是Git仓库中内容和头信息（Header）的一个校验和(checksum)。
+Linux kernel开创者和Git的开发者——Linus说，Git使用了SHA-1并非是为了安全性，而是为了数据的完整性；
+它可以保证，在很多年后，你重新checkout某个commit时，一定是它多年前的当时的状态，完全一摸一样，完全值得信任。
+
+这里的分支名貌似有很规律的命名规则，即
+a
+ndorid-项目名-内核类型-内核版本-系统版本别名(例 安卓7、8等)-系统版本(例.1、.2)
+
+然后我们用之前获取到的cbf66a6(short commit id(显示的是实际的commit id的前7位)) 
+直接检出我们需要的代码的分支，执行如下命令。
+git branch -r --contains <short commit id>
+
+
+
+
+
+git tag 或者 git tag -l 查看本地所有 tag
+git ls-remote --tags origin 查看远程所有 tag
+git checkout [tagname] 切换标签
+git checkout -b <branchName> <tagName> 检出标签
+git rev-parse HEAD 显示当前分支哈希值
+git log --pretty=oneline //查看当前分支的提交历史 里面包含 commit id
+git branch 查看当前已经切换到分支
+git checkout eec2459	直接 short commit id = eec2459 来检出分支
+
+
+android L arm64 kernel image压缩、解压
+https://blog.cofface.com/archives/1025.html
