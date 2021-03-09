@@ -1,0 +1,135 @@
+1、下载的官方刷机包
+shamu-lmy47d-factory-228e9d64	（对应的Android版本是5.1）
+刷机后是可以系统是可以启动的
+
+
+系统启动后，看到内核的版本是 3.10.40-geec2459
+
+2、下载内核代码
+git clone https://android.googlesource.com/kernel/msm
+
+自己编译的内核烧写到手机，系统启动不起来，没找到原因
+
+root
+使用的是Kingo ROOT一键root(5.1是可以root成功的，7.1的系统root不成功)
+
+//------------------------------------------------
+后面用官方刷机包flash-all.bat一键刷机，刷机之后系统可以启动，但是重启手机，系统起不来，原因没找到
+后面问了下咸鱼里面卖手机的人，按照他的手动刷官方包，可以重复启动系统
+
+1. 刷入 Bootloader & Radio
+
+
+打开命令行，进入解压工厂镜像的目录（如果解压工厂镜像的目录在 C:\android，则在命令行中输入「pushd C:\android」），依次输入以下命令：
+
+
+fastboot flash bootloader <bootloader文件名>.img
+
+
+注：由于每种设备的 bootloader 和 radio 文件名都不同，
+
+在操作时请将文件名换为对应的文件名。
+如果你的设备是手机或支持移动网络的平板设备，你还需要刷入 radio：
+
+
+fastboot flash radio <radio文件名>.img
+
+ 
+
+
+
+2. 重启设备至 Bootloader
+
+
+fastboot reboot-bootloader
+
+ 
+
+
+
+3. 依次刷入其他镜像文件
+
+重启完毕后，请依次刷入 recovery、boot、system
+
+镜像文件
+
+
+fastboot flash recovery recovery.img
+
+
+fastboot flash boot boot.img
+
+
+fastboot flash system system.img
+
+ 
+
+
+
+4. 清除用户数据（非必选）
+
+
+fastboot flash cache cache.img
+
+
+fastboot flash userdata userdata.img
+
+
+强烈
+
+建议执行此步，以避免完成后系统因为缓存或其他问题不能正常工作。 
+
+ 
+
+
+
+5. 再次重启
+
+
+fastboot reboot
+
+
+####################################
+在看看官方的flash-all.bat
+PATH=%PATH%;"%SYSTEMROOT%\System32"
+
+fastboot flash bootloader bootloader-shamu-moto-apq8084-71.08.img
+f
+astboot reboot-bootloader
+
+ping -n 5 127.0.0.1 >nul
+
+fastboot flash radio radio-shamu-d4.0-9625-02.95.img
+
+fastboot reboot-bootloader
+
+ping -n 5 127.0.0.1 >nul
+
+fastboot -w update image-shamu-lmy47d.zip		这里不一样
+
+
+
+echo Press any key to exit...
+
+pause >nul
+
+exit
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+区别：
+官方是fastboot -w update image-shamu-lmy47d.zip
+咸鱼的那人是：
+fastboot flash recovery recovery.img
+
+
+fastboot flash boot boot.img
+
+
+fastboot flash system system.img
+
+ 
+fastboot flash cache cache.img
+
+
+fastboot flash userdata userdata.img
+

@@ -1,0 +1,21 @@
+1、下载的官方刷机包
+angler-n4f26i-factory-ff60a465	（对应的Android版本是7.1.1）
+刷机后是可以系统是可以启动的
+
+
+系统启动后，看到内核的版本是 3.10.73-gcbf66a6
+
+2、下载内核代码
+git clone https://android.googlesource.com/kernel/msm
+git checkout cbf66a6 #切换到某个tag，不在任何branch
+
+编译内核之后	将Image.gz-dtb替换掉boot.img中的kernel文件
+fastboot flash boot boot.img
+
+系统启动后，看到内核的版本是 3.10.73.g350f3b9	如果修改了内核代码，内核版本后面是 3.10.73.g350f3b9-dirty
+
+
+root
+使用的是SpuerSU一键root
+如果fastboot flash boot boot.img了，就需要重新做root
+
