@@ -1,0 +1,32 @@
+c7181000-c74dd000 r-xp 00000000 00:00 0                                  [anon:libc_malloc]
+
+PROT_READ | PROT_WRITE | PROT_EXEC
+mmap MAP_SHARED和MAP_PRIVATE ？？？
+p=私有 s=共享
+
+delta = 0x118E40
+0xc7299e40
+
+判断条件：
+1、r-xp
+2、sizeBlock = 0x35C000
+3、[anon:libc_malloc]
+
+coinAddr = blockStart + 0x118E40
+coinAddr - 8 = -494718973
+coinAddr - 4 = -514719741		由 E1 52 00 03(-514719741) 改成: E1 52 80 25(-514686939)
+coinAddr     = -444588000		写金币的代码
+coinAddr + 4 = -905969662
+coinAddr + 8 = -481165312
+
+//----------------------地址 coinAddr - 4
+0x0000000000000000:  E1 52    strh r1, [r4, r3]
+0x0000000000000002:  00 03    lsls r0, r0, #0xc
+改为：
+0x0000000000000000:  E1 52    strh r1, [r4, r3]
+0x0000000000000002:  80 25    movs r5, #0x80		直接赋值r5
+
+//----------------------地址 coinAddr
+写金币代码
+0x0000000000000000:  E5 80    strh r5, [r4, #6]		将r5中的数据写到存金币的地址里面
+0x0000000000000002:  20 20    movs r0, #0x20
