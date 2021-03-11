@@ -1,0 +1,62 @@
+1、通过搜索thumb指令，9990=0x2706，搜索什么样的指令？ arm指令 MOV     R3, #0x2706
+2、通过firda，收集阳光和命令同时按，碰运气（多种点花）。此方法感觉不可行，在写阳光之前会写同一块的其他地址
+3、硬件断点，首先应该是要解决系统对ptrace的支持，开启CONFIG_HAVE_ARCH_TRACEHOOK CONFIG_HAVE_HW_BREAKPOINT，用gdb调试应该是只能是带符号的
+4、开启CONFIG_HAVE_ARCH_TRACEHOOK CONFIG_HAVE_HW_BREAKPOINT，重新编译内核，使用IDA调试，尝试设置硬件断点
+5、研究marmalade引擎，找到游戏逻辑代码
+
+目前来看，找到修改阳光代码可行的方案
+1、分析code system内存块里面的数据，目前来看使用的是thumb指令集，如果可以找到判断阳光<9990的代码，是可以定位的。
+从分析植物大战僵尸 完全版来看，arm指令 MOV     R3, #0x2706。将对应可能的thumb指令列出来，进行搜索
+2、研究marmalade引擎，看有没有破解工具，或者找到游戏逻辑代码
+3、修改安卓系统内核开启硬件断点，重新编译内核，烧写到手机后，看使用IDA调试设置硬件断点能否成功
+
+
+暂停界面
+0x9d49c5c0
+0x9d4a3998
+
+0x9d5e17ec
+0x9d49c45c
+0x9d5e15ac
+0x9d4c9550
+
+
+---------------
+MOV     R3, #0x2706
+CMP     R2, R3
+BLE     loc_165A24
+
+
+
+问题：
+
+[单选] 在Thumb指令集中，32位有效立即数是由8位立即数通过下面哪一种操作而间接得到的（）。
+A . 左移
+B . 右移
+C . 循环左移
+D . 循环右移
+
+参考答案： A
+
+
+
+MOV  Rd,#0~#255	将数据送入寄存器	Rd:=8_bit_immed
+MOV  Rd,Rn	将数据送入寄存器	Rd:=Rn
+
+Thumb数据处理指令
+
+② <opcode2>  <Rd>，<Rn>，#<3_bit_immed>
+   <opcode2>：=ADD|SUB
+③ <opcode3>  <Rd>|<Rn>，#<8_bit_immed>
+   <opcode3>：=ADD|SUB|MOV|CMP
+④ <opcode4>  <Rd>，<Rm>，#<shift_immed>
+   <opcode4>：=LSL|LSR|AS
+⑧ <opcode7>  <Rd>|<Rn>，<Rm>
+   <opcode7>：=MOV|ADD|CMP
+3_bit_immed、7_bit_immed、8_bit_immed分别表示3位、7位、8位立即数
+
+0x2706 = 9990
+
+LSL  <Rd>，<Rm>，＃<immed_5>	逻辑左移位数，范围为0～31
+9990 = data * 2的n次方 		
+
