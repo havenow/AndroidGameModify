@@ -11,3 +11,6 @@ https://blog.csdn.net/green369258/article/details/55510650
 
 
 https://blog.csdn.net/u011649400/article/details/78705594
+
+如何在ARM Linux内核中使用硬件断点
+https://blog.csdn.net/lingxf/article/details/50994645
