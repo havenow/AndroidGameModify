@@ -1,0 +1,62 @@
+如果是自己的ARM系统，可以写汇编，通过MCR协处理器指令操作CP14，从而读写DBGWCR和DBGWVR来下硬件断点。
+
+
+如果是Linux系统（2.6.37版本以上），就简单了，可以通过ptrace函数来操作DBGWCR和DBGWVR，下硬件断点。
+
+https://blog.csdn.net/_xiao/article/details/40619797
+https://blog.csdn.net/green369258/article/details/55510650
+https://blog.csdn.net/green369258/article/details/56017335?spm=1001.2014.3001.5501
+
+
+gdb中
+void aarch64_linux_get_debug_reg_capacity (int tid)函数
+/* Get hardware breakpoint register info.  */
+  if (ptrace (PTRACE_GETREGSET, tid, NT_ARM_HW_BREAK, &iov) == 0
+
+kernel/ptrace.c的function
+int ptrace_request(struct task_struct *child, long request,
+           unsigned long addr, unsigned long data)
+ 中有如下代码片段
+ #ifdef CONFIG_HAVE_ARCH_TRACEHOOK
+
+ #endif
+并且addr 是NT_ARM_HW_WATCH或者NT_ARM_HW_BREAK的时候
+ 需要开启如下选项CONFIG_HAVE_HW_BREAKPOINT是因为
+ enum aarch64_regset {
+    REGSET_GPR,
+    REGSET_FPR,
+    REGSET_TLS,
+#ifdef CONFIG_HAVE_HW_BREAKPOINT
+    REGSET_HW_BREAK,
+    REGSET_HW_WATCH,
+#endif
+    REGSET_SYSTEM_CALL,
+};
+ 如果没有CONFIG_HAVE_HW_BREAKPOINT会导致
+ PTRACE_GETREGSET 失败 
+
+ 下面的两个值是定义在 ptrace.h中的标准值
+ #define PTRACE_GETREGSET   0x4204
+ #define PTRACE_SETREGSET   0x4205
+ 下面的两个值是定义在 /usr/include/elf.h中的标准值
+ #define NT_ARM_HW_BREAK    0x402       /* ARM hardware breakpoint registers */
+ #define NT_ARM_HW_WATCH    0x403       /* ARM hardware watchpoint registers */
+gdb 和kernel是统一的
+
+
+ 需要开启如下选项CONFIG_HAVE_ARCH_TRACEHOOK
+		 CONFIG_HAVE_HW_BREAKPOINT
+
+
+config文件加入如下配置		out/target/product/$(product)/obj/KERNEL_OBJ/.config
+CONFIG_HAVE_HW_BREAKPOINT=y
+CONFIG_HAVE_ARCH_TRACEHOOK=y
+
+	
+Depends on: PERF_EVENTS [=y]
+      Selected by: X86 [=y]
+
+改为
+
+Depends on: PERF_EVENTS [=y]
+      default y

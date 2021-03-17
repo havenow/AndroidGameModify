@@ -1,0 +1,14 @@
+http://news.candou.com/473461.shtml
+
+Marmalade简介：
+Marmalade被很多人认为是跨平台制作C++游戏的最佳平台。
+通过Marmalade SDK，开发者可以在单一的Marmalade项目文件夹中打开Xcode或Visual Studio，将代码语言汇编至
+iOS、Android、Windows Phone和黑莓等平台。2013年，Marmalade公司还在SDK的基础上，添加了Marmalade Juice
+(面向Objective-C语言的跨平台SDK)，以及Marmalade Quick(一个更快捷、灵活和开放环境下的加速工具)。
+评价：Marmalade公司CEO哈维·艾略特说：“通过将定制插件程序植入Marmalade 7，
+我们可以帮助游戏开发者设计IAP、打广告、分析数据、提升盈利，或提供其他服务。
+这套工具为游戏开发者量身定做，我们希望借助它帮规模较小和独立开发者，通过产品获取更多收益。”
+
+代表作品：《你画我猜》(Draw Something)、《植物大战僵尸》、Signal to the Stars、Talisman Prologue。
+售价：年费500美元起，Marmalade C++，Marmalade Quick和Web Marmalade免费赠送。
+公司官网：www.madewithmarmalade.com
