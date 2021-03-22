@@ -1,0 +1,24 @@
+gef>  disassemble main
+Dump of assembler code for function main:
+   0xab18f410 <+0>:	push	{r11, lr}
+   0xab18f414 <+4>:	mov	r11, sp
+   0xab18f418 <+8>:	sub	sp, sp, #16
+   0xab18f41c <+12>:	ldr	r2, [pc, #56]	; 0xab18f45c <main+76>
+   0xab18f420 <+16>:	add	r2, pc, r2
+   0xab18f424 <+20>:	ldr	r3, [pc, #52]	; 0xab18f460 <main+80>
+   0xab18f428 <+24>:	add	r3, pc, r3
+   0xab18f42c <+28>:	movw	r12, #0
+   0xab18f430 <+32>:	str	r12, [r11, #-4]
+   0xab18f434 <+36>:	str	r0, [sp, #8]
+   0xab18f438 <+40>:	str	r1, [sp, #4]
+   0xab18f43c <+44>:	mov	r0, r2
+   0xab18f440 <+48>:	mov	r1, r3
+   0xab18f444 <+52>:	bl	0xab18f4b0
+   0xab18f448 <+56>:	movw	r1, #0
+   0xab18f44c <+60>:	str	r0, [sp]
+   0xab18f450 <+64>:	mov	r0, r1
+   0xab18f454 <+68>:	mov	sp, r11
+   0xab18f458 <+72>:	pop	{r11, pc}
+   0xab18f45c <+76>:			; <UNDEFINED> instruction: 0xffffef57
+   0xab18f460 <+80>:			; <UNDEFINED> instruction: 0xffffef48
+End of assembler dump.

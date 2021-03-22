@@ -1,0 +1,29 @@
+[ Legend: Modified register | Code | Heap | Stack | String ]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ registers ©¤©¤©¤©¤
+$r0  : 0x0       
+$r1  : 0x0       
+$r2  : 0x0       
+$r3  : 0x0       
+$r4  : 0x0       
+$r5  : 0x0       
+$r6  : 0x0       
+$r7  : 0x0       
+$r8  : 0x0       
+$r9  : 0x0       
+$r10 : 0x0       
+$r11 : 0x0       
+$r12 : 0x0       
+$sp  : 0xfffefaf0  ¡ú  0x00000001
+$lr  : 0x0       
+$pc  : 0xf778c784  ¡ú  <__dl__start+0> mov r0,  sp
+$cpsr: [thumb fast interrupt overflow carry zero negative]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ stack ©¤©¤©¤©¤
+0xfffefaf0©¦+0x0000: 0x00000001	 ¡û $sp
+0xfffefaf4©¦+0x0004: 0xfffefc09  ¡ú  "./arm_demo"
+0xfffefaf8©¦+0x0008: 0x00000000
+0xfffefafc©¦+0x000c: 0xfffefc14  ¡ú  "_=./gdbserver-32"
+0xfffefb00©¦+0x0010: 0xfffefc25  ¡ú  "ANDROID_DATA=/data"
+0xfffefb04©¦+0x0014: 0xfffefc38  ¡ú  "TMPDIR=/data/local/tmp"
+0xfffefb08©¦+0x0018: 0xfffefc4f  ¡ú  "DOWNLOAD_CACHE=/data/cache"
+0xfffefb0c©¦+0x001c: 0xfffefc6a  ¡ú  "LOGNAME=root"
+[!] Command 'context' failed to execute properly, reason: 'NoneType' object is not iterable
