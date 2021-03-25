@@ -1,0 +1,106 @@
+which clang
+clang hello.c -o hello
+file hello
+./hello
+
+which adb
+
+
+/Users/wangf/Library/Android/sdk/platform-tools
+配置adb
+cd $HOME
+open -e .bash_profile
+
+ANDROID_HOME=/Users/wangf/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME
+
+配置ndk
+MAC: export PATH=/Users/wangf/Desktop/arm/android-ndk-r22/toolchains/llvm/prebuilt/darwin-x86_64/bin:$PATH
+Linux: export PATH=~/android-ndk-r22/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+
+
+clang -target armv7a-linux-android22 hello.c -o hello
+clang -target aarch64-linux-android22 hello.c -o hello
+
+
+预处理
+clang -target armv7a-linux-android22 -E hello.c -o arm_hello.i
+
+编译
+clang -target armv7a-linux-android22 -S arm_hello.i -o arm_hello.s
+
+汇编
+clang -target armv7a-linux-android22 -c arm_hello.s -o arm_hello.o
+
+链接
+clang -target armv7a-linux-android22 arm_hello.o -o arm_hello
+
+
+直接将汇编代码编译成可执行程序
+clang -target armv7a-linux-android22 arm_hello.s -o arm_hello
+
+
+//-----------------------------ARM 汇编程序的结构
+处理器
+
+段setction
+	.text
+	.section	.rodata.str1.1,"aMS",%progbits,1
+	.section	".note.GNU-stack","",%progbits
+
+符号
+	外部符号
+	bl printf
+
+子程序
+	.globl	main 
+	.type	main,%function
+	.code	32 
+main:
+	.fnstart
+	.fnend
+
+标号
+
+注释
+@
+
+//--------------------寄存器
+arm 32
+R0~R7	未分组寄存器
+R8~R12	分组寄存器
+R13	SP
+R14	LR
+
+R15	PC
+CPSR	
+
+push {r11, lr} @保存寄存器lr, r11到栈里面，lr记录函数的返回地址
+mov r11, sp @把sp赋值给r11
+
+bl 子程序的调用
+R0-R3传参数
+大于4个参数的时候，多的参数使用栈来传参
+R0用作返回值
+
+bx lr @跳转到lr地址	arm -->thumb或者thumb --> arm
+
+
+gef
+
+target remote :1234
+b main
+info b
+ni 汇编指令单步	n 源码单步
+si 单步步入
+
+
+//在main函数第一条汇编指令出下断
+target remote :1234
+disassemble main
+b *0xaaead410
+c
+
+
+
+	
