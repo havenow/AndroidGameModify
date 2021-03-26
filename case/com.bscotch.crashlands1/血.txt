@@ -1,0 +1,55 @@
+[ Legend: Modified register | Code | Heap | Stack | String ]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ registers ©¤©¤©¤©¤
+$r0  : 0xc2efb6a0  ¡ú  0x00000000
+$r1  : 0x44      
+$r2  : 0xce4c8d30  ¡ú  0x00000044 ("D"?)
+$r3  : 0x38      
+$r4  : 0xcc4f6958  ¡ú  0x00000000
+$r5  : 0xfffffc  
+$r6  : 0xcc4f6898  ¡ú  0x00000000
+$r7  : 0x5       
+$r8  : 0xc2efb6a0  ¡ú  0x00000000
+$r9  : 0x0       
+$r10 : 0x2       
+$r11 : 0xcc4f63f8  ¡ú  0xcc4f69f8  ¡ú  0xcc4f6b98  ¡ú  0xcc4f6d88  ¡ú  0xcc4f70d0  ¡ú  0xcc4f7118  ¡ú  0xcc4f7128  ¡ú  0xcc4f7158
+$r12 : 0xd03acef8  ¡ú  0xce4c8cf8  ¡ú  0xe92d4c10  ¡ú  0x00000000
+$sp  : 0xcc4f63f0  ¡ú  0xcc4f6958  ¡ú  0x00000000
+$lr  : 0xcea467b8  ¡ú  0xe59d010c  ¡ú  0x00000000
+$pc  : 0xce4c8d7c  ¡ú  0xe8bd8c10  ¡ú  0x00000000
+$cpsr: [thumb fast interrupt overflow carry zero NEGATIVE]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ stack ©¤©¤©¤©¤
+0xcc4f63f0©¦+0x0000: 0xcc4f6958  ¡ú  0x00000000	 ¡û $sp
+0xcc4f63f4©¦+0x0004: 0x00000002
+0xcc4f63f8©¦+0x0008: 0xcc4f69f8  ¡ú  0xcc4f6b98  ¡ú  0xcc4f6d88  ¡ú  0xcc4f70d0  ¡ú  0xcc4f7118  ¡ú  0xcc4f7128  ¡ú  0xcc4f7158	 ¡û $r11
+0xcc4f63fc©¦+0x000c: 0xcea467b8  ¡ú  0xe59d010c  ¡ú  0x00000000
+0xcc4f6400©¦+0x0010: 0x00000000
+0xcc4f6404©¦+0x0014: 0xcc4f6938  ¡ú  0xcc4f6790  ¡ú  0x00000000
+0xcc4f6408©¦+0x0018: 0x00000000
+0xcc4f640c©¦+0x001c: 0xcc4f6a38  ¡ú  0x00000000
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ code:arm:ARM ©¤©¤©¤©¤
+   0xce4c8d70 <YYRValue::__localCopy(YYRValue+0> b      0xce4c8d94 <_ZN8YYRValue11__localCopyERKS_+156>
+   0xce4c8d74 <YYRValue::__localCopy(YYRValue+0> vldr   d16,  [r4]
+   0xce4c8d78 <YYRValue::__localCopy(YYRValue+0> vstr   d16,  [r0]
+ ¡ú 0xce4c8d7c <YYRValue::__localCopy(YYRValue+0> pop    {r4,  r10,  r11,  pc}
+      0xcea467b8 <gml_Script_damage_target(CInstance*,+0> ldr    r0,  [sp,  #268]	; 0x10c
+      0xcea467bc <gml_Script_damage_target(CInstance*,+0> str    r8,  [sp,  #28]
+      0xcea467c0 <gml_Script_damage_target(CInstance*,+0> sub    r0,  r0,  #1
+      0xcea467c4 <gml_Script_damage_target(CInstance*,+0> str    r10,  [r11,  #-400]	; 0xfffffe70
+      0xcea467c8 <gml_Script_damage_target(CInstance*,+0> tst    r0,  r5
+      0xcea467cc <gml_Script_damage_target(CInstance*,+0> bne    0xcea467d8 <_Z24gml_Script_damage_targetP9CInstanceS0_R8YYRValueiPPS1_+35232>
+
+
+
+[#0] 0xce4c8d7c ¡ú YYRValue::__localCopy(YYRValue const&)()
+[#1] 0xcea467b8 ¡ú gml_Script_damage_target(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#2] 0xcea3d768 ¡ú gml_Script_damage_list_of_targets(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#3] 0xcea4dbf8 ¡ú gml_Script_deal_damage_in_radius(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#4] 0xcf76d900 ¡ú gml_Object_o_wompit_Step_0(CInstance*, CInstance*)()
+[#5] 0xce5406b8 ¡ú ExecuteIt(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#6] 0xce540918 ¡ú Code_Execute(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#7] 0xce54ea10 ¡ú CEvent::Execute(CInstance*, CInstance*)()
+[#8] 0xce54ed2c ¡ú Perform_Event_Object_ASync(CInstance*, CInstance*, int, int, int)()
+[#9] 0xce54eea8 ¡ú Perform_Event(CInstance*, CInstance*, int, int)()
+
+
+
