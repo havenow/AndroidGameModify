@@ -44,6 +44,12 @@ void CCheatSDK::loadSo(GAME_NAME game)
 		LOGE("target_pid %d.\n", target_pid);
 		_dll = dlopen("libR1.so", RTLD_NOW);
 		break;
+	case _GAME_BULLY:
+		target_pid = find_pid_of("com.rockstargames.bully");
+		appendToLogFile("target_pid %d.\n", target_pid);
+		LOGE("target_pid %d.\n", target_pid);
+		_dll = dlopen("libBully.so", RTLD_NOW);
+		break;
 	case _GAME_DADNME:
 		target_pid = find_pid_of("com.lakegame.dadnme");
 		appendToLogFile("target_pid %d.\n", target_pid);
@@ -93,6 +99,10 @@ CCheatI* CCheatSDK::chooseCheatGame(GAME_NAME game)
 	case _GAME_GTA3:
 		_pCheat = new CCheatGTA3();
 		break;
+	case _GAME_BULLY:
+		_pCheat = new CCheatBULLY();
+		LOGE("chooseCheatGame. _GAME_BULLY\n");
+		break;
 	case _GAME_DADNME:
 		_pCheat = new CCheatDadNMe();
 		break;
@@ -115,6 +125,10 @@ void CCheatSDK::chooseHookStrategy(GAME_NAME game)
 		break;
 	case _GAME_GTA3:
 		_hookStrategy = new hookGTA3();
+		break;
+	case _GAME_BULLY:
+		_hookStrategy = new hookBULLY();
+		LOGE("chooseHookStrategy. hookBULLY\n");
 		break;
 	case _GAME_DADNME:
 		_hookStrategy = new hookDadNMe();

@@ -30,6 +30,23 @@ protected:
 	
 };
 
+class hookBULLY : public hookStrategy
+{
+public:
+	hookBULLY();
+	virtual ~hookBULLY();
+	
+	void calFunAddr(void* dll);
+	virtual void DoHook();
+
+protected:
+	static int replaceGameProcess();
+	int hookGameProcess();
+	int unHook();
+	long funGameProcessdAddr;
+	int (*f__ZN5CGame7ProcessEv)();	
+};
+
 class hookGTAVC : public hookStrategy
 {
 public:
