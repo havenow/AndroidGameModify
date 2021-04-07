@@ -1,0 +1,19 @@
+1¡¢open terminal
+adb forward tcp:1234 tcp:1234
+
+2¡¢open terminal
+adb shell
+su
+cd /data/local/tmp
+./gdbserver32 :1234 --attach pid
+
+3¡¢open terminal
+hyper
+gdb-multiarch
+gef-remote :1234
+watch *(int*)0xc51cd9f0
+info b
+c
+quit
+
+
