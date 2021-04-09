@@ -1,0 +1,35 @@
+Old value = 0x7e4   2020
+New value = 0x7e9	2025
+0xc367ece4 in ?? () from target:/data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+  
+
+   0xc367ecd8                  ldr    r0,  [r5,  #100]	; 0x64
+   0xc367ecdc                  add    r6,  r0,  r4						修改为 add    r6,  r0,  r4, LSL #4
+   0xc367ece0                  str    r6,  [r5,  #100]	; 0x64
+ → 0xc367ece4                  ldr    r5,  [r5,  #16]
+   0xc367ece8                  cmp    r5,  #0
+   0xc367ecec                  bne    0xc367ecf8
+   0xc367ecf0                  mov    r0,  #0
+   0xc367ecf4                  bl     0xc4b55f00
+   0xc367ecf8                  mov    r0,  r5
+   
+   
+$r0  : 0x7e4         
+$r4  : 0x5       
+$r5  : 0x9cfc0d20  →  0xbbd18580  →  0xc13ce6e0  →  0xc0b096b0  →  "Assembly-CSharp.dll"
+$r6  : 0x7e9  
+
+gef➤  vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc3271000 0xc5001000 0x00000000 r-x /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+0xc5001000 0xc51a3000 0x01d90000 rw- /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+
+
+0xc367ecdc - 0xc3271000 =    0x40DCDC
+   
+   
+   add    r6,  r0,  r4			04 60 80 e0		-528457724	-528457724
+   add   r6,  r0,  r4, LSL #2	04 61 80 e0		-528457468
+   add    r6,  r0,  r4, LSL #4	04 62 80 e0		-528457212
+   add    r6,  r0,  r4, LSL #8	04 64 80 e0		-528456700  好像有问题
