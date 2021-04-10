@@ -1,0 +1,42 @@
+忽略一些不关注的信号
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+
+
+Old value = 0x3
+New value = 0x4
+
+
+$r0  : 0xc52a636c  →  0xbcb70600  →  0xe97c66b4  →  0xc0bece63  →  "Assembly-CSharp-firstpass.dll"
+$r1  : 0x3       
+      
+$r4  : 0xb7ecabd0  →  0xbbce5b00  →  0xe97c66e0  →  0xc0c096b0  →  "Assembly-CSharp.dll"
+$r5  : 0x4       
+$r8  : 0x1
+
+   0xc3776d2c                  ldr    r0,  [pc,  r0]
+   0xc3776d30                  add    r5,  r1,  r8					改为 add    r5,  r1,  r8, LSL #4
+   0xc3776d34                  str    r5,  [r4,  #40]	; 0x28
+ → 0xc3776d38                  ldr    r4,  [r4,  #8]
+   0xc3776d3c                  ldr    r0,  [r0]
+   0xc3776d40                  ldrb   r1,  [r0,  #194]	; 0xc2
+   0xc3776d44                  tst    r1,  #1
+   0xc3776d48                  beq    0xc3776d5c
+   0xc3776d4c                  ldr    r1,  [r0,  #112]	; 0x70
+
+   
+gef➤  vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc3371000 0xc5101000 0x00000000 r-x /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+0xc5101000 0xc52a3000 0x01d90000 rw- /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+
+
+0xc3776d30 - 0xc3371000 = 0x405D30
+
+
+add    r5,  r1,  r8					08 50 81 e0		-528396280	-528396280
+
+add    r5,  r1,  r8, LSL #2			08 51 81 e0		-528396024
+add    r5,  r1,  r8, LSL #4			08 52 81 e0		-528395768	
