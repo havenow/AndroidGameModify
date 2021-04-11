@@ -1,0 +1,145 @@
+handle SIGCONT noprint nostop
+
+
+
+	[Address(RVA = "0x4B61BC", Offset = "0x4B61BC", VA = "0x4B61BC")]
+	private void RefreshZombies(float elapsedTime)
+	{
+	}
+	
+	[Address(RVA = "0x3C7940", Offset = "0x3C7940", VA = "0x3C7940")]
+	public void LockZombie()
+	{
+	}
+	
+	[Address(RVA = "0x412978", Offset = "0x412978", VA = "0x412978")]
+	private void SpawnZombie()
+	{
+	}
+	
+	
+public class TG_Static
+{
+	[FieldOffset(Offset = "0x0")]
+	public const float ITEM_COOLDOWN = 1.5f;
+	
+	
+	
+	
+public class TG_GameManager : TG_UpdateManager<TG_GameManager>
+{	
+	[FieldOffset(Offset = "0xA0")]
+	private float itemCooldownCounter;
+	
+	
+	
+搜索 float类型数据 1.5
+对全部内存数据改为100，看哪个是记录冷却时间的
+然后下硬件断点
+
+Old value = 0x40dd6462	6.91850376
+New value = 0x40db404e	6.85159969
+0xc377b6a0 in ?? () from target:/data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+
+
+$r1  : 0x3d8904e9  →  0x00000000
+
+
+   0xc377b694                  vmov   s2,  r1	-301917680				vsub.f32 s2,  s2,  s2	41 1a 31 ee		-289994240
+   0xc377b698                  vsub.f32 s16,  s0,  s2				s0 - s2 --> s16；s0应该是剩余的时间 s2是要减去的时间
+   0xc377b69c                  vstr   s16,  [r4,  #160]	; 0xa0
+ → 0xc377b6a0                  ldr    r5,  [r4,  #16]
+   0xc377b6a4                  cmp    r5,  #0
+   0xc377b6a8                  bne    0xc377b6b8
+   0xc377b6ac                  mov    r0,  #0
+   0xc377b6b0                  bl     0xc4c55f00
+   0xc377b6b4                  vldr   s16,  [r4,  #160]	; 0xa0
+
+gef➤  vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc3371000 0xc5101000 0x00000000 r-x /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+0xc5101000 0xc52a3000 0x01d90000 rw- /data/app/com.armorgames.infectonator3-1/lib/arm/libil2cpp.so
+
+##########################	0xc377b698 - 0xc3371000 = 0x40A698
+
+.text:0040A65C sub_40A65C                              ; CODE XREF: sub_40A0FC+220↑p
+.text:0040A65C                                         ; DATA XREF: .data.rel.ro:01E82464↓o
+.text:0040A65C ; __unwind {
+
+
+
+vsub.f32 s16,  s0,  s2		41 8a 30 ee		-298808767	-298808767
+
+改法1：vsub.f32 s16,  s0,  s0		40 8a 30 ee		-298808768				!!!!!!!!!!!!!	这里				
+
+改法2：vmov.f32	s0, #-1.000000e+00	 00 0a bf ee -289469952
+
+
+或者
+.text:0040A684 28 0A 94 ED                 VLDR            S0, [R4,#0xA0]			-309065176
+改法3：	vmov   s0,  r1		10 1a 00 ee												-301983216
+
+
+.text:0040A6A0 10 50 94 E5     -443265008            LDR             R5, [R4,#0x10]
+修改为
+mov r5, #0 		00 50 a0 e3		-476033024									!!!!!!!!!!!!!	和这里
+
+
+
+dnSpy中通过地址搜索函数 "40A65C"	数字/字符串
+////////////////////////////////////////////////////////////////////////////////
+int __fastcall sub_40A65C(int a1, float a2)
+{
+  int v2; // r4
+  float v3; // s0
+  float v4; // s16
+  int v5; // r5
+  int v6; // r5
+  int v7; // r5
+  int v8; // r5
+  int v9; // s16
+  int v10; // r4
+
+  v2 = a1;
+  if ( *(_DWORD *)(a1 + 72) == 9 )
+    goto LABEL_19;
+  if ( *(_BYTE *)(a1 + 156) )
+    goto LABEL_14;
+  v3 = *(float *)(a1 + 160);
+  if ( v3 <= 0.0 )
+  {
+LABEL_19:
+    *(_DWORD *)(a1 + 160) = 1069547520;
+    *(_BYTE *)(a1 + 156) = 1;
+  }
+  else
+  {
+    v4 = v3 - a2;
+    *(float *)(a1 + 160) = v3 - a2;		修改点1
+    v5 = *(_DWORD *)(a1 + 16);			修改点2 这里不改ui上面会有显示0.0
+    if ( !v5 )		
+    {
+      ((void (__fastcall *)(_DWORD))loc_18E4F00)(0);
+      v4 = *(float *)(v2 + 160);
+    }
+
+	
+	
+public class TG_GameManager : TG_UpdateManager<TG_GameManager>
+{	
+	[Address(RVA = "0x40A65C", Offset = "0x40A65C", VA = "0x40A65C")]
+	private void SupportItemUpdate(float elapsedTime)
+	{
+	}
+	
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@	
+总结：
+0x40A698
+ori:	vsub.f32 s16,  s0,  s2		41 8a 30 ee		-298808767
+modify:	vsub.f32 s16,  s0,  s0		40 8a 30 ee		-298808768
+
+40A6A0 
+ori:	ldr    r5,  [r4,  #16]				10 50 94 E5     -443265008
+modify:	mov r5, #0 							00 50 a0 e3		-476033024	
+
