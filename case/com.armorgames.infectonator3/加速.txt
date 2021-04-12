@@ -1,0 +1,47 @@
+public class TG_WorldmapUIManager : MonoBehaviour
+{
+游戏里面加速按钮，x1 x2
+
+	[Address(RVA = "0x19582D8", Offset = "0x19582D8", VA = "0x19582D8")]
+	public void _RealtimeSpeedButtonDown()
+	{
+	}
+	
+	
+	
+
+.text:019582D8 sub_19582D8                             ; CODE XREF: sub_1947430+57C↑j
+.text:019582D8                                         ; DATA XREF: .data.rel.ro:01E84F28↓o
+.text:019582D8 ; __unwind {
+.text:019582D8                 STMFD           SP!, {R4-R6,R10,R11,LR}
+.text:019582DC                 ADD             R11, SP, #0x10
+.text:019582E0                 MOV             R4, R0
+.text:019582E4                 LDR             R0, =(byte_1F5D6D2 - 0x19582F0)
+.text:019582E8                 ADD             R0, PC, R0 ; byte_1F5D6D2
+
+
+
+
+───────────────────────────────────────────────────────────────────────────────────────── stack ────
+0xe39fe818│+0x0000: 0xc52a2d8c  →  0xbcb755d0  →  0xe97c6000  →  0xc0b53fb2  →  "mscorlib.dll"	 ← $sp
+0xe39fe81c│+0x0004: 0xc52a4fa0  →  0xbbc0ee00  →  0xe97c6134  →  0xc0bb507f  →  0x74696e55  →  0x17003b49  →  0x00000000
+0xe39fe820│+0x0008: 0xc52a4fa0  →  0xbbc0ee00  →  0xe97c6134  →  0xc0bb507f  →  0x74696e55  →  0x17003b49  →  0x00000000
+0xe39fe824│+0x000c: 0xc52a88ec  →  0xbc005890  →  0xc49c8dcc  →  0xe92d4830  →  0x00000000
+0xe39fe828│+0x0010: 0xc52a88ec  →  0xbc005890  →  0xc49c8dcc  →  0xe92d4830  →  0x00000000
+0xe39fe82c│+0x0014: 0xc3fde94c  →  0xe92d4ff0  →  0x00000000
+0xe39fe830│+0x0018: 0xb7fcd820  →  0xbe91bd80  →  0xe97c6554  →  0xc0bd17cd  →  0x74696e55  →  0x17003b49  →  0x00000000
+0xe39fe834│+0x001c: 0xac5338a0  →  0xac46ce30  →  0xe97c6000  →  0xc0b53fb2  →  "mscorlib.dll"
+────────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xc4cc92cc                  mlseq  r0,  sp,  r4,  r5
+   0xc4cc92d0                  subseq r5,  r4,  r4,  lsl #7
+   0xc4cc92d4                  subseq r12,  r4,  r4,  asr #14
+ → 0xc4cc92d8                  push   {r4,  r5,  r6,  r10,  r11,  lr}
+   0xc4cc92dc                  add    r11,  sp,  #16
+   0xc4cc92e0                  mov    r4,  r0
+   0xc4cc92e4                  ldr    r0,  [pc,  #188]	; 0xc4cc93a8
+   0xc4cc92e8                  add    r0,  pc,  r0
+   0xc4cc92ec                  ldrb   r0,  [r0]
+
+
+hook il2cpp_runtime_invoke   
+   调用set_timeScale
