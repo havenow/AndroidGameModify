@@ -1,0 +1,51 @@
+使用dlopen和dlsym计算函数地址，在va中hook失败，看了下fun_il2cpp_scr_run_time_invoke 不在maps中so的地址范围之中
+如果直接和游戏打在一个包里面，是可以hook的。
+
+ 	void *handle_r = NULL;
+	handle_r = dlopen("libil2cpp.so", 1);
+	if (handle_r != NULL) {
+		LOGE("dlsym dll != NULL\n");
+		 if (dlsym(handle_r, il2cpp_script[0])) {
+			void * il2cpp_scr_run_time_invoke = dlsym(handle_r, il2cpp_script[0]);
+			if (il2cpp_scr_run_time_invoke != NULL) {
+				il2cpp_method_get_class = (IL2CPP_METHOD_GET_CLASS) dlsym(handle_r, il2cpp_script[1]);
+				il2cpp_class_get_image = (IL2CPP_CLASS_GET_IMAGE) dlsym(handle_r, il2cpp_script[2]);
+				il2cpp_class_from_name = (IL2CPP_CLASS_FROM_NAME) dlsym(handle_r, il2cpp_script[3]);
+				il2cpp_method_from_name = (IL2CPP_METHOD_FROM_NAME) dlsym(handle_r, il2cpp_script[4]);
+ 				
+				Dl_info info;
+				dladdr((void*)il2cpp_scr_run_time_invoke, &info);
+				LOGE("il2cpp_scr_run_time_invoke Dl_info: %x - %x\n", (unsigned int)(long)(info.dli_fbase), (unsigned int)(long)(info.dli_saddr));
+			
+				long fun_il2cpp_scr_run_time_invoke = (long)(info.dli_saddr);
+				if (registerInlineHook((uint32_t) fun_il2cpp_scr_run_time_invoke, (uint32_t) (il2cpp_run_time_invoke), (uint32_t **) &IL2CPP_RUN_TIME_INVOKE) != ELE7EN_OK) 
+				{
+					LOGE("registerInlineHook fun_il2cpp_scr_run_time_invoke failure\n");
+				}
+				if (inlineHook((uint32_t) fun_il2cpp_scr_run_time_invoke) != ELE7EN_OK) {
+					LOGE("inlineHook fun_il2cpp_scr_run_time_invoke failure\n");
+				} 
+				LOGE("hook il2cpp_scr_run_time_invoke finish\n");
+			} else {
+				LOGE("il2cppScript nocatch");
+			}
+		} 
+	}
+	
+
+使用baseAddr加偏移计数函数地址，可以hook
+	il2cpp_method_get_class = reinterpret_cast<IL2CPP_METHOD_GET_CLASS>(_baseAddr + 0x18DD648);
+	il2cpp_class_get_image = reinterpret_cast<IL2CPP_CLASS_GET_IMAGE>(_baseAddr + 0x18DD140);
+	il2cpp_class_from_name = reinterpret_cast<IL2CPP_CLASS_FROM_NAME>(_baseAddr + 0x18DD0C4);
+	il2cpp_method_from_name = reinterpret_cast<IL2CPP_METHOD_FROM_NAME>(_baseAddr + 0x18DD0EC);
+	
+	long fun_il2cpp_scr_run_time_invoke = _baseAddr + 0x18DD71C;
+	LOGE("fun_il2cpp_scr_run_time_invoke %x", fun_il2cpp_scr_run_time_invoke);
+	if (registerInlineHook((uint32_t) fun_il2cpp_scr_run_time_invoke, (uint32_t) (il2cpp_run_time_invoke), (uint32_t **) &IL2CPP_RUN_TIME_INVOKE) != ELE7EN_OK) 
+	{
+		LOGE("registerInlineHook fun_il2cpp_scr_run_time_invoke failure\n");
+	}
+	if (inlineHook((uint32_t) fun_il2cpp_scr_run_time_invoke) != ELE7EN_OK) {
+		LOGE("inlineHook fun_il2cpp_scr_run_time_invoke failure\n");
+	} 
+	LOGE("hook il2cpp_scr_run_time_invoke finish\n");
