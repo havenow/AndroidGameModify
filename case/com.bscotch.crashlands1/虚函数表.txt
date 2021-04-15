@@ -1,0 +1,60 @@
+查看虚函数表 类 在.data.rel.ro区
+
+.data.rel.ro:021E6C90 ; ===========================================================================
+.data.rel.ro:021E6C90
+.data.rel.ro:021E6C90 ; Segment type: Pure data
+.data.rel.ro:021E6C90                 AREA .data.rel.ro, DATA, ALIGN=4
+.data.rel.ro:021E6C90                 ; ORG 0x21E6C90
+.data.rel.ro:021E6C90 off_21E6C90     DCD off_21E6C90         ; DATA XREF: LOAD:off_7C↑o
+.data.rel.ro:021E6C90                                         ; LOAD:off_11C↑o ...
+.data.rel.ro:021E6C94                 ALIGN 0x10
+.data.rel.ro:021E6CA0                 EXPORT _ZTV17ALCdevice_android
+.data.rel.ro:021E6CA0 ; `vtable for'ALCdevice_android
+.data.rel.ro:021E6CA0 _ZTV17ALCdevice_android DCB    0        ; DATA XREF: LOAD:000749D0↑o
+.data.rel.ro:021E6CA0                                         ; ALCdevice_android::ALCdevice_android(void)+20↑o ...
+.data.rel.ro:021E6CA1                 DCB    0
+.data.rel.ro:021E6CA2                 DCB    0
+.data.rel.ro:021E6CA3                 DCB    0
+.data.rel.ro:021E6CA4                 DCB    0
+.data.rel.ro:021E6CA5                 DCB    0
+.data.rel.ro:021E6CA6                 DCB    0
+.data.rel.ro:021E6CA7                 DCB    0
+.data.rel.ro:021E6CA8                 DCD _ZN17ALCdevice_androidD2Ev ; ALCdevice_android::~ALCdevice_android()
+.data.rel.ro:021E6CAC                 DCD _ZN17ALCdevice_androidD0Ev ; ALCdevice_android::~ALCdevice_android()
+.data.rel.ro:021E6CB0                 DCD _ZN17ALCdevice_android12openPlaybackEPc ; ALCdevice_android::openPlayback(char *)
+.data.rel.ro:021E6CB4                 DCD _ZN17ALCdevice_android13closePlaybackEv ; ALCdevice_android::closePlayback(void)
+.data.rel.ro:021E6CB8                 DCD _ZN17ALCdevice_android13resetPlaybackEv ; ALCdevice_android::resetPlayback(void)
+.data.rel.ro:021E6CBC                 DCD _ZN17ALCdevice_android13startPlaybackEv ; ALCdevice_android::startPlayback(void)
+.data.rel.ro:021E6CC0                 DCD _ZN17ALCdevice_android12stopPlaybackEv ; ALCdevice_android::stopPlayback(void)
+.data.rel.ro:021E6CC4                 DCD _ZN17ALCdevice_android13pausePlaybackEv ; ALCdevice_android::pausePlayback(void)
+.data.rel.ro:021E6CC8                 DCD _ZN17ALCdevice_android14resumePlaybackEv ; ALCdevice_android::resumePlayback(void)
+.data.rel.ro:021E6CCC                 DCD _ZN17ALCdevice_android13openRecordingEii ; ALCdevice_android::openRecording(int,int)
+.data.rel.ro:021E6CD0                 DCD _ZN17ALCdevice_android14closeRecordingEv ; ALCdevice_android::closeRecording(void)
+.data.rel.ro:021E6CD4                 DCD _ZN17ALCdevice_android14startRecordingEv ; ALCdevice_android::startRecording(void)
+.data.rel.ro:021E6CD8                 DCD _ZN17ALCdevice_android13stopRecordingEv ; ALCdevice_android::stopRecording(void)
+.data.rel.ro:021E6CDC                 DCD _ZN17ALCdevice_android16getRecordingDataEPvi ; ALCdevice_android::getRecordingData(void *,int)
+.data.rel.ro:021E6CE0                 DCD _ZN17ALCdevice_android19getRecordingDataLenEv ; ALCdevice_android::getRecordingDataLen(void)
+.data.rel.ro:021E6CE4                 EXPORT _ZTV25ALCdevice_capture_android
+
+
+
+。。。。。。
+
+
+
+
+.data.rel.ro:021E79F8                 EXPORT _ZTV15b2ContactFilter
+.data.rel.ro:021E79F8 ; `vtable for'b2ContactFilter
+.data.rel.ro:021E79F8 _ZTV15b2ContactFilter DCB    0          ; DATA XREF: LOAD:000416A0↑o
+.data.rel.ro:021E79F8                                         ; .data:b2_defaultFilter↓o
+.data.rel.ro:021E79F9                 DCB    0
+.data.rel.ro:021E79FA                 DCB    0
+.data.rel.ro:021E79FB                 DCB    0
+.data.rel.ro:021E79FC                 DCB    0
+.data.rel.ro:021E79FD                 DCB    0
+.data.rel.ro:021E79FE                 DCB    0
+.data.rel.ro:021E79FF                 DCB    0
+.data.rel.ro:021E7A00                 DCD _ZN15b2ContactFilterD2Ev ; b2ContactFilter::~b2ContactFilter()
+.data.rel.ro:021E7A04                 DCD _ZN15b2ContactFilterD0Ev ; b2ContactFilter::~b2ContactFilter()
+.data.rel.ro:021E7A08                 DCD _ZN15b2ContactFilter13ShouldCollideEP9b2FixtureS1_ ; b2ContactFilter::ShouldCollide(b2Fixture *,b2Fixture *)
+.data.rel.ro:021E7A0C                 EXPORT bdf_driver_class

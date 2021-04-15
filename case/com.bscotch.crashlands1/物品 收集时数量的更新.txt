@@ -1,0 +1,28 @@
+gml_Object_o_character_Other_10
+
+_ZN8YYRValue11__localCopyERKS
+
+
+#木棍 77
+
+#木头树
+木头 145
+木屑 61
+木头树种子 43
+
+#锯齿草
+锯齿草叶 48
+锯齿草韧   151
+锯齿草种子 54
+
+
+
+#口哨根
+口哨穿孔虫 24
+口哨根芦苇 108
+急蟒兽 3
+
+#泥土 6
+
+
+/data/app/com.bscotch.crashlands1-1/lib/arm

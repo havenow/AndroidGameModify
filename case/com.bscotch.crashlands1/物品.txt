@@ -1,0 +1,109 @@
+ 0xce75230c <MapStore::SetValue(RValue*)+352> ldm    r5,  {r0,  r1}
+   0xce752310 <MapStore::SetValue(RValue*)+356> str    r0,  [r4]
+   0xce752314 <MapStore::SetValue(RValue*)+360> str    r1,  [r4,  #4]
+ → 0xce752318 <MapStore::SetValue(RValue*)+364> sub    sp,  r11,  #16
+   0xce75231c <MapStore::SetValue(RValue*)+368> pop    {r4,  r5,  r6,  r10,  r11,  pc}
+   0xce752320 <CDS_Map::Mark4GC(unsigned+0> push   {r4,  r5,  r6,  r7,  r8,  r9,  r11,  lr}
+   0xce752324 <CDS_Map::Mark4GC(unsigned+0> add    r11,  sp,  #24
+   0xce752328 <CDS_Map::Mark4GC(unsigned+0> ldr    r8,  [r0]
+   0xce75232c <CDS_Map::Mark4GC(unsigned+0> mov    r5,  r1
+
+base CE161000
+
+
+[#0] 0xce752318 → MapStore::SetValue(RValue*)()							0x5F1318 
+[#1] 0xce753b64 → CDS_Map::Replace(RValue*, RValue*)()							0x5F2B64
+[#2] 0xce57a36c → F_DsMapReplace(RValue&, CInstance*, CInstance*, int, RValue*)()
+[#3] 0xce7a6eb4 → YYGML_CallLegacyFunction(CInstance*, CInstance*, YYRValue&, int, int, YYRValue**)()	
+[#4] 0xcf273d6c → gml_Script_modify_total_owned(CInstance*, CInstance*, YYRValue&, int, YYRValue**)() 0x1112D6C
+[#5] 0xcecbd8d4 → gml_Script_gain_item(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()		0xB5C8D4
+[#6] 0xcee888bc → gml_Script_pickup_item(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()		0xD278BC
+[#7] 0xd0165d30 → gml_Object_o_vacuum_manager_Step_0(CInstance*, CInstance*)()
+[#8] 0xce5456b8 → ExecuteIt(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#9] 0xce545918 → Code_Execute(CInstance*, CInstance*, CCode*, RValue*, int)()
+
+
+
+
+				ldm    r5,  {r0,  r1}
+.text:005F1310                 STR             R0, [R4]		double数据的低四位
+.text:005F1314                 STR             R1, [R4,#4]	double数据的高四位
+.text:005F1318                 SUB             SP, R11, #0x10
+.text:005F131C                 LDMFD           SP!, {R4-R6,R10,R11,PC}
+
+$r0  : 0x0       
+$r1  : 0x40620000
+
+$r4  : 0xc2184790  →  0x00000000	注意这里 0xc2184794  →  0x40620000
+$r5  : 0xcc57e868  →  0x00000000	注意这里 0xcc57e86C  →  0x40620000
+
+0xc2184790地址开始的8字节数据是
+0x00000000 0x40620000 
+
+
+STR R0，[R1]，＃8             ；将R0中的字数据写入以R1为地址的存储器中，并将新地址R1＋8写入R1。
+
+
+.text:005F1310 00 00 84 E5                 STR             R0, [R4]
+.text:005F1314 04 10 84 E5                 STR             R1, [R4,#4]
+
+
+//------------ *3 需要四条指令
+VLDR D16,[R5]
+vmov.f64	d17, #3.000000e+00
+vmul.f64	d16, d16, d17		"\xa1\x0b\x60\xee"
+vstr	d16, [R4]
+
+//---------- 2次方 需要三条指令  ！！！！！！！！！！！！！！！！！！！！！！！！改成这样对游戏有影响 会崩溃 应该是其他地方使用了D16
+VLDR D16,[R5] 				"\x00\x0b\xd5\xed"	-304805120
+vmul.f64	d16, d16, d16		"\xa1\x0b\x60\xee"	-295695455
+vstr	d16, [R4]			"\x00\x0b\xc4\xed"	-305919232
+
+//-----------*2 使用D0
+VLDR D0,[R5] 				"\x00\x0b\x95\xed"	-308999424
+vadd.f64	d0, d0,d0		"\x00\x0b\x30\xee"	-298841344
+vstr	d0, [R4]			"\x00\x0b\x84\xed"	-310113536
+
+
+
+//---------------原代码
+LDMIA           R5, {R0,R1}		"\x03\x00\x95\xe8"	-392888317
+STR             R0, [R4]		"\x00\x00\x84\xe5"	-444334080
+STR             R1, [R4,#4]		"\x04\x10\x84\xe5"	-444329980
+
+
+MUL : 乘法
+这两个指令与普通算术指令在对操作数的限制上有所不同:
+给出的所有操作数、和目的寄存器必须为简单的寄存器。
+你不能对操作数 2 使用立即值或被移位的寄存器。
+目的寄存器和操作数 1 必须是不同的寄存器。   *****
+最后，你不能指定 R15 为目的寄存器
+(Multiplication)
+ps:带累加的乘法MLA
+
+ADD     R1, R1, #0x100		"\x01\x1c\x81\xe2"
+
+对双精度浮点数，相邻的三个NEON指令的目的寄存器必须是不同的？？
+
+
+############################################################
+	double temp = 5;
+	temp *= 3;
+
+vmov.f64	d16, #5.000000e+00
+vstr	d16, [sp]
+vldr	d16, [sp]
+vmov.f64	d17, #3.000000e+00
+vmul.f64	d16, d16, d17
+
+
+############################################################直接改成31  会引起游戏闪退
+vmov.f64	d16, #3.100000e+01	"\x0f\x0b\xf3\xee"	-286061809	浮点数立即数最大是31
+vstr	d16, [R4]			"\x00\x0b\xc4\xed"	-305919232
+
+.LCPI0_0:
+	.long	0                               @ double 1.0E+6  一百万
+	.long	1093567616
+
+
+MOV R3, R3, LSR #23
