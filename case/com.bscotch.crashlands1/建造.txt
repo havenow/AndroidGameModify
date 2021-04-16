@@ -1,0 +1,37 @@
+Old value = 0
+New value = 9
+0xce4c8d7c in YYRValue::__localCopy(YYRValue const&) () from target:/data/app/com.bscotch.crashlands1-1/lib/arm/libyoyo.so
+
+base ce15c000
+
+
+   0xce4c8d70 <YYRValue::__localCopy(YYRValue+0> b      0xce4c8d94 <_ZN8YYRValue11__localCopyERKS_+156>
+   0xce4c8d74 <YYRValue::__localCopy(YYRValue+0> vldr   d16,  [r4]
+   0xce4c8d78 <YYRValue::__localCopy(YYRValue+0> vstr   d16,  [r0]
+ ¡ú 0xce4c8d7c <YYRValue::__localCopy(YYRValue+0> pop    {r4,  r10,  r11,  pc}
+      0xceb1ebcc <gml_Script_queue_recipe(CInstance*,+0> movw   r6,  #65532	; 0xfffc
+      0xceb1ebd0 <gml_Script_queue_recipe(CInstance*,+0> movt   r6,  #255	; 0xff
+      0xceb1ebd4 <gml_Script_queue_recipe(CInstance*,+0> sub    r0,  r11,  #304	; 0x130
+      0xceb1ebd8 <gml_Script_queue_recipe(CInstance*,+0> mov    r4,  #2
+      0xceb1ebdc <gml_Script_queue_recipe(CInstance*,+0> str    r4,  [r11,  #-228]	; 0xffffff1c
+      0xceb1ebe0 <gml_Script_queue_recipe(CInstance*,+0> bl     0xce4a5008 <_Z11BOOL_RValuePK6RValue@plt>
+
+
+.text:0036CD70 07 00 00 EA                 B               loc_36CD94
+.text:0036CD74             ; ---------------------------------------------------------------------------
+.text:0036CD74 00 0B D4 ED                 VLDR            D16, [R4]
+.text:0036CD78 00 0B C0 ED                 VSTR            D16, [R0]
+.text:0036CD7C 10 8C BD E8                 LDMFD           SP!, {R4,R10,R11,PC}
+
+
+
+[#0] 0xce4c8d7c ¡ú YYRValue::__localCopy(YYRValue const&)()
+[#1] 0xceb1ebcc ¡ú gml_Script_queue_recipe(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#2] 0xcf9d31e4 ¡ú gml_Object_button_craft_Other_11(CInstance*, CInstance*)()
+[#3] 0xce5406b8 ¡ú ExecuteIt(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#4] 0xce540918 ¡ú Code_Execute(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#5] 0xce54ea10 ¡ú CEvent::Execute(CInstance*, CInstance*)()
+[#6] 0xce54ed2c ¡ú Perform_Event_Object_ASync(CInstance*, CInstance*, int, int, int)()
+[#7] 0xce54eea8 ¡ú Perform_Event(CInstance*, CInstance*, int, int)()
+[#8] 0xcf9d268c ¡ú gml_Object_button_craft_Step_0(CInstance*, CInstance*)()
+[#9] 0xce5406b8 ¡ú ExecuteIt(CInstance*, CInstance*, CCode*, RValue*, int)()
