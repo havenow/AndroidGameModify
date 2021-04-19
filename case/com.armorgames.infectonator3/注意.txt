@@ -1,0 +1,19 @@
+watch *(int*)0xb7f55280
+
+忽略不关心的信号
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+	int ret1 = xhook_register(pathname_regex_str,il2cpp_script[0],(void *) &il2cpp_run_time_invoke,(void**) &IL2CPP_RUN_TIME_INVOKE);
+				int ret2 = xhook_refresh(0);
+
+
+xhook_register("/system/lib/libc.so","clock_gettime",(void *) &clock_get_time,(void**) &CLOCK_GETTIME);
+
+
+https://gregstoll.com/~gregstoll/floattohex
+
+64位
+x0~x7作为传参数的寄存器
+x0作为返回值；x8作为结果的地址寄存器
+
