@@ -1,0 +1,442 @@
+3E8BiRia8CHUsPMpVjCoEX25saQa9JgorD0B++74Czk=
+
+#################################################################################################
+Hyperpwn加持的gdb和IDA
+
+IDA：图形界面，快速上手，强大的idapython和idc支持，缺点是不支持ARM的硬件断点
+
+gdb：命令行操作，虽然没有美观易用的GUI界面，但是可以配合其他gdb的扩展插件如gef、pwndbg等，同时支持ARM的硬件断点
+
+#################################################################################################
+注意：有些资源的下载需要翻墙
+
+1、编译redsocks 并结合iptables 配置好全局代理
+安装依赖库： libevent2 才能编译，否则会报错
+sudo apt-get install libevent-dev
+
+接下来拉取源码并编译(github 拉取较慢，可以使用gitee)
+git clone https://github.com/semigodking/redsocks.git
+如切到gitee 拉取代码:git clone https://gitee.com/fengzihk/redsocks.git
+
+然后cd 到项目根目录
+cd ./redsocks，然后就可以开心的编译了
+make 开始编译，成功后会生成redsocks 可执行文件
+
+
+接下来修改redsocks 配置,配置好代理ip，启动即可，同时执行iptables 转发规则即可开启全局透明代理。
+
+cp redsocks.conf.example redsocks.conf
+geany red
+geany redsocks.conf
+查找1080，有两处
+ip = example.org;
+port = 1080;
+改为
+ip = 192.168.0.100;
+porot = 1080;
+./redsocks -c redsocks.conf 启动redsocks
+
+新开一个terminal
+geany redsocks.conf 看看local_port = 12345
+iptables.sh
+cat iptables.sh |sh
+
+可以看到redsocks开始工作了
+
+#################################################################################################
+下载Google 官方NDK
+这里使用ndk-r20 版本，提取NDK 当中的gdbserver
+
+安装gdb-multiarch
+使用sudo apt-get install gdb-multiarch安装
+
+gdb-multiarch打开gdb
+quit退出gdb
+
+
+#################################################################################################
+下载Hyper 并安装
+sudo dpkg -i hyper.deb 安装
+sudo apt-get install -f
+
+从HyperPwn的readme可以看到
+if you encounter any weird display bugs during using Hyper or hyperpwn, try to upgrade Hyper to v3.1.0-canary.4.
+	如果你在使用Hyper或者Hyperpwn时遇到任何奇怪的显示问题，试着使用Hyper v3.1.0-canary.4
+下载v3.1.0-canary.4这个版本的
+hyper_3.1.0-canary.4_amd64.deb
+sudo dpkg -i hyper_3.1.0-canary.4_amd64.deb
+输入Hyper后，会有一个黑色命令行窗口弹出来
+
+
+#################################################################################################
+分别安装pwndbg、gef、peda 这三个gdb插件
+
+(1)Hyperpwn on peda
+从HyperPwn的readme可以看到
+If you want to use hyperpwn on peda, please use my fork of peda or peda-arm.
+所以是安装修改版的peda，
+
+nslookup raw.githubuercontent.com
+服务器:  dns.google
+Address:  8.8.8.8
+
+非权威应答:
+名称:    raw.githubusercontent.com
+Addresses:  185.199.111.133
+          185.199.108.133
+          185.199.109.133
+          185.199.110.133
+
+服务器:  public-dns-a.dnspai.com
+Address:  101.198.198.198
+非权威应答:
+名称:    github.map.fastly.net
+Addresses:  151.101.76.133
+Aliases: raw.githubusercontent.com
+
+注意要安装git
+
+(2)Hyperpwn on gef
+wget -q -O- https://github.com/hugsy/gef/raw/master/gef.sh | sh 应该不是这个
+看https://github.com/hugsy/gef/的readme:
+wget -O ~/.gdbinit-gef.py -q http://gef.blah.cat/py
+echo source ~/.gdbinit-gef.py >> ~/.gdbinit
+
+(3)Hyperpwn on pwndbg
+拉取github 上pwndbg 最新代码，运行setup.sh 即可
+git clone https://github.com/pwndbg/pwndbg.git
+./setup.sh
+
+error update plugins
+error couldnit find the binary git
+
+
+
+----------------------------
+gef> awatch *(int *)0xd223a594
+Hardware access (read/write) watchpoint 1: *(int *)0xd223a594
+gef> c
+Continuing.
+
+
+###################
+安装hyperinator 和hyperpwn
+hyper i hyperinator
+hyper i hyperpwn
+
+
+###################
+在hyper 中输入gdb-multiarch
+注意：如果Hyper 弹出无法更新插件，则是由于DNS 污染导致，可通过修改hosts，手工指定raw.githubusercontent.com 的解析ip 即可。
+同时，可以通过编辑~/.gdbinit 配置文件来在基于peda、gef、pwndbg 的Hyperpwn 之间来回切换
+
+
+安装frida
+sudo apt install python-pip
+pip install --upgrade pip
+pip install frida
+pip install frida-tools
+安装adb
+sudo apt-get install android-tools-adb
+
+adb install '/home/wangfeng/apk/vmp2protect.apk' 
+
+frida -U -f com.example.classloadertest -l debugvmp.js --no-pause -o log.txt
+问题：
+python版本太低
+https://blog.csdn.net/qq_42693848/article/details/88900553
+
+
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 9888 	启动后gg修改器无法修改text段内存的数据
+
+
+adb install --abi armeabi-v7a noollvm.apk
+frida -U -f com.kanxue.vmpprotect -l debugmyvmp.js -o logvmp.txt
+
+
+//----------------------------------------
+/data/local/tmp下
+./gdbserver-32 :1234 --attach pid
+
+hyper下
+gdb-multiarch
+
+gef下：
+set arch arm
+set arm fallback-mode thumb
+
+gef-remote :1234
+vmmap libpvz.so
+
+gef>  vmmap libpvz.so
+Start      End        Offset     Perm Path
+0xe197e000 0xe19fc000 0x00000000 r-x /data/app/com.popcap.pvz-1/lib/arm/libpvz.so
+0xe1a04000 0xe1a05000 0x0007e000 rw- /data/app/com.popcap.pvz-1/lib/arm/libpvz.so
+
+
+x/60aw 0xe197e000 查看代码   x/20i 0xe197e000  查看20条指令
+
+awatch *(int*)0xc522a9f0
+
+b *0xc512a9f0 thr 1
+c
+
+gef config context.nb_lines_code_prev 10
+gef config context.nb_lines_code 50
+gef config context.nb_lines_stack 50
+
+c
+
+F8 步过
+nexti
+
+b *0xc51cd9f0 thr 1
+
+info b
+
+del 1
+
+
+
+表达式可以是一个地址：
+
+     例如：watch *(int *)0x12345678 可以检测4个字节的内存是否变化 ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+  watch 在有些操作系统支持硬件观测点，硬件观测点的运行速度比软件观测点的快。如果系统支持硬件观测的话，当设置观测点是会打印如下信息：
+
+     Hardware watchpoint num: expr
+
+    如果不想用硬件观测点的话可如下设置：
+
+    set can-use-hw-watchpoints
+
+ 
+
+    watch两个变种 rwatch，awatch，这两个命令只支持硬件观测点如果系统不支持硬件观测点会答应出不支持这两个命令的信息:，
+
+ 
+
+    rwatch <expr>
+
+    当表达式（变量）expr被读时，停住程序。
+
+        
+
+    awatch <expr>
+
+    当表达式（变量）的值被读或被写时，停住程序。
+
+//#######################################################################
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0xc5225490  →  0xca38d488  →  0xca11082c  →  0xe92d4ff0  →  0x0020e916
+$r1  : 0x2660    
+$r2  : 0x2706    
+$r3  : 0x5560    
+$r4  : 0xc540d4e0  →  0xc7af6cd0  →  0xca390ec8  →  0xca158c6c  →  0xe12fff1e  →  0x00000000
+$r5  : 0x4       
+$r6  : 0x4       
+$r7  : 0x0       
+$r8  : 0x42c80000
+$r9  : 0x40b03550
+$r10 : 0x40b1d707
+$r11 : 0x3f746666 ("fft?"?)
+$r12 : 0x2647    
+$sp  : 0xc48fcb08  →  0x7f800000
+$lr  : 0xca13c410  →  0xe5945064  →  0x00000000
+$pc  : 0xca108f98  →  0xc7802003  →  0x00000000
+$cpsr: [thumb fast interrupt overflow carry zero NEGATIVE]
+───────────────────────────────────────────────────────────────────────────────────── stack ────
+0xc48fcb08│+0x0000: 0x7f800000   ← $sp
+0xc48fcb0c│+0x0004: 0xc540d4e0  →  0xc7af6cd0  →  0xca390ec8  →  0xca158c6c  →  0xe12fff1e  →  0x00000000
+0xc48fcb10│+0x0008: 0x40fa5a41
+0xc48fcb14│+0x000c: 0xca13c8dc  →  0xe5945070  →  0x00000000
+0xc48fcb18│+0x0010: 0x00000001
+0xc48fcb1c│+0x0014: 0x43af0000
+0xc48fcb20│+0x0018: 0xc540d4e0  →  0xc7af6cd0  →  0xca390ec8  →  0xca158c6c  →  0xe12fff1e  →  0x00000000
+0xc48fcb24│+0x001c: 0xc540d4e0  →  0xc7af6cd0  →  0xca390ec8  →  0xca158c6c  →  0xe12fff1e  →  0x00000000
+────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xca108f8c                  add    r2,  r2,  #6
+   0xca108f90                  cmp    r1,  r2
+   0xca108f94                  str    r1,  [r0,  r3]
+ → 0xca108f98                  strgt  r2,  [r0,  r3]    NOT taken [Reason: !(!Z && N==V)]
+   0xca108f9c                  ble    0xca108fac
+   0xca108fa0                  mov    r1,  #9
+   0xca108fa4                  mov    r2,  #1
+   0xca108fa8                  b      0xca108e14
+   0xca108fac                  cmp    r1,  #8000        ; 0x1f40
+─────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "com.popcap.pvz", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#1] Id 2, Name: "Jit thread pool", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#2] Id 3, Name: "Signal Catcher", stopped 0xeaa3d804 in __rt_sigtimedwait (), reason: BREAKPOINT
+[#3] Id 4, Name: "JDWP", stopped 0xeaa3e718 in recvmsg (), reason: BREAKPOINT
+[#4] Id 5, Name: "ReferenceQueueD", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#5] Id 6, Name: "FinalizerDaemon", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#6] Id 7, Name: "FinalizerWatchd", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#7] Id 8, Name: "HeapTaskDaemon", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#8] Id 9, Name: "Binder:14605_1", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#9] Id 10, Name: "Binder:14605_2", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#10] Id 11, Name: "com.popcap.pvz", stopped 0xeaa3d3f4 in __accept4 (), reason: BREAKPOINT
+[#11] Id 12, Name: "Thread-3", stopped 0xca108f98 in ?? (), reason: BREAKPOINT
+[#12] Id 13, Name: "Binder:14605_3", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#13] Id 14, Name: "AudioTrack", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#14] Id 15, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#15] Id 16, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#16] Id 17, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#17] Id 18, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#18] Id 19, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#19] Id 20, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#20] Id 21, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#21] Id 22, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#22] Id 23, Name: "Binder:14605_4", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#23] Id 24, Name: "Binder:14605_5", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#24] Id 25, Name: "Binder:14605_6", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#25] Id 26, Name: "Binder:14605_7", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+───────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0xca108f98 → strgt r2,  [r0,  r3]
+[#1] 0xca13c410 → ldr r5,  [r4,  #100]  ; 0x64
+
+
+
+
+
+
+
+gef>  vmmap libyoyo.so
+Start      End        Offset     Perm Path
+0xcbeb0000 0xce096000 0x00000000 r-x /data/app/com.bscotch.crashlands1-1/lib/arm/libyoyo.so
+0xce096000 0xce10c000 0x021e5000 r-- /data/app/com.bscotch.crashlands1-1/lib/arm/libyoyo.so
+0xce10c000 0xce20f000 0x0225b000 rw- /data/app/com.bscotch.crashlands1-1/lib/arm/libyoyo.so
+
+watch *(int*)0xca6fb6a0
+
+watch *(int*)0xc4908144
+
+watch *(double*)0xcaafb6a0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0xcaafb6a0  →  0x00000000
+$r1  : 0x44      
+$r2  : 0xcc21cd30  →  0x00000044 ("D"?)
+$r3  : 0x38      
+$r4  : 0xca057958  →  0x00000000
+$r5  : 0xfffffc  
+$r6  : 0xca057898  →  0x00000000
+$r7  : 0x5       
+$r8  : 0xcaafb6a0  →  0x00000000
+$r9  : 0x0       
+$r10 : 0x2       
+$r11 : 0xca0573f8  →  0xca0579f8  →  0xca057b98  →  0xca057d88  →  0xca0580d0  →  0xca058118  →  0xca058128  →  0xca058158
+$r12 : 0xce100ef8  →  0xcc21ccf8  →  0xe92d4c10  →  0x0029cc16
+$sp  : 0xca0573f0  →  0xca057958  →  0x00000000
+$lr  : 0xcc79a7b8  →  0xe59d010c  →  0x00000000
+$pc  : 0xcc21cd7c  →  0xe8bd8c10  →  0x00000000
+$cpsr: [thumb fast interrupt overflow carry zero NEGATIVE]
+───────────────────────────────────────────────────────────────────────────────────── stack ────
+0xca0573f0│+0x0000: 0xca057958  →  0x00000000    ← $sp
+0xca0573f4│+0x0004: 0x00000002
+0xca0573f8│+0x0008: 0xca0579f8  →  0xca057b98  →  0xca057d88  →  0xca0580d0  →  0xca058118  →  0xca058128  →  0xca058158         ← $r11
+0xca0573fc│+0x000c: 0xcc79a7b8  →  0xe59d010c  →  0x00000000
+0xca057400│+0x0010: 0x00000000
+0xca057404│+0x0014: 0xca057938  →  0xca057790  →  0x00000000
+0xca057408│+0x0018: 0x00000000
+0xca05740c│+0x001c: 0xca057a38  →  0x00000000
+────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xcc21cd70 <YYRValue::__localCopy(YYRValue+0> b      0xcc21cd94 <_ZN8YYRValue11__localCopyERKS_+156>
+   0xcc21cd74 <YYRValue::__localCopy(YYRValue+0> vldr   d16,  [r4]
+   0xcc21cd78 <YYRValue::__localCopy(YYRValue+0> vstr   d16,  [r0]
+ → 0xcc21cd7c <YYRValue::__localCopy(YYRValue+0> pop    {r4,  r10,  r11,  pc}
+      0xcc79a7b8 <gml_Script_damage_target(CInstance*,+0> ldr    r0,  [sp,  #268]       ; 0x10c
+      0xcc79a7bc <gml_Script_damage_target(CInstance*,+0> str    r8,  [sp,  #28]
+      0xcc79a7c0 <gml_Script_damage_target(CInstance*,+0> sub    r0,  r0,  #1
+      0xcc79a7c4 <gml_Script_damage_target(CInstance*,+0> str    r10,  [r11,  #-400]    ; 0xfffffe70
+      0xcc79a7c8 <gml_Script_damage_target(CInstance*,+0> tst    r0,  r5
+      0xcc79a7cc <gml_Script_damage_target(CInstance*,+0> bne    0xcc79a7d8 <_Z24gml_Script_damage_targetP9CInstanceS0_R8YYRValueiPPS1_+35232>
+─────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "tch.crashlands1", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#1] Id 2, Name: "Jit thread pool", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#2] Id 3, Name: "Signal Catcher", stopped 0xeaa3d804 in __rt_sigtimedwait (), reason: BREAKPOINT
+[#3] Id 4, Name: "JDWP", stopped 0xeaa3e718 in recvmsg (), reason: BREAKPOINT
+[#4] Id 5, Name: "ReferenceQueueD", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#5] Id 6, Name: "FinalizerDaemon", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#6] Id 7, Name: "FinalizerWatchd", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#7] Id 8, Name: "HeapTaskDaemon", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#8] Id 9, Name: "Binder:19799_1", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#9] Id 10, Name: "Binder:19799_2", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#10] Id 11, Name: "Profile Saver", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#11] Id 12, Name: "tch.crashlands1", stopped 0xeaa3d3f4 in __accept4 (), reason: BREAKPOINT
+[#12] Id 13, Name: "tch.crashlands1", stopped 0xeaa3eff4 in writev (), reason: BREAKPOINT
+[#13] Id 14, Name: "RenderThread", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#14] Id 15, Name: "Binder:19799_3", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#15] Id 16, Name: "Thread-3", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#16] Id 17, Name: "pool-1-thread-1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#17] Id 18, Name: "work_thread", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#18] Id 19, Name: "NetWorkSender", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#19] Id 20, Name: "FileObserver", stopped 0xeaa3e628 in read (), reason: BREAKPOINT
+[#20] Id 21, Name: "ConnectivityThr", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#21] Id 22, Name: "GLThread 175", stopped 0xcc21cd7c in YYRValue::__localCopy(YYRValue const&) (), reason: BREAKPOINT
+[#22] Id 23, Name: "hwuiTask1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#23] Id 24, Name: "SL-NetWorkSende", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#24] Id 25, Name: "AudioTrack", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#25] Id 26, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#26] Id 27, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#27] Id 28, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#28] Id 29, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#29] Id 30, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#30] Id 31, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#31] Id 32, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#32] Id 33, Name: "GLThread 175", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#33] Id 34, Name: "GLThread 175", stopped 0xeaa3e4bc in nanosleep (), reason: BREAKPOINT
+[#34] Id 35, Name: "GLThread 175", stopped 0xeaa3e4bc in nanosleep (), reason: BREAKPOINT
+[#35] Id 36, Name: "GLThread 175", stopped 0xeaa3e4bc in nanosleep (), reason: BREAKPOINT
+[#36] Id 37, Name: "GLThread 175", stopped 0xeaa3e4bc in nanosleep (), reason: BREAKPOINT
+[#37] Id 38, Name: "Chrome_DBThread", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#38] Id 39, Name: "Chrome_FileThre", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#39] Id 40, Name: "Chrome_FileUser", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#40] Id 41, Name: "Chrome_ProcessL", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#41] Id 42, Name: "Chrome_CacheThr", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#42] Id 43, Name: "Chrome_IOThread", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#43] Id 44, Name: "IndexedDB", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#44] Id 45, Name: "Thread-7", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#45] Id 46, Name: "Thread-8", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#46] Id 47, Name: "pool-2-thread-1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#47] Id 48, Name: "pool-3-thread-1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#48] Id 49, Name: "ConnectivityMan", stopped 0xeaa3d498 in __epoll_pwait (), reason: BREAKPOINT
+[#49] Id 50, Name: "Binder:19799_4", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#50] Id 51, Name: "pool-4-thread-1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#51] Id 52, Name: "Binder:19799_5", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#52] Id 53, Name: "pool-5-thread-1", stopped 0xeaa0c404 in syscall (), reason: BREAKPOINT
+[#53] Id 54, Name: "Binder:19799_6", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#54] Id 55, Name: "Binder:19799_7", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#55] Id 56, Name: "Binder:19799_8", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#56] Id 57, Name: "Binder:19799_9", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#57] Id 58, Name: "Binder:19799_A", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#58] Id 59, Name: "Binder:19799_B", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#59] Id 60, Name: "Binder:19799_C", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#60] Id 61, Name: "Binder:19799_D", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#61] Id 62, Name: "Binder:19799_E", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+[#62] Id 63, Name: "Binder:19799_F", stopped 0xeaa3d5d8 in __ioctl (), reason: BREAKPOINT
+───────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0xcc21cd7c → YYRValue::__localCopy(YYRValue const&)()
+[#1] 0xcc79a7b8 → gml_Script_damage_target(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#2] 0xcc791768 → gml_Script_damage_list_of_targets(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#3] 0xcc7a1bf8 → gml_Script_deal_damage_in_radius(CInstance*, CInstance*, YYRValue&, int, YYRValue**)()
+[#4] 0xcd4c1900 → gml_Object_o_wompit_Step_0(CInstance*, CInstance*)()
+[#5] 0xcc2946b8 → ExecuteIt(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#6] 0xcc294918 → Code_Execute(CInstance*, CInstance*, CCode*, RValue*, int)()
+[#7] 0xcc2a2a10 → CEvent::Execute(CInstance*, CInstance*)()
+[#8] 0xcc2a2d2c → Perform_Event_Object_ASync(CInstance*, CInstance*, int, int, int)()
+[#9] 0xcc2a2ea8 → Perform_Event(CInstance*, CInstance*, int, int)()
+
+.text:0036CD1C 0E 00 51 E3                 CMP             R1, #0xE
+改为:		10 8C BD E8                 LDMFD           SP!, {R4,R10,R11,PC}
+
+
+36CD1C + 
+
+
+Old value = 190
+New value = 174
+0xcc21cd7c in YYRValue::__localCopy(YYRValue const&) () from target:/data/app/com.bscotch.crashlands1-1/lib/arm/libyoyo.so
