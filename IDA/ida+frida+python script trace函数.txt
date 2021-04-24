@@ -1,0 +1,47 @@
+ida 动态调试so
+
+adb forward tcp:11678 tcp:11678	不使用默认端口，避免应用反调试会检测端口号
+./android_server -p11678	android_server也可以修改名称，避免应用反调试会检测进程名
+
+代码在base.apk里面，可能在java里面加载so时不是静态加载的，而是后面调用的加载的？ 
+调试的时候 alt + g 将T的值改为1 就改成thumb格式的
+按c
+
+    public static synchronized void loadso() {
+        synchronized (Bbbbbbbbbbbbbb.class) {
+            synchronized (Bbbbbbbbbbbbbb.class) {
+                if (!b && !isloaded) {
+                    try {
+                        System.loadLibrary("xxx");
+                        b = true;
+                        isloaded = true;
+                    } catch (Throwable unused) {
+                        b = false;
+                        isloaded = true;
+                    }
+                }
+            }
+        }
+    }
+
+########################################################流程
+启动app
+>frida -U com.example.hellojni_sign2 -l hook_7.js
+frida主动调用函数 call_encode2_function() 可以看看函数地址
+
+IDA attach 进程
+File/Script file 选择trace_xxxsign.py
+frida:	call_encode2_function()
+断在函数的第一条指令
+suspend_other_thread() trace的时候挂起其他线程
+starthook()
+Deubgger/Tracing options/Trace file 设置输出的trace log文件
+Deubgger/Tracing/Instructions trace 
+F9 程序继续执行
+断在函数最后一条指令，trace结束
+F9 程序继续执行
+
+resume_process()
+unhook()
+
+使用010 edit 打开 trace log文件，搜索方便
