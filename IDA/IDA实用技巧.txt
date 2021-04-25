@@ -1,0 +1,25 @@
+1、在汇编代码界面 Ctrl+s 会显示所有节的名称
+
+2、伪代码界面，对一个数字右键，r，将数字转换为char
+
+3、File/Load file/Prase c header file (ctrl+f9)	导入jin.h
+jni.h需要做下面的修改
+//#include <sys/cdefs.h>
+
+//#include <stdarg.h>
+
+//from sys/cdefs.h
+#if defined(__ANDROID__) && !defined(__LP64__) && defined( __arm__)
+
+#define __NDK_FPABI__ __attribute__((pcs("aapcs")))
+
+#else
+
+#define __NDK_FPABI__
+
+#endif
+
+
+4、伪代码界面，对一个函数右键 force call type，可以补全函数调用的参数
+
+
