@@ -1,0 +1,5 @@
+hexdump dword $r1 
+hexdump dword 0xfffefbff
+registers
+vmmap
+elf-info
