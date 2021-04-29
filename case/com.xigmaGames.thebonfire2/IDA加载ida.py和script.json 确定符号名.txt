@@ -1,0 +1,4 @@
+IDA中 File/Script file...
+依次选择通过Il2CppDumper.exe处理libil2cpp.so global-metadata.dat之后更新的
+ida.py和script.json
+
