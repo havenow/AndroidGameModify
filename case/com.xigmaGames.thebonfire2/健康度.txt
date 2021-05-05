@@ -1,0 +1,134 @@
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 14912
+
+gdb-multiarch
+target remote :1234
+
+watch *(int*)0x9b71A26C
+info b
+c
+quit
+
+vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xcbe4c000 0xcd332000 0x00000000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcd332000 0xcd3ca000 0x014e5000 r-- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcd3ca000 0xcd462000 0x0157d000 rw- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+
+Old value = 0x82	130好像是最大值
+New value = 0x7e
+0xcc431244 in __start_il2cpp () from target:/data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0x7e      
+$r1  : 0x4       
+$r2  : 0x0       
+$r3  : 0x0       
+$r4  : 0x9b71a230  →  0xbf10c460  →  0xc429e790  →  0xc8abfac2  →  "Assembly-CSharp.dll"
+$r5  : 0x4       
+$r6  : 0x96a27a80  →  0xbeac89a0  →  0xc429e790  →  0xc8abfac2  →  "Assembly-CSharp.dll"
+$r7  : 0x9b71a230  →  0xbf10c460  →  0xc429e790  →  0xc8abfac2  →  "Assembly-CSharp.dll"
+$r8  : 0x95e36be0  →  0xbf171860  →  0xc429e790  →  0xc8abfac2  →  "Assembly-CSharp.dll"
+$r9  : 0x95e36280  →  0xbf171860  →  0xc429e790  →  0xc8abfac2  →  "Assembly-CSharp.dll"
+$r10 : 0x0       
+$r11 : 0xc231b860  →  0xc231b8b8  →  0xc231b9b8  →  0xc231b9d8  →  0xc231b9e0  →  0xc231ba00  →  0xc25a6717  →   push {r4,  r5,  r6,  lr}
+$r12 : 0xe9b3d948  →  0xe9afd4ad  →  <pthread_getspecific+1> movs r1,  #140	; 0x8c
+$sp  : 0xc231b858  →  0x00000005
+$lr  : 0xcc2cee94  →  0xe35a0001  →  0x00000000
+$pc  : 0xcc431244  →  0x0a000005
+$cpsr: [thumb fast interrupt overflow carry zero NEGATIVE]
+───────────────────────────────────────────────────────────────────────────────────────── stack ────
+0xc231b858│+0x0000: 0x00000005	 ← $sp
+0xc231b85c│+0x0004: 0x00000004
+0xc231b860│+0x0008: 0xc231b8b8  →  0xc231b9b8  →  0xc231b9d8  →  0xc231b9e0  →  0xc231ba00  →  0xc25a6717  →   push {r4,  r5,  r6,  lr}	 ← $r11
+0xc231b864│+0x000c: 0xcc2cee94  →  0xe35a0001  →  0x00000000
+0xc231b868│+0x0010: 0x964c2108  →  0xce0be100  →  0xc429da00  →  0xc8a3619a  →  "mscorlib.dll"
+0xc231b86c│+0x0014: 0xf94fd4a7
+0xc231b870│+0x0018: 0x00000000
+0xc231b874│+0x001c: 0xb664a9c0  →  0xc429db88  →  0xc8a70801  →  0x74696e55  →  0x17003b49  →  0x00000000
+────────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xcc431238 <__start_il2cpp+2415352> ldr    r0,  [r4,  #60]	; 0x3c
+   0xcc43123c <__start_il2cpp+2415356> sub    r0,  r0,  r1
+   0xcc431240 <__start_il2cpp+2415360> str    r0,  [r4,  #60]	; 0x3c
+ → 0xcc431244 <__start_il2cpp+2415364> beq    0xcc431260 <__start_il2cpp+2415392>	NOT taken [Reason: !(Z)]
+   0xcc431248 <__start_il2cpp+2415368> cmp    r2,  #1
+   0xcc43124c <__start_il2cpp+2415372> beq    0xcc431268 <__start_il2cpp+2415400>
+   0xcc431250 <__start_il2cpp+2415376> cmp    r2,  #0
+   0xcc431254 <__start_il2cpp+2415380> bne    0xcc431274 <__start_il2cpp+2415412>
+   0xcc431258 <__start_il2cpp+2415384> add    r1,  r4,  #64	; 0x40
+
+
+base_il2cpp + 5E523C
+sub    r0,  r0,  r1	
+str    r0,  [r4,  #60]	; 0x3c	r0 是血减少后的值，[r4,  #60]是存物品的地址
+
+
+sub    r0,  r0,  r1	01 00 40 e0	-532676607
+mov r0,r0		00 00 a0 e1	-509607936
+
+
+
+
+	// Token: 0x0600037F RID: 895 RVA: 0x00002050 File Offset: 0x00000250
+	[Address(RVA = "0x5E5228", Offset = "0x5E5228", VA = "0x5E5228")]
+	public void ReduceHealth(int value, Buff damageType)
+	{
+	}
+
+	// Token: 0x04000313 RID: 787
+	[FieldOffset(Offset = "0x3C")]
+	public int myHealth;
+
+
+il2cpp:005E5228 WorkerStats$$ReduceHealth               ; CODE XREF: AIAgent$$TakeDamage+23C↑p
+il2cpp:005E5228                                         ; DATA XREF: .data:015CE26C↓o
+il2cpp:005E5228 ; __unwind {
+il2cpp:005E5228                 STMFD           SP!, {R4,R5,R11,LR}
+il2cpp:005E522C                 ADD             R11, SP, #8
+il2cpp:005E5230                 MOV             R4, R0
+il2cpp:005E5234                 CMP             R2, #2
+il2cpp:005E5238                 LDR             R0, [R4,#0x3C]
+il2cpp:005E523C                 SUB             R0, R0, R1
+il2cpp:005E5240                 STR             R0, [R4,#0x3C]
+
+
+
+思路二：
+参考WorkerStats$$ResetHealth函数，将maxHealth赋值给myHealth
+il2cpp:005E5148 WorkerStats$$ResetHealth                ; CODE XREF: EatFood._execute_d__10$$MoveNext+904↑p
+il2cpp:005E5148                                         ; EatFood._execute_d__10$$MoveNext+B2C↑p
+il2cpp:005E5148                                         ; DATA XREF: ...
+il2cpp:005E5148 ; __unwind {
+il2cpp:005E5148                 STMFD           SP!, {R4-R6,R10,R11,LR}
+il2cpp:005E514C                 ADD             R11, SP, #0x10
+il2cpp:005E5150                 MOV             R4, R0
+il2cpp:005E5154                 LDR             R5, [R4,#0x5C]		;public Slider healthBar;
+il2cpp:005E5158                 LDR             R6, [R4,#0x38]		public int maxHealth;
+il2cpp:005E515C                 CMP             R5, #0			如果Slider healthBar == 0；将maxHealth赋值给myHealth
+il2cpp:005E5160                 STR             R6, [R4,#0x3C]		;public int myHealth;
+
+
+思路三：
+int __fastcall WorkerStats__ReduceHealth(_DWORD *a1, int a2, int a3)
+{
+  _DWORD *v3; // r4
+  int v4; // r0
+  _DWORD *v5; // r1
+  int v6; // r1
+  int v7; // r5
+  int v8; // r5
+  int v9; // r0
+  signed int v10; // r1
+  int v11; // r5
+  int v12; // r5
+  signed int v13; // r5
+  int v14; // r4
+
+  v3 = a1;		a1是worker的指针 0x3c = 60 /4 = 15
+  v4 = a1[15] - a2;	a2是伤害值
+  v3[15] = v4;
+
+
