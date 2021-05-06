@@ -1,0 +1,65 @@
+0x9a3684d0(l)
+*** 0x9a3689a0(jl)
+0x9a368770(l)
+*** 0x9a368a80（luxav）	+ 0x3c = 9A368ABC
+
+0x9a3687e0 鹿
+
+
+游戏初始时搜索下面连续内存
+1 2 3 walkSpeed maxLevel 力量（看界面） 精力（看界面） 智力（看界面） 经验(忽略) level(忽略，初始是5) 4 4 5 5 130 130
+
+狼和鹿小偷 的	智力（-1） 经验(0) 
+
+	// Token: 0x04000307 RID: 775
+	[FieldOffset(Offset = "0xC")]
+	public float walkSpeed;
+
+	// Token: 0x04000308 RID: 776
+	[FieldOffset(Offset = "0x10")]
+	public int maxLevel;
+
+	// Token: 0x04000309 RID: 777
+	[FieldOffset(Offset = "0x14")]	力量
+	public int strength;
+
+	// Token: 0x0400030A RID: 778
+	[FieldOffset(Offset = "0x18")]	敏捷
+	public int agility;
+
+	// Token: 0x0400030B RID: 779
+	[FieldOffset(Offset = "0x1C")]	智力
+	public int intelligence;
+
+	// Token: 0x0400030C RID: 780
+	[FieldOffset(Offset = "0x20")]
+	public int expereience;
+
+
+	[FieldOffset(Offset = "0x24")]
+	public int level;
+
+
+	// Token: 0x0400030E RID: 782
+	[FieldOffset(Offset = "0x28")]	
+	public int maxStomachFill;
+
+	// Token: 0x0400030F RID: 783
+	[FieldOffset(Offset = "0x2C")]	胃Fill	饥饿
+	public int currentStomachFill;
+
+	// Token: 0x04000310 RID: 784
+	[FieldOffset(Offset = "0x30")]
+	public int maxEnergy;
+
+	// Token: 0x04000311 RID: 785
+	[FieldOffset(Offset = "0x34")]	精力
+	public int myEnergy;
+
+	// Token: 0x04000312 RID: 786
+	[FieldOffset(Offset = "0x38")]
+	public int maxHealth;
+
+	// Token: 0x04000313 RID: 787
+	[FieldOffset(Offset = "0x3C")]	健康
+	public int myHealth;
