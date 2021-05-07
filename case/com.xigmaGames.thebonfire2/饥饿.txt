@@ -1,0 +1,92 @@
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 31345
+
+gdb-multiarch
+target remote :1234
+
+watch *(float*)0x962b9374
+info b
+c
+quit
+
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+
+vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc984b000 0xcad31000 0x00000000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcad31000 0xcadc9000 0x014e5000 r-- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcadc9000 0xcae61000 0x0157d000 rw- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+Old value = 4
+New value = 3
+0xca0d510c in __start_il2cpp () from target:/data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0x962b92b8  →  0xbf08e500  →  0xc93fa0f8  →  0xcce0f80d  →  0x74696e55  →  0x17003b49  →  0x00000000
+$r1  : 0x0       
+$r2  : 0x40800000
+$r3  : 0x0       
+$r4  : 0x962b92b8  →  0xbf08e500  →  0xc93fa0f8  →  0xcce0f80d  →  0x74696e55  →  0x17003b49  →  0x00000000
+$r5  : 0x40400000
+$r6  : 0x1       
+$r7  : 0x0       
+$r8  : 0x0       
+$r9  : 0x962d9d00  →  0xbea19860  →  0xc93fa590  →  0xcce3fac2  →  0x65737341  →  0x4dfc2258
+$r10 : 0x96489aa0  →  0xbf0d56a0  →  0xc93fa590  →  0xcce3fac2  →  0x65737341  →  0x4dfc2258
+$r11 : 0xc3101918  →  0xc3101970  →  0xc31019a0  →  0xc31019c0  →  0xc31019c8  →  0xc31019e8  →  0xc338c717  →   push {r4,  r5,  r6,  lr}
+$r12 : 0xca0d509c  →  0xe92d4c70  →  0xe3510000  →  0x00000000
+$sp  : 0xc3101908  →  0x00000003
+$lr  : 0xca0d4f7c  →  0xee080a10
+$pc  : 0xca0d510c  →  0xebfffbb4
+$cpsr: [thumb fast interrupt overflow CARRY zero negative]
+───────────────────────────────────────────────────────────────────────────────────────── stack ────
+0xc3101908│+0x0000: 0x00000003	 ← $sp
+0xc310190c│+0x0004: 0x962b92b8  →  0xbf08e500  →  0xc93fa0f8  →  0xcce0f80d  →  0x74696e55  →  0x17003b49  →  0x00000000
+0xc3101910│+0x0008: 0x517a8900  →  0xcb967200  →  0xc93f9800  →  0xccdb619a  →  0x6f63736d  →  0xaf739672  →  0xff6d0964
+0xc3101914│+0x000c: 0x96489aa0  →  0xbf0d56a0  →  0xc93fa590  →  0xcce3fac2  →  0x65737341  →  0x4dfc2258
+0xc3101918│+0x0010: 0xc3101970  →  0xc31019a0  →  0xc31019c0  →  0xc31019c8  →  0xc31019e8  →  0xc338c717  →   push {r4,  r5,  r6,  lr}	 ← $r11
+0xc310191c│+0x0014: 0xc9e20948  →  0xe59f03d4  →  0x00000000
+0xc3101920│+0x0018: 0x00000004
+0xc3101924│+0x001c: 0xcc7e9760  →  0xcde7cc00  →  0xc93f9800  →  0xccdb619a  →  0x6f63736d  →  0xaf739672  →  0xff6d0964
+────────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xca0d5100 <__start_il2cpp+5188032> beq    0xca0d5160 <__start_il2cpp+5188128>
+   0xca0d5104 <__start_il2cpp+5188036> mov    r0,  r4
+   0xca0d5108 <__start_il2cpp+5188040> vstr   s0,  [r4,  #188]	; 0xbc
+ → 0xca0d510c <__start_il2cpp+5188044> bl     0xca0d3fe4 <__start_il2cpp+5183652>
+     0xca0d3fe4 <__start_il2cpp+5183652> push   {r4,  r5,  r6,  r7,  r8,  r10,  r11,  lr}
+      0xca0d3fe8 <__start_il2cpp+5183656> add    r11,  sp,  #24
+      0xca0d3fec <__start_il2cpp+5183660> sub    sp,  sp,  #40	; 0x28
+      0xca0d3ff0 <__start_il2cpp+5183664> mov    r4,  r0
+      0xca0d3ff4 <__start_il2cpp+5183668> ldr    r0,  [pc,  #944]	; 0xca0d43ac <__start_il2cpp+5184620>
+      0xca0d3ff8 <__start_il2cpp+5183672> add    r0,  pc,  r0
+
+和精力的地址一样
+
+
+ base + 0x88A108
+vstr   s0,  [r4,  #188]		2f 0a 84 ed	-310113745
+mov r0, r0			00 00 a0 e1	-509607936
+
+
+
+il2cpp:0088A09C UnityEngine.UI.Slider$$Set              ; DATA XREF: .data:015E1864↓o
+il2cpp:0088A09C ; __unwind {
+il2cpp:0088A09C                 STMFD           SP!, {R4-R6,R10,R11,LR}
+il2cpp:0088A0A0                 ADD             R11, SP, #0x10
+
+... ...
+
+il2cpp:0088A0F8 loc_88A0F8                              ; DATA XREF: il2cpp:00D6364C↓o
+il2cpp:0088A0F8                 VCMP.F32        S2, S0
+il2cpp:0088A0FC                 VMRS            APSR_nzcv, FPSCR
+il2cpp:0088A100                 BEQ             locret_88A160
+il2cpp:0088A104                 MOV             R0, R4
+il2cpp:0088A108                 VSTR            S0, [R4,#0xBC]
+il2cpp:0088A10C                 BL              UnityEngine.UI.Slider$$UpdateVisuals
+
+
