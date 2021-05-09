@@ -1,0 +1,103 @@
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 11788
+
+gdb-multiarch
+target remote :1234
+
+watch *(int*)0x9a18c064
+info b
+c
+quit
+
+
+vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc1b27000 0xc300d000 0x00000000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc300d000 0xc30a5000 0x014e5000 r-- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc30a5000 0xc313d000 0x0157d000 rw- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+
+忽略不关心的信号
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+
+//-------------物品
+Old value = 0x34
+New value = 0x35
+0xc1f88510 in __start_il2cpp () from target:/data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0xc31cd368  →  0xbf5e0f00  →  0xc53ee390  →  0xcd43fac2  →  "Assembly-CSharp.dll"
+$r1  : 0x9a18c054  →  0x00000000
+$r2  : 0x35      
+$r3  : 0x0       
+$r4  : 0x1       
+$r5  : 0x9a18c050  →  0xb5086f90  →  0xc53ed600  →  0xcd3b619a  →  "mscorlib.dll"
+$r6  : 0x1       
+$r7  : 0x1       
+$r8  : 0x1       
+$r9  : 0x97a17e20  →  0xbf396f40  →  0xc53ee390  →  0xcd43fac2  →  "Assembly-CSharp.dll"
+$r10 : 0x1       
+$r11 : 0xc32fe910  →  0xc32fe930  →  0xc32fe9b8  →  0xc32fe9d8  →  0xc32fe9e0  →  0xc32fea00  →  0xc36bc717  →   push {r4,  r5,  r6,  lr}
+$r12 : 0xc249459c  →  0xe92d4df0  →  0xba00002a  →  0x4d50003a (":"?)
+$sp  : 0xc32fe8e0  →  0x00000000
+$lr  : 0xc1f884b0  →  0xe0450000  →  0x0020044f
+$pc  : 0xc1f88510  →  0xe5900000  →  0x00000000
+$cpsr: [thumb fast interrupt overflow CARRY zero negative]
+───────────────────────────────────────────────────────────────────────────────────────── stack ────
+0xc32fe8e0│+0x0000: 0x00000000	 ← $sp
+0xc32fe8e4│+0x0004: 0x00000000
+0xc32fe8e8│+0x0008: 0x00000001
+0xc32fe8ec│+0x000c: 0x99e48960  →  0xbf30f8c0  →  0xc53ee390  →  0xcd43fac2  →  "Assembly-CSharp.dll"
+0xc32fe8f0│+0x0010: 0x9a1c20a0  →  0xb7d0f450  →  0xc53ed600  →  0xcd3b619a  →  "mscorlib.dll"
+0xc32fe8f4│+0x0014: 0x9a08c690  →  0xbf37aa00  →  0xc53ee390  →  0xcd43fac2  →  "Assembly-CSharp.dll"
+0xc32fe8f8│+0x0018: 0x97a17e20  →  0xbf396f40  →  0xc53ee390  →  0xcd43fac2  →  "Assembly-CSharp.dll"
+0xc32fe8fc│+0x001c: 0x00000001
+────────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xc1f88504 <__start_il2cpp+826820> ldr    r0,  [pc,  r0]
+   0xc1f88508 <__start_il2cpp+826824> add    r2,  r2,  r10
+   0xc1f8850c <__start_il2cpp+826828> str    r2,  [r1,  #16]
+ → 0xc1f88510 <__start_il2cpp+826832> ldr    r0,  [r0]
+   0xc1f88514 <__start_il2cpp+826836> ldrb   r1,  [r0,  #187]	; 0xbb
+   0xc1f88518 <__start_il2cpp+826840> tst    r1,  #2
+   0xc1f8851c <__start_il2cpp+826844> beq    0xc1f88530 <__start_il2cpp+826864>
+   0xc1f88520 <__start_il2cpp+826848> ldr    r1,  [r0,  #116]	; 0x74
+   0xc1f88524 <__start_il2cpp+826852> cmp    r1,  #0
+
+
+
+   0xc1f88508 <__start_il2cpp+826824> add    r2,  r2,  r10	
+   0xc1f8850c <__start_il2cpp+826828> str    r2,  [r1,  #16]	r2 是增加之后的数量，[r1,  #16]是存物品的地址
+ → 0xc1f88510 <__start_il2cpp+826832> ldr    r0,  [r0]
+
+
+base_il2cpp+ 0x461508
+add    r2,  r2,  r10		0a 20 82 e0	-528343030
+add    r2,  r2,  r10，LSL #4 	0a 22 82 e0	-528342518
+
+
+
+
+
+dnSpy 搜索 461508（十六进制） 收不到结果 是Unity 引擎里面的函数？？？
+
+il2cpp:00461454 ResourceStorageBuilding$$AddResouceAndGetRemaining
+il2cpp:00461454           
+
+... ...
+
+il2cpp:004614F8                 LDR             R0, =(off_15E9F08 - 0x46150C)
+il2cpp:004614FC                 ADD             R1, R5, R8,LSL#2
+il2cpp:00461500                 LDR             R2, [R1,#0x10]
+il2cpp:00461504                 LDR             R0, [PC,R0] ; off_15E9F08 ; Class$MainBarUI
+il2cpp:00461508                 ADD             R2, R2, R10
+il2cpp:0046150C                 STR             R2, [R1,#0x10]
+
+
+
+int __fastcall ResourceStorageBuilding__AddResouceAndGetRemaining(int a1, unsigned int a2, int a3)
+{
+
