@@ -1,0 +1,124 @@
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 6203
+
+gdb-multiarch
+target remote :1234
+
+watch *(float*)0x9A3689D4
+info b
+c
+quit
+
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+
+vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xc11cc000 0xc17b1000 0x00000000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc17b1000 0xc17b2000 0x005e5000 rwx /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc17b2000 0xc26b2000 0x005e6000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc26b2000 0xc274a000 0x014e5000 r-- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xc274a000 0xc27e2000 0x0157d000 rw- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+Old value = 0x2
+New value = 0x1
+0xc17a7eac in __start_il2cpp () from target:/data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+Ignoring packet error, continuing...
+Reply contains invalid hex digit 116
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────── registers ────
+$r0  : 0x1       
+$r1  : 0x968ba640  →  0xbd5b0860  →  0xcaff9790  →  0xcbabfac2  →  "Assembly-CSharp.dll"
+$r2  : 0xb9de5918  →  0xc142bef4  →  0xe92d4c70  →  0xc872f7ed  →  0x00000000
+$r3  : 0xc14b4064  →  0x00000058 ("X"?)
+$r4  : 0x8       
+$r5  : 0xca8ea988  →  0x96c621a0  →  0xb9de3888  →  0xcaff8a00  →  0xcba3619a  →  0x6f63736d  →  0xaf739672  →  0x6133ff6c
+$r6  : 0x9a3689a0  →  0xbd64a460  →  0xcaff9790  →  0xcbabfac2  →  "Assembly-CSharp.dll"
+$r7  : 0x1       
+$r8  : 0xc286def8  →  0xb88f1b70  →  0xc142bf34  →  0xe2800008  →  0x00000000
+$r9  : 0x968ba640  →  0xbd5b0860  →  0xcaff9790  →  0xcbabfac2  →  "Assembly-CSharp.dll"
+$r10 : 0x0       
+$r11 : 0xca8ea9b8  →  0xca8ea9d8  →  0xca8ea9f8  →  0xca8eaa18  →  0xca8eaa20  →  0xca8eaa40  →  0xca8eabd8  →  0xca8ead28
+$r12 : 0xc27e177c  →  0xe98aff87  →  0x8441f0e9  →  0xf9c42d41
+$sp  : 0xca8ea960  →  0x3dcd9960  →  0x00000000
+$lr  : 0xc17a7eb8  →  0xe3500000  →  0x00000000
+$pc  : 0xc17a7eac  →  0xe5981000  →  0x00000000
+$cpsr: [thumb fast interrupt overflow CARRY zero negative]
+───────────────────────────────────────────────────────────────────────────────────────── stack ────
+0xca8ea960│+0x0000: 0x3dcd9960  →  0x00000000	 ← $sp
+0xca8ea964│+0x0004: 0xc286dc98  →  0xb88f1ba0  →  0xc142bf30  →  0xe12fff1e  →  0x3fdc005b ("["?)
+0xca8ea968│+0x0008: 0xc28712d4  →  0xb9de4580  →  0xc21c3374  →  0xe92d4800  →  <llvm::ARM::getDefaultExtensions(llvm::StringRef,+0> movs r2,  #10
+0xca8ea96c│+0x000c: 0x00000000
+0xca8ea970│+0x0010: 0x96a5fab0  →  0xbf292700  →  0xcaff9790  →  0xcbabfac2  →  "Assembly-CSharp.dll"
+0xca8ea974│+0x0014: 0xffffffff
+0xca8ea978│+0x0018: 0x96c621a0  →  0xb9de3888  →  0xcaff8a00  →  0xcba3619a  →  0x6f63736d  →  0xaf739672  →  0x6133ff6c
+0xca8ea97c│+0x001c: 0x00000000
+────────────────────────────────────────────────────────────────────────────────── code:arm:ARM ────
+   0xc17a7ea0 <__start_il2cpp+2377568> cmp    r0,  #1
+   0xc17a7ea4 <__start_il2cpp+2377572> subge  r0,  r0,  #1
+   0xc17a7ea8 <__start_il2cpp+2377576> strge  r0,  [r6,  #52]	; 0x34
+ → 0xc17a7eac <__start_il2cpp+2377580> ldr    r1,  [r8]
+   0xc17a7eb0 <__start_il2cpp+2377584> mov    r0,  r5
+   0xc17a7eb4 <__start_il2cpp+2377588> bl     0xc190dd68 <__start_il2cpp+3843624>
+   0xc17a7eb8 <__start_il2cpp+2377592> cmp    r0,  #0
+   0xc17a7ebc <__start_il2cpp+2377596> bne    0xc17a7e18 <__start_il2cpp+2377432>
+   0xc17a7ec0 <__start_il2cpp+2377600> ldr    r0,  [sp,  #20]
+
+
+0xc17a7ea8 -  0xc11cc000 = 5DBEA8
+
+
+int __fastcall WorkerManager__UpdateEnergy(int a1)
+{
+     if ( v10 )
+      {
+        v11 = *(_DWORD *)(v8 + 52) + 2;		增加 
+        if ( v11 > *(_DWORD *)(v8 + 48) )
+          v11 = *(_DWORD *)(v8 + 48);
+        *(_DWORD *)(v8 + 52) = v11;
+      }
+      else
+      {
+LABEL_36:
+        v12 = *(_DWORD *)(v8 + 52);		减少
+        if ( v12 >= 1 )
+          *(_DWORD *)(v8 + 52) = v12 - 1;
+      }
+
+il2cpp:005DBE6C             loc_5DBE6C                              ; CODE XREF: WorkerManager$$UpdateEnergy+13C↑j
+il2cpp:005DBE6C 00 00 57 E3                 CMP             R7, #0
+il2cpp:005DBE70 09 00 00 0A                 BEQ             loc_5DBE9C		r7==0，跳转到减少精力的代码
+il2cpp:005DBE74 0B 00 54 E3                 CMP             R4, #0xB
+il2cpp:005DBE78 06 00 54 13                 CMPNE           R4, #6
+il2cpp:005DBE7C 06 00 00 1A                 BNE             loc_5DBE9C
+il2cpp:005DBE80 34 10 96 E5                 LDR             R1, [R6,#0x34]	myEnergy存放到r1
+il2cpp:005DBE84 30 00 96 E5                 LDR             R0, [R6,#0x30]	maxEnergy存放到r0
+il2cpp:005DBE88 02 10 81 E2                 ADD             R1, R1, #2		r1+2
+il2cpp:005DBE8C 00 00 51 E1                 CMP             R1, R0
+il2cpp:005DBE90 00 10 A0 C1                 MOVGT           R1, R0		r1 > maxEnergy，将maxEnergy存放到r1
+il2cpp:005DBE94 34 10 86 E5                 STR             R1, [R6,#0x34]
+il2cpp:005DBE98 03 00 00 EA                 B               loc_5DBEAC
+
+CMP             R1, R0
+MOVGT           R1, R0
+修改为：
+MOV           R1, R0	00 10 a0 e1	-509603840
+MOV           R1, R0	00 10 a0 e1	-509603840
+
+
+il2cpp:005DBE9C             loc_5DBE9C                              ; CODE XREF: WorkerManager$$UpdateEnergy+14C↑j
+il2cpp:005DBE9C                                                     ; WorkerManager$$UpdateEnergy+158↑j
+il2cpp:005DBE9C 34 00 96 E5                 LDR             R0, [R6,#0x34]	-443154380
+il2cpp:005DBEA0 01 00 50 E3                 CMP             R0, #1		-481296383
+il2cpp:005DBEA4 01 00 40 A2                 SUBGE           R0, R0, #1		-1572863999
+il2cpp:005DBEA8 34 00 86 A5                 STRGE           R0, [R6,#0x34]	-1517944780
+
+
+修改为：
+LDR           R0, [R6,#0x30]	30 00 96 e5	-443154384
+MOV	r0,r0			00 00 a0 e1	-509607936
+MOV	r0,r0			00 00 a0 e1	-509607936
+STR           R0, [R6,#0x34]	34 00 86 e5	-444202956
+

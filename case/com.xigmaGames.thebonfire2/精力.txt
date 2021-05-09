@@ -1,0 +1,79 @@
+adb forward tcp:1234 tcp:1234
+./gdbserver-32 :1234 --attach 6203
+
+gdb-multiarch
+target remote :1234
+
+watch *(float*)0x8ae0e7fc
+info b
+c
+quit
+
+handle SIGPWR noprint nostop
+handle SIGXCPU noprint nostop
+
+
+vmmap libil2cpp.so
+[ Legend:  Code | Heap | Stack ]
+Start      End        Offset     Perm Path
+0xca2aa000 0xcb790000 0x00000000 r-x /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcb790000 0xcb828000 0x014e5000 r-- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+0xcb828000 0xcb8c0000 0x0157d000 rw- /data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+
+
+	40A00000	5
+Old value = 0x40800000	4
+New value = 0x40400000	3
+0xcab3410c in __start_il2cpp () from target:/data/app/com.xigmaGames.thebonfire2-1/lib/arm/libil2cpp.so
+[ Legend: Modified register | Code | Heap | Stack | String ]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ registers ©¤©¤©¤©¤
+$r0  : 0x8ae0e740  ¡ú  0xc0dc6e80  ¡ú  0xcdb9b4f8  ¡ú  0xcd10f80d  ¡ú  0x74696e55  ¡ú  0x17003b49  ¡ú  0x00000000
+$r1  : 0x0       
+$r2  : 0x40a00000
+$r3  : 0x0       
+$r4  : 0x8ae0e740  ¡ú  0xc0dc6e80  ¡ú  0xcdb9b4f8  ¡ú  0xcd10f80d  ¡ú  0x74696e55  ¡ú  0x17003b49  ¡ú  0x00000000
+$r5  : 0x40400000
+$r6  : 0x1       
+$r7  : 0x0       
+$r8  : 0x96a42f48  ¡ú  0xbfef8ec0  ¡ú  0xcdb9b990  ¡ú  0xcd13fac2  ¡ú  0x65737341  ¡ú  0xf1fe09e0
+$r9  : 0x96d4fea0  ¡ú  0xbf168800  ¡ú  0xcdb9b990  ¡ú  0xcd13fac2  ¡ú  0x65737341  ¡ú  0xf1fe09e0
+$r10 : 0x9540a950  ¡ú  0xc3b81974  ¡ú  0xc3310ab1  ¡ú   push {r4,  lr}
+$r11 : 0xc3e648e8  ¡ú  0xc3e64940  ¡ú  0xc3e64960  ¡ú  0xc3e64988  ¡ú  0xc3e649a8  ¡ú  0xc3e649b0  ¡ú  0xc3e649d0  ¡ú  0xc330c717
+$r12 : 0xcab3409c  ¡ú  0xe92d4c70  ¡ú  0xe3510000  ¡ú  0x00000000
+$sp  : 0xc3e648d8  ¡ú  0x00000003
+$lr  : 0xcab33f7c  ¡ú  0xee080a10
+$pc  : 0xcab3410c  ¡ú  0xebfffbb4
+$cpsr: [thumb fast interrupt overflow CARRY zero negative]
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ stack ©¤©¤©¤©¤
+0xc3e648d8©¦+0x0000: 0x00000003	 ¡û $sp
+0xc3e648dc©¦+0x0004: 0x8ae0e740  ¡ú  0xc0dc6e80  ¡ú  0xcdb9b4f8  ¡ú  0xcd10f80d  ¡ú  0x74696e55  ¡ú  0x17003b49  ¡ú  0x00000000
+0xc3e648e0©¦+0x0008: 0x8baacca0  ¡ú  0xcc252540  ¡ú  0xcdb9ac00  ¡ú  0xcd0b619a  ¡ú  0x6f63736d  ¡ú  0xaf739672  ¡ú  0x2828ff28
+0xc3e648e4©¦+0x000c: 0x9540a950  ¡ú  0xc3b81974  ¡ú  0xc3310ab1  ¡ú   push {r4,  lr}
+0xc3e648e8©¦+0x0010: 0xc3e64940  ¡ú  0xc3e64960  ¡ú  0xc3e64988  ¡ú  0xc3e649a8  ¡ú  0xc3e649b0  ¡ú  0xc3e649d0  ¡ú  0xc330c717	 ¡û $r11
+0xc3e648ec©¦+0x0014: 0xca87f890  ¡ú  0xe599400c  ¡ú  0x00000000
+0xc3e648f0©¦+0x0018: 0x0000000f
+0xc3e648f4©¦+0x001c: 0xcdb70100  ¡ú  0xcc01c700  ¡ú  0xcdb9ac00  ¡ú  0xcd0b619a  ¡ú  0x6f63736d  ¡ú  0xaf739672  ¡ú  0x2828ff28
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ code:arm:ARM ©¤©¤©¤©¤
+   0xcab34100 <__start_il2cpp+5188032> beq    0xcab34160 <__start_il2cpp+5188128>
+   0xcab34104 <__start_il2cpp+5188036> mov    r0,  r4
+   0xcab34108 <__start_il2cpp+5188040> vstr   s0,  [r4,  #188]	; 0xbc
+ ¡ú 0xcab3410c <__start_il2cpp+5188044> bl     0xcab32fe4 <__start_il2cpp+5183652>
+      0xcab32fe4 <__start_il2cpp+5183652> push   {r4,  r5,  r6,  r7,  r8,  r10,  r11,  lr}
+      0xcab32fe8 <__start_il2cpp+5183656> add    r11,  sp,  #24
+      0xcab32fec <__start_il2cpp+5183660> sub    sp,  sp,  #40	; 0x28
+      0xcab32ff0 <__start_il2cpp+5183664> mov    r4,  r0
+      0xcab32ff4 <__start_il2cpp+5183668> ldr    r0,  [pc,  #944]	; 0xcab333ac <__start_il2cpp+5184620>
+      0xcab32ff8 <__start_il2cpp+5183672> add    r0,  pc,  r0
+©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ arguments (guessed) ©¤©¤©¤©¤
+__start_il2cpp+5183652 (
+   $r0 = 0x8ae0e740 ¡ú 0xc0dc6e80 ¡ú 0xcdb9b4f8 ¡ú 0xcd10f80d ¡ú 0x74696e55 ¡ú 0x17003b49 ¡ú 0x00000000,
+   $r1 = 0x00000000,
+   $r2 = 0x40a00000
+)
+
+
+base = 0xca2aa000 
+0xcab34108 = base + 0x88A108
+vstr   s0,  [r4,  #188]		2f 0a 84 ed	-310113745
+mov r0, r0			00 00 a0 e1	-509607936	
+
