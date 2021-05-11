@@ -1,0 +1,4 @@
+1、通过gef调试时，使用quit退出调试
+2、使用frida hook时，使用下面的命令
+frida -U com.xigmaGames.thebonfire2 -l bornfire.js	如果修改了js文件，不用重新运行
+如果使用python的方式，如果修改了py文件，需要重新运行py文件
