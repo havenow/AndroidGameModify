@@ -1,0 +1,30 @@
+1、如果在同一进程，可以直接读取内存，暂停进程估计会有问题
+
+2、如果在不同进程，ptrace attach上进程后，能否直接用指针读取内存，不用ptrace读？？？
+暂停进程，应该用的是kill这个函数
+#include <sys/types.h>
+ 
+#include <signal.h>
+
+int kill(pid_t pid, int sig);
+
+
+15) SIGTERM
+程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL。
+
+18) SIGCONT
+让一个停止(stopped)的进程继续执行. 本信号不能被阻塞. 可以用一个handler来让程序在由stopped状态变为继续执行时完成特定的工作. 例如, 重新显示提示符
+
+19) SIGSTOP
+停止(stopped)进程的执行. 注意它和terminate以及interrupt的区别:该进程还未结束, 只是暂停执行. 本信号不能被阻塞, 处理或忽略.
+
+
+kill 命令需要进程号作为参数，而 killall 需要进程名称。
+
+另外，还可以在这两个命令后附加要发送信号序号作为参数。默认情况下，它们都向相关进程发送信号 15 (TERM)。例如，如果你想要终止 PID 为 785 的进程，请输入以下命令：
+
+$ kill 785
+
+如果您要向它发送信号 19 (STOP)，请输入：
+
+$ kill -19 785
