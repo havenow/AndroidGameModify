@@ -1,0 +1,39 @@
+.rodata:000115C0 aMonoClassGetFi DCB "mono_class_get_fields",0
+.rodata:000115D8 aMonoClassGetPr DCB "mono_class_get_properties",0
+.rodata:00011620 aMonoClassGetFi_0 DCB "mono_class_get_field_from_name",0
+.rodata:00011640 aMonoClassGetPr_0 DCB "mono_class_get_property_from_name",0
+
+.rodata:0001173C aMonoFieldGetVa DCB "mono_field_get_value",0
+.rodata:00011754 aMonoFieldGetVa_0 DCB "mono_field_get_value_object",0
+.rodata:00011770 aMonoFieldSetVa DCB "mono_field_set_value",0
+.rodata:00011788 aMonoFieldStati DCB "mono_field_static_set_value",0
+.rodata:000117A4 aMonoFieldStati_0 DCB "mono_field_static_get_value",0
+
+
+
+namespace StardewValley
+{
+	// Token: 0x02000198 RID: 408
+	public class Game1 : Game
+	{
+public static int timeOfDay = 600;
+
+
+mono_field_static_get_value
+mono_field_static_set_value
+
+游戏中1s是1分钟
+界面时间显示	打印timeOfDay的值	
+上午6:00	600
+上午11:50	1150
+下午12:00	1200
+下午1:00	1300
+下午6:00	1800
+下午11:00	2300
+下午12:00	2400
+上午12:10	2410
+上午1:00	2500
+上午2:00	2600
+开始存档
+
+继续新的一天
