@@ -1,0 +1,19 @@
+
+namespace StardewValley
+{
+	// Token: 0x02000198 RID: 408
+	public class Game1 : Game
+	{
+
+public static double dailyLuck = 0.001;
+
+private static void _newDayAfterFade()函数中计算dailyLuck 
+Game1.dailyLuck = Math.Min(0.10000000149011612, (double)Game1.random.Next(-100, 101) / 1000.0 + (double)(Game1.player.hasSpecialCharm ? 0.025f : 0f));
+
+不同的幸运值，房间里面电视机，点击算命占卜时，显示的图片不一样
+0.07-0.1	星星
+0.002-0.07	金字塔
+-0.02-0.02	打转的光
+-0.07--0.02	蝙蝠
+-0.1--0.07	骷髅
+
