@@ -1,0 +1,74 @@
+https://segmentfault.com/a/1190000004071127
+https://www.cnblogs.com/murongxiaopifu/p/4557365.html
+
+C#代码中定义的Component类
+using System;
+using System.Runtime.CompilerServices;
+namespace ManagedLibrary
+{
+   public class Component
+   {
+      //字段
+      private IntPtr native_handle = (IntPtr)0;
+      //方法
+      [MethodImpl(MethodImplOptions.InternalCall)]
+      public extern static Component[] GetComponents();			//只有定义没有实现	static 函数
+      [MethodImpl(MethodImplOptions.InternalCall)]
+      public extern static int get_id_Internal(IntPtr native_handle);	//只有定义没有实现	static 函数
+      //属性
+      public int ID
+      {
+         get 
+         {
+            return get_id_Internal(this.native_handle);
+         }
+      }
+      public int Tag {
+         [MethodImpl(MethodImplOptions.InternalCall)]
+         get;								//只有定义没有实现	非static 函数
+      }
+   }
+}
+
+
+c++代码中对C#代码的实现
+//获取属性
+int ManagedLibrary_Component_get_id_Internal(const Component* component)
+{
+    return component->id;
+}
+ 
+int ManagedLibrary_Component_get_tag(MonoObject* this_ptr)//static 函数 第一个参数是this指针
+{
+    Component* component;
+    mono_field_get_value(this_ptr, native_handle_field, reinterpret_cast<void*>(&Component));
+    return component->tag;
+}
+
+MonoArray* ManagedLibrary_Component_GetComponents()
+{
+    MonoArray* array = mono_array_new(domain, Component_class, num_Components);
+    
+    for(uint32_t i = 0; i < num_Components; ++i)
+    {
+        MonoObject* obj = mono_object_new(domain, Component_class);
+        mono_runtime_object_init(obj);
+        void* native_handle_value = &Components[i];
+        mono_field_set_value(obj, native_handle_field, &native_handle_value);
+        mono_array_set(array, MonoObject*, i, obj);
+    }
+    
+    return array;
+}
+
+
+
+最后我们还需要将C#中的接口和C/C++中的具体实现关联起来。即通过Mono的mono_add_internal_call方法来实现，
+也即在Mono的运行时中注册刚刚用C/C++实现的具体逻辑，以便将托管代码（C#）和非托管代码（C/C++）绑定。
+// get_id_Internal
+mono_add_internal_call("ManagedLibrary.Component::get_id_Internal", reinterpret_cast<void*>(ManagedLibrary_Component_get_id_Internal));
+//Tag get
+mono_add_internal_call("ManagedLibrary.Component::get_Tag", reinterpret_cast<void*>(ManagedLibrary_Component_get_tag));
+//GetComponents
+mono_add_internal_call("ManagedLibrary.Component::GetComponents", reinterpret_cast<void*>(ManagedLibrary_Component_GetComponents));
+
