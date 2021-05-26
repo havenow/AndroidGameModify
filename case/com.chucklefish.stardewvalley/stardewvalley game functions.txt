@@ -1,0 +1,284 @@
+.rodata:00010B2C aFarmer         DCB "Farmer",0          ; DATA XREF: sub_663C+16↑o
+.rodata:00010B34 aAdditemtoinven DCB "addItemToInventory",0
+.rodata:00010B48 aGainexperience DCB "gainExperience",0  ; DATA XREF: sub_663C+A2↑o
+.rodata:00010B58 aGetMoney       DCB "get_money",0       ; DATA XREF: sub_663C+B2↑o
+.rodata:00010B64 aSetMoney       DCB "set_money",0       ; DATA XREF: sub_663C+C2↑o
+.rodata:00010B70 aGetmovementspe DCB "getMovementSpeed",0
+.rodata:00010B84 aUpdate         DCB "Update",0          ; DATA XREF: sub_663C+78↑o
+.rodata:00010B8C aSetStamina     DCB "set_stamina",0     ; DATA XREF: sub_663C+F2↑o
+.rodata:00010B98 aGetLevel       DCB "get_Level",0       ; DATA XREF: sub_663C+102↑o
+.rodata:00010BA4 aTool           DCB "Tool",0            ; DATA XREF: sub_663C+6A↑o
+.rodata:00010BAC aTree           DCB "Tree",0            ; DATA XREF: sub_663C+11E↑o
+.rodata:00010BB4 aIspassable     DCB "isPassable",0      ; DATA XREF: sub_663C+12C↑o
+.rodata:00010BC0 aWateringcan    DCB "WateringCan",0     ; DATA XREF: sub_663C+13C↑o
+.rodata:00010BCC aDofunction     DCB "DoFunction",0      ; DATA XREF: sub_663C+14A↑o
+.rodata:00010BD8 aFishingrod     DCB "FishingRod",0      ; DATA XREF: sub_663C+192↑o
+.rodata:00010BE4 aCancasthere    DCB "CanCastHere",0     ; DATA XREF: sub_663C+1A0↑o
+.rodata:00010BF0 aCraftingrecipe DCB "CraftingRecipe",0  ; DATA XREF: sub_663C+1BA↑o
+.rodata:00010C00 aDoesfarmerhave DCB "doesFarmerHaveIngredientsInInventory",0
+.rodata:00010C28 aTaptomove      DCB "TapToMove",0       ; DATA XREF: sub_663C+1C8↑o
+.rodata:00010C34 aTileonmap      DCB "TileOnMap",0       ; DATA XREF: sub_663C+1D6↑o
+.rodata:00010C40 aTv             DCB "TV",0              ; DATA XREF: sub_663C+1E4↑o
+.rodata:00010C44 aCtor           DCB ".ctor",0           ; DATA XREF: sub_663C+1F2↑o
+.rodata:00010C4C aSetUpgradeleve DCB "set_UpgradeLevel",0
+.rodata:00010C60 aInventorymenu  DCB "InventoryMenu",0   ; DATA XREF: sub_663C+212↑o
+.rodata:00010C70 aFuncloader     DCB "FuncLoader",0      ; DATA XREF: sub_663C+34↑o
+.rodata:00010C7C aLoadlibrary    DCB "LoadLibrary",0     ; DATA XREF: sub_663C+42↑o
+.rodata:00010C88 aBasicString    DCB "basic_string",0    ; DATA XREF: sub_6A70+50↑o
+.rodata:00010C98 aLibopenal32So  DCB "libopenal32.so",0  ; DATA XREF: sub_6ACC+22↑o
+.rodata:00010CA8 aVector         DCB "vector",0          ; DATA XREF: sub_7064+CC↑o
+.rodata:00010CB0 aOutOfMemory    DCB "out of memory",0xA,0
+.rodata:00010CC0 aHealth         DCB "health",0          ; DATA XREF: sub_7870+28↑o
+.rodata:00010CC8 aValue          DCB "value",0           ; DATA XREF: sub_7870+3C↑o
+.rodata:00010CD0 aMaxhealth      DCB "maxHealth",0       ; DATA XREF: sub_7914+132↑o
+.rodata:00010CDC aTimeofday      DCB "timeOfDay",0       ; DATA XREF: sub_7914+3C↑o
+.rodata:00010CE8 aMaxitems       DCB "maxItems",0        ; DATA XREF: sub_7914+D6↑o
+.rodata:00010CF4 aStack          DCB "stack",0           ; DATA XREF: sub_7B14+C2↑o
+.rodata:00010CFC aPlugindemon    DCB "PluginDemoN",0     ; DATA XREF: sub_7B14+100↑o
+.rodata:00010D08 aSStackD        DCB "%s stack=%d",0     ; DATA XREF: sub_7B14+FE↑o
+.rodata:00010D14 aQuality        DCB "quality",0         ; DATA XREF: sub_7B14+70↑o
+.rodata:00010D1C aStardewvalley  DCB "StardewValley",0   ; DATA XREF: sub_8104+22↑o
+.rodata:00010D2C aObject         DCB "Object",0          ; DATA XREF: sub_8104+24↑o
+.rodata:00010D34 aStardewvalleyN DCB "StardewValley.Network",0
+.rodata:00010D4C aNetposition    DCB "NetPosition",0     ; DATA XREF: sub_8104+5E↑o
+.rodata:00010D58 aX              DCB "X",0               ; DATA XREF: sub_8104+6E↑o
+.rodata:00010D5C aY              DCB "Y",0               ; DATA XREF: sub_8104+78↑o
+.rodata:00010D60 aUpgradelevel   DCB "upgradeLevel",0    ; DATA XREF: sub_8104+A6↑o
+.rodata:00010D70 aNpc            DCB "NPC",0             ; DATA XREF: sub_8104+C4↑o
+.rodata:00010D74 aName           DCB "name",0            ; DATA XREF: sub_8104+D4↑o
+.rodata:00010D7C aPosition       DCB "position",0        ; DATA XREF: sub_8104+DE↑o
+.rodata:00010D88 aDisplayname    DCB "_displayName",0    ; DATA XREF: sub_8104+E8↑o
+.rodata:00010D98 aDatestringfors DCB "dateStringForSaveGame",0
+.rodata:00010DB0 aDayofmonthfors DCB "dayOfMonthForSaveGame",0
+.rodata:00010DC8 aAttackincrease DCB "attackIncreaseModifier",0
+.rodata:00010DE0 aFarminglevel   DCB "farmingLevel",0    ; DATA XREF: sub_8104+148↑o
+.rodata:00010DF0 aExperiencepoin DCB "experiencePoints",0
+.rodata:00010E04 aCanmove        DCB "canMove",0         ; DATA XREF: sub_8104+170↑o
+.rodata:00010E0C aGetFacingdirec DCB "get_FacingDirection",0
+.rodata:00010E20 aStardewvalleyM DCB "StardewValley.Menus",0
+.rodata:00010E34 aCapacity       DCB "capacity",0        ; DATA XREF: sub_8104+1A8↑o
+.rodata:00010E40 aRows           DCB "rows",0            ; DATA XREF: sub_8104+1B2↑o
+.rodata:00010E48 aSystemDiagnost DCB "System.Diagnostics",0
+.rodata:00010E5C aStopwatch      DCB "Stopwatch",0       ; DATA XREF: sub_8104+1D0↑o
+.rodata:00010E68 aFrequency      DCB "Frequency",0       ; DATA XREF: sub_8104+1E0↑o
+.rodata:00010E74 aElapsed        DCB "elapsed",0         ; DATA XREF: sub_8104+1EA↑o
+.rodata:00010E7C aLocationname   DCB "LocationName",0    ; DATA XREF: sub_8104+20A↑o
+.rodata:00010E8C aAdventureguild DCB "AdventureGuild",0  ; DATA XREF: sub_8104+21C↑o
+.rodata:00010E9C aAnimalshop     DCB "AnimalShop",0      ; DATA XREF: sub_8104+226↑o
+.rodata:00010EA8 aArchaeologyhou DCB "ArchaeologyHouse",0
+.rodata:00010EBC aBackwoods      DCB "Backwoods",0       ; DATA XREF: sub_8104+23A↑o
+.rodata:00010EC8 aBathhouseEntry DCB "BathHouse_Entry",0 ; DATA XREF: sub_8104+244↑o
+.rodata:00010ED8 aBathhouseMensl DCB "BathHouse_MensLocker",0
+.rodata:00010EF0 aBathhousePool  DCB "BathHouse_Pool",0  ; DATA XREF: sub_8104+258↑o
+.rodata:00010F00 aBathhouseWomen DCB "BathHouse_WomensLocker",0
+.rodata:00010F18 aBeach          DCB "Beach",0           ; DATA XREF: sub_8104+26C↑o
+.rodata:00010F20 aBlacksmith     DCB "Blacksmith",0      ; DATA XREF: sub_8104+276↑o
+.rodata:00010F2C aBugland        DCB "BugLand",0         ; DATA XREF: sub_8104+280↑o
+.rodata:00010F34 aBusstop        DCB "BusStop",0         ; DATA XREF: sub_8104+28A↑o
+.rodata:00010F3C aCellar         DCB "Cellar",0          ; DATA XREF: sub_8104+294↑o
+.rodata:00010F44 aClub           DCB "Club",0            ; DATA XREF: sub_8104+29E↑o
+.rodata:00010F4C aCommunitycente DCB "CommunityCenter",0 ; DATA XREF: sub_8104+2A8↑o
+.rodata:00010F5C aDesert         DCB "Desert",0          ; DATA XREF: sub_8104+2B2↑o
+.rodata:00010F64 aElliotthouse   DCB "ElliottHouse",0    ; DATA XREF: sub_8104+2BC↑o
+.rodata:00010F74 aFarm           DCB "Farm",0            ; DATA XREF: sub_8104+2C6↑o
+.rodata:00010F7C aFarmcave       DCB "FarmCave",0        ; DATA XREF: sub_8104+2D0↑o
+.rodata:00010F88 aFishshop       DCB "FishShop",0        ; DATA XREF: sub_8104+2DA↑o
+.rodata:00010F94 aForest         DCB "Forest",0          ; DATA XREF: sub_8104+2E4↑o
+.rodata:00010F9C aGreenhouse     DCB "Greenhouse",0      ; DATA XREF: sub_8104+2EE↑o
+.rodata:00010FA8 aHaleyhouse     DCB "HaleyHouse",0      ; DATA XREF: sub_8104+2F8↑o
+.rodata:00010FB4 aHarveyroom     DCB "HarveyRoom",0      ; DATA XREF: sub_8104+302↑o
+.rodata:00010FC0 aHospital       DCB "Hospital",0        ; DATA XREF: sub_8104+30C↑o
+.rodata:00010FCC aJojamart       DCB "JojaMart",0        ; DATA XREF: sub_8104+316↑o
+.rodata:00010FD8 aJoshhouse      DCB "JoshHouse",0       ; DATA XREF: sub_8104+450↑o
+.rodata:00010FE4 aLeahhouse      DCB "LeahHouse",0       ; DATA XREF: sub_8104+45A↑o
+.rodata:00010FF0 aManorhouse     DCB "ManorHouse",0      ; DATA XREF: sub_8104+464↑o
+.rodata:00010FFC aMine           DCB "Mine",0            ; DATA XREF: sub_8104+46E↑o
+.rodata:00011004 aMountain       DCB "Mountain",0        ; DATA XREF: sub_8104+478↑o
+.rodata:00011010 aRailroad       DCB "Railroad",0        ; DATA XREF: sub_8104+482↑o
+.rodata:0001101C aSaloon         DCB "Saloon",0          ; DATA XREF: sub_8104+48C↑o
+.rodata:00011024 aSamhouse       DCB "SamHouse",0        ; DATA XREF: sub_8104+496↑o
+.rodata:00011030 aSandyhouse     DCB "SandyHouse",0      ; DATA XREF: sub_8104+4A0↑o
+.rodata:0001103C aSciencehouse   DCB "ScienceHouse",0    ; DATA XREF: sub_8104+4AA↑o
+.rodata:0001104C aSebastianroom  DCB "SebastianRoom",0   ; DATA XREF: sub_8104+4B4↑o
+.rodata:0001105C aSeedshop       DCB "SeedShop",0        ; DATA XREF: sub_8104+4BE↑o
+.rodata:00011068 aSewer          DCB "Sewer",0           ; DATA XREF: sub_8104+4C8↑o
+.rodata:00011070 aSkullcave      DCB "SkullCave",0       ; DATA XREF: sub_8104+4D2↑o
+.rodata:0001107C aSummit         DCB "Summit",0          ; DATA XREF: sub_8104+4DC↑o
+.rodata:00011084 aTent           DCB "Tent",0            ; DATA XREF: sub_8104+4E6↑o
+.rodata:0001108C aTown           DCB "Town",0            ; DATA XREF: sub_8104+4F0↑o
+.rodata:00011094 aTrailer        DCB "Trailer",0         ; DATA XREF: sub_8104+4FA↑o
+.rodata:0001109C aTunnel         DCB "Tunnel",0          ; DATA XREF: sub_8104+504↑o
+.rodata:000110A4 aUndergroundmin DCB "UndergroundMine",0 ; DATA XREF: sub_8104+50E↑o
+.rodata:000110B4 aWitchhut       DCB "WitchHut",0        ; DATA XREF: sub_8104+518↑o
+.rodata:000110C0 aWitchswamp     DCB "WitchSwamp",0      ; DATA XREF: sub_8104+522↑o
+.rodata:000110CC aWitchwarpcave  DCB "WitchWarpCave",0   ; DATA XREF: sub_8104+52C↑o
+.rodata:000110DC aWizardhouse    DCB "WizardHouse",0     ; DATA XREF: sub_8104+536↑o
+.rodata:000110E8 aWizardhousebas DCB "WizardHouseBasement",0
+.rodata:000110FC aWoods          DCB "Woods",0           ; DATA XREF: sub_8104+54A↑o
+.rodata:00011104 aGame1          DCB "Game1",0           ; DATA XREF: sub_8104+568↑o
+.rodata:0001110C aDailyluck      DCB "dailyLuck",0       ; DATA XREF: sub_8104+578↑o
+.rodata:00011118 aWeatherfortomo DCB "weatherForTomorrow",0
+.rodata:0001112C aIssnowing      DCB "isSnowing",0       ; DATA XREF: sub_8104+596↑o
+.rodata:00011138 aWarphome       DCB "warpHome",0        ; DATA XREF: sub_8104+5A0↑o
+.rodata:00011144 aGetlocationreq DCB "getLocationRequest",0
+.rodata:00011158 aGetPlayer      DCB "get_player",0      ; DATA XREF: sub_8104+5B4↑o
+.rodata:00011164 aWarpfarmer     DCB "warpFarmer",0      ; DATA XREF: sub_8104+5BE↑o
+.rodata:00011170 aNewseason      DCB "newSeason",0       ; DATA XREF: sub_8104+5C8↑o
+.rodata:0001117C aGetlocationfro DCB "getLocationFromName",0
+.rodata:00011190 aDrawdialoguebo DCB "drawDialogueBox",0 ; DATA XREF: sub_8104+5DC↑o
+.rodata:000111A0 aDrawlettermess DCB "drawLetterMessage",0
+.rodata:000111B4 aDrawobjectdial DCB "drawObjectDialogue",0
+.rodata:000111C8 aShowglobalmess DCB "showGlobalMessage",0
+.rodata:000111DC aNetcode        DCB "Netcode",0         ; DATA XREF: sub_8104+616↑o
+.rodata:000111E4 aNetint         DCB "NetInt",0          ; DATA XREF: sub_8104+618↑o
+.rodata:000111EC aNetfloat       DCB "NetFloat",0        ; DATA XREF: sub_8104+646↑o
+.rodata:000111F8 aStardewvalleyT DCB "StardewValley.TerrainFeatures",0
+.rodata:00011218 aStardewvalleyT_0 DCB "StardewValley.Tools",0
+.rodata:0001122C aWatercanmax    DCB "waterCanMax",0     ; DATA XREF: sub_8104+6B2↑o
+.rodata:00011238 aSetWaterleft   DCB "set_WaterLeft",0   ; DATA XREF: sub_8104+6BC↑o
+.rodata:00011248 aGamelocation   DCB "GameLocation",0    ; DATA XREF: sub_8104+6DA↑o
+.rodata:00011258 aGetwarppointto DCB "getWarpPointTo",0  ; DATA XREF: sub_8104+6EA↑o
+.rodata:00011268 aLasttouchactio DCB "lastTouchActionLocation",0
+.rodata:00011280 aStardewvalleyO DCB "StardewValley.Objects",0
+.rodata:00011298 aGetweatherfore DCB "getWeatherForecast",0
+.rodata:000112AC aGetfortunefore DCB "getFortuneForecast",0
+.rodata:000112C0 aDonewithcastin DCB "doneWithCastingAnimation",0
+.rodata:000112DC aPlayercaughtfi DCB "playerCaughtFishEndFunction",0
+.rodata:000112F8 aWhichfish      DCB "whichFish",0       ; DATA XREF: sub_8104+8A2↑o
+.rodata:00011304 aFishsize       DCB "fishSize",0        ; DATA XREF: sub_8104+8AC↑o
+.rodata:00011310 aStardewvalleyM_0 DCB "StardewValley.Mobile",0
+.rodata:00011328 aMobiledebughar DCB "MobileDebugHarry",0
+.rodata:0001133C aUnlockeverythi DCB "unlockEverything",0
+.rodata:00011350 aFish           DCB "Fish",0            ; DATA XREF: sub_8104+8F8↑o
+
+
+.rodata:0001135C aMonoRuntimeInv DCB "mono_runtime_invoke",0
+.rodata:00011370 aMonoCompileMet DCB "mono_compile_method",0
+.rodata:00011384 aMonoImageOpenF DCB "mono_image_open_from_data_with_name",0
+.rodata:000113A8 aMonoGetRootDom DCB "mono_get_root_domain",0
+.rodata:000113C0 aMonoDomainGet  DCB "mono_domain_get",0 ; DATA XREF: .data.rel.ro.local:000133A0↓o
+.rodata:000113D0 aMonoDomainAsse DCB "mono_domain_assembly_open",0
+.rodata:000113EC aMonoDomainFore DCB "mono_domain_foreach",0
+.rodata:00011400 aMonoThreadAtta DCB "mono_thread_attach",0
+.rodata:00011414 aMonoThreadDeta DCB "mono_thread_detach",0
+.rodata:00011428 aMonoObjectNew  DCB "mono_object_new",0 ; DATA XREF: .data.rel.ro.local:000133C8↓o
+.rodata:00011438 aMonoRuntimeObj DCB "mono_runtime_object_init",0
+.rodata:00011454 aMonoStringToUt DCB "mono_string_to_utf8",0
+.rodata:00011468 aMonoStringNewW DCB "mono_string_new_wrapper",0
+.rodata:00011488 aMonoAddInterna DCB "mono_add_internal_call",0
+.rodata:000114A0 aMonoObjectGetC DCB "mono_object_get_class",0	//通过obj获取class 例：mono_class_get_name(mono_object_get_class(exception)));
+.rodata:000114B8 aMonoObjectUnbo DCB "mono_object_unbox",0
+.rodata:000114CC aMonoStringNew  DCB "mono_string_new",0 ; DATA XREF: .data.rel.ro.local:00013408↓o
+.rodata:000114DC aMonoAssemblyOp DCB "mono_assembly_open",0
+.rodata:000114F0 aMonoAssemblyGe DCB "mono_assembly_get_image",0
+.rodata:00011508 aMonoReflection DCB "mono_reflection_type_from_name",0
+.rodata:00011528 aMonoClassNumFi DCB "mono_class_num_fields",0
+.rodata:00011540 aMonoClassNumMe DCB "mono_class_num_methods",0
+.rodata:00011558 aMonoClassNumPr DCB "mono_class_num_properties",0
+.rodata:00011574 aMonoClassGetNa DCB "mono_class_get_name",0
+.rodata:00011588 aMonoClassGetMe DCB "mono_class_get_method_from_name",0
+.rodata:000115A8 aMonoClassGetMe_0 DCB "mono_class_get_methods",0
+.rodata:000115C0 aMonoClassGetFi DCB "mono_class_get_fields",0
+.rodata:000115D8 aMonoClassGetPr DCB "mono_class_get_properties",0
+.rodata:000115F4 aMonoClassGetEv DCB "mono_class_get_events",0
+.rodata:0001160C aMonoClassVtabl DCB "mono_class_vtable",0
+.rodata:00011620 aMonoClassGetFi_0 DCB "mono_class_get_field_from_name",0
+.rodata:00011640 aMonoClassGetPr_0 DCB "mono_class_get_property_from_name",0
+.rodata:00011664 aMonoClassFromM DCB "mono_class_from_mono_type",0
+.rodata:00011680 aMonoClassFromN DCB "mono_class_from_name",0
+.rodata:00011698 aMonoMethodGetO DCB "mono_method_get_object",0		//MonoReflectionMethod *(*mono_method_get_object)(void *domain, void *method, void *refclass) = NULL;
+.rodata:000116B0 aMonoMethodSign DCB "mono_method_signature",0
+.rodata:000116C8 aMonoMethodGetL DCB "mono_method_get_last_managed",0
+.rodata:000116E8 aMonoMethodDesc DCB "mono_method_desc_search_in_class",0
+.rodata:0001170C aMonoMethodDesc_0 DCB "mono_method_desc_free",0
+.rodata:00011724 aMonoMethodGetH DCB "mono_method_get_header",0
+.rodata:0001173C aMonoFieldGetVa DCB "mono_field_get_value",0			//(mono_object, field, &value);
+.rodata:00011754 aMonoFieldGetVa_0 DCB "mono_field_get_value_object",0	//(pDomain,m_pMonoField,m_pMonoObject);
+.rodata:00011770 aMonoFieldSetVa DCB "mono_field_set_value",0
+.rodata:00011788 aMonoFieldStati DCB "mono_field_static_set_value",0
+.rodata:000117A4 aMonoFieldStati_0 DCB "mono_field_static_get_value",0
+.rodata:000117C0 aMonoSignatureG DCB "mono_signature_get_desc",0
+.rodata:000117D8 aMonoSignatureG_0 DCB "mono_signature_get_params",0
+.rodata:000117F4 aMonoDisasmCode DCB "mono_disasm_code",0
+.rodata:00011808 aMonoArrayAddrW DCB "mono_array_addr_with_size",0
+.rodata:00011824 aMonoArrayLengt DCB "mono_array_length",0
+
+
+
+
+
+
+
+
+
+
+
+
+MonoReflectionMethodHandle ref_method_h,
+MonoMethod *method;
+MonoReflectionMethod *ref_method = MONO_HANDLE_RAW (ref_method_h);
+method = ref_method->method;
+
+
+https://github.com/mono/mono/blob/bdd772531d379b4e78593587d15113c37edd4a64/mono/metadata/object-internals.h
+struct _MonoReflectionMethod {
+	MonoObject object;
+	MonoMethod *method;
+	MonoString *name;
+	MonoReflectionType *reftype;
+};
+/* Safely access System.Reflection.MonoMethod from native code */
+TYPED_HANDLE_DECL (MonoReflectionMethod);
+
+
+struct _MonoDelegate {
+	MonoObject object;
+
+	MonoReflectionMethod *method_info;
+	MonoReflectionMethod *original_method_info;
+	MonoObject *data;
+	MonoBoolean method_is_virtual;
+};
+
+
+https://github.com/mono/mono/blob/bdd772531d379b4e78593587d15113c37edd4a64/mono/metadata/object.h
+struct _MonoObject {
+	MonoVTable *vtable;
+	MonoThreadsSync *synchronisation;
+};
+mono/metadata/object-forward.h
+typedef struct _MonoObject MONO_RT_MANAGED_ATTR MonoObject;
+
+
+
+
+
+
+
+
+
+MonoReflectionField*    mono_field_get_object    (MonoDomain *domain, MonoClass *klass, MonoClassField *field);
+typedef struct _MonoReflectionField MONO_RT_MANAGED_ATTR MonoReflectionField;
+
+struct _MonoReflectionField {
+	MonoObject object;
+	MonoClass *klass;
+	MonoClassField *field;
+	MonoString *name;
+	MonoReflectionType *type;
+	guint32 attrs;
+};
+
+
+https://blog.csdn.net/AApanqingyun/article/details/83189356
+从mono源码中我们找到了mono_add_internal_call这个函数，看起来和前面那个属性标签应该是对应的，这个函数有两个参数，
+const char *name 和  const void* method，从字面上理解就应该是函数的名字和指向函数的指针，确实是这样的，
+name是C#中的函数名，method是C++中的函数地址，这样通过这个函数就能够将C#中的函数和C++中的函数关联起来了，
+那么这个函数名该怎么给呢？他是以这样 namespace.class::function 的形式给的，如果在C#中定义的是静态函数，
+那么在C++中函数的参数和C#中一致，如果在C#中定义的是成员函数，C++中函数参数的第一个参数就是这个成员函数所在类的this引用。
+
+
+https://www.cnblogs.com/murongxiaopifu/p/4557365.html
+InternalCall
+
+
