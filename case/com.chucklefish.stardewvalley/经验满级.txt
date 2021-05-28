@@ -1,0 +1,48 @@
+gainExperience
+
+namespace StardewValley
+{
+	// Token: 0x020001F8 RID: 504
+	public class Farmer : Character, IComparable
+	{
+
+public void gainExperience(int which, int howMuch)
+		{
+
+	switch (which)
+				{
+				case 0:
+					num2 = this.farmingLevel;
+					this.farmingLevel.Value = num;
+					break;
+				case 1:
+					num2 = this.fishingLevel;
+					this.fishingLevel.Value = num;
+					break;
+				case 2:
+					num2 = this.foragingLevel;
+					this.foragingLevel.Value = num;
+					break;
+				case 3:
+					num2 = this.miningLevel;
+					this.miningLevel.Value = num;
+					break;
+				case 4:
+					num2 = this.combatLevel;
+					this.combatLevel.Value = num;
+					break;
+				case 5:
+					num2 = this.luckLevel;
+					this.luckLevel.Value = num;
+					break;
+				}
+
+
+
+
+				this.farmingLevel,
+				this.fishingLevel,
+				this.foragingLevel,
+				this.miningLevel,
+				this.combatLevel,
+				this.luckLevel
