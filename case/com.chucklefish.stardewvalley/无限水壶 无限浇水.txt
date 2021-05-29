@@ -1,0 +1,46 @@
+namespace StardewValley.Tools
+{
+	// Token: 0x02000244 RID: 580
+	public class WateringCan : Tool
+	{
+
+			public int WaterLeft
+		{
+			get
+			{
+				return this.waterLeft;
+			}
+			set
+			{
+				this.waterLeft = value;
+			}
+		}
+
+
+
+				switch (this.upgradeLevel)
+				{
+				case 0:
+					this.waterCanMax = 40;
+					break;
+				case 1:
+					this.waterCanMax = 55;
+					break;
+				case 2:
+					this.waterCanMax = 70;
+					break;
+				case 3:
+					this.waterCanMax = 85;
+					break;
+				case 4:
+					this.waterCanMax = 100;
+					break;
+				}
+
+
+		public int waterCanMax = 40;
+
+		private int waterLeft = 40;
+
+获取waterCanMax 的值
+调用set_WaterLeft
