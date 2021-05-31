@@ -1,0 +1,16 @@
+public readonly NetInt quality = new NetInt(0);
+
+
+      result = dword_14888(result, "StardewValley", "Object");
+      dword_143A8 = result;
+      if ( result )
+      {
+        sub_765C((int **)&dword_143A8, "stack");			//添加物品数量为10倍
+        result = (int)sub_765C((int **)&dword_143A8, "quality");	//添加物品品质为4
+      }
+
+
+      result = dword_14888(v1, "Netcode", "NetInt");
+      dword_14368 = result;
+      if ( result )
+        result = (int)sub_765C((int **)&dword_14368, "value");
