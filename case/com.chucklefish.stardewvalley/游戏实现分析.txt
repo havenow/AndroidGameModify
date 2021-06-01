@@ -26,3 +26,28 @@ MonoDomain，用来作为盛放托管代码的容器
 将C#中的接口和C/C++中的具体实现关联起来。即通过Mono的mono_add_internal_call方法来实现，
 也即在Mono的运行时中注册刚刚用C/C++实现的具体逻辑，以便将托管代码（C#）和非托管代码（C/C++）绑定
 mono_add_internal_call("ManagedLibrary.Component::get_id_Internal", reinterpret_cast<void*>(ManagedLibrary_Component_get_id_Internal));
+
+#########################################
+源码结构
+这里仅列举几个重要的目录：
+mcs：
+    mcs： Mono实现的基于Ecma标准的C#编译器。
+    class： CLI的C#级的实现。类似于Android中的Java层，应用程序看到的是这一层提供的接口。这一层是平台无关的。
+    ilasm： 反汇编器，将Native code反汇编成bytecode。
+mono：
+    mini： JIT编译器，将bytecode编译成native code。
+    metadata： Mono的runtime，CLI的Native级的实现。
+    io-layer： 与操作系统相关的接口实现，像socket，thread，mutex这些。
+
+
+#################################
+https://www.jianshu.com/p/edc258398153
+采用Mono机制编译、处理C#语言编写的逻辑代码，编译之后本地存储IL指令。
+在游戏运行阶段存在代码动态编译的过程，Mono jit机制将IL指令编译为机器可识别的汇编指令。
+
+
+其中 mini_method_compile 函数在内部通过 Mono的 JIT 机制实现动态编译过程。
+
+
+
+

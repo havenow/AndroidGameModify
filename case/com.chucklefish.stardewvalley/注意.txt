@@ -1,0 +1,12 @@
+1、通过gef调试时，使用quit退出调试
+2、使用frida hook时，使用下面的命令
+frida -U com.chucklefish.stardewvalley -l stardewvalley.js	如果修改了js文件，不用重新运行
+
+如果使用python的方式，如果修改了py文件，需要重新运行py文件
+
+frida -U -p 23585 -l stardewvalley.js	在va中跑游戏时，通过进程号来注入脚本
+va中启动时，使用包名注入脚本，会提示下面的错误
+Failed to spawn: ambiguous name; it matches: com.chucklefish.stardewvalley (pid: 22746), com.chucklefish.stardewvalley (pid: 22780)
+
+3、adb安装时强制应用App以32位运行
+adb install --abi armeabi-v7a <path to apk>
