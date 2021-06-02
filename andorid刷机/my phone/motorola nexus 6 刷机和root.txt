@@ -12,6 +12,11 @@ git clone https://android.googlesource.com/kernel/msm
 
 root
 使用的是Kingo ROOT一键root(5.1是可以root成功的，7.1的系统root不成功)
+好像用Kingo ROOT也会失败
+http://www.sxlog.com/shouji/454.html
+下载nexus 6：使用CF-Auto-Root一键root 安卓6.0.1
+双击运行root-windows.bat
+
 
 //------------------------------------------------
 后面用官方刷机包flash-all.bat一键刷机，刷机之后系统可以启动，但是重启手机，系统起不来，原因没找到
@@ -94,8 +99,7 @@ fastboot reboot
 PATH=%PATH%;"%SYSTEMROOT%\System32"
 
 fastboot flash bootloader bootloader-shamu-moto-apq8084-71.08.img
-f
-astboot reboot-bootloader
+fastboot reboot-bootloader
 
 ping -n 5 127.0.0.1 >nul
 
