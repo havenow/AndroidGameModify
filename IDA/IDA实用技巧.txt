@@ -8,6 +8,7 @@ jni.h需要做下面的修改
 
 //#include <stdarg.h>
 
+添加：
 //from sys/cdefs.h
 #if defined(__ANDROID__) && !defined(__LP64__) && defined( __arm__)
 
@@ -21,5 +22,9 @@ jni.h需要做下面的修改
 
 
 4、伪代码界面，对一个函数右键 force call type，可以补全函数调用的参数
+
+5、;	添加注释
+
+
 
 
