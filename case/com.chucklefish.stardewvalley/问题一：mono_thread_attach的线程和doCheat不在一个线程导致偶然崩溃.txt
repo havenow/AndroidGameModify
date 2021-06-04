@@ -1,0 +1,13 @@
+遇到的问题：
+	EXPORT_FUNC void doCheat(int arg0, int arg1, int arg2)
+	{
+		cheat_init(_baseAddr);	attach到线程
+		//process_cheat_safe(arg0, arg1);	最后集成到va里面的时候，开启cheat和do cheat是在一个线程
+		
+		pthread_attr_t attr;
+		pthread_attr_init(&attr);
+		pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+		pthread_create(&cheat_thread, &attr, threadProcCheat, NULL);//只是为了测试用的
+		后面开启cheat是在线程threadProcCheat
+		因此会出现偶然崩溃
+	}
