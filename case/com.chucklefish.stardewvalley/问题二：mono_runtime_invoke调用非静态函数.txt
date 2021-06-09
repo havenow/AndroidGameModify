@@ -1,0 +1,56 @@
+typedef MonoObject* (*mono_runtime_invoke_t)(MonoMethod* method, void* obj, MonoArray* params, MonoObject** exc);
+
+ * @obJ: object instance					it should be NULL for static methods
+obj is the 'this' pointer, it should be NULL for static
+ methods, a MonoObject* for object instances and a pointer to
+ the value type for value types.
+
+
+通过mono_object_new，是创建一个新的对象，只创建内存
+一般后面会调用mono_runtime_object_init来调用构造函数
+
+
+调动非静态函数的一种方案：通过静态函数获取对象
+MonoObject* get_game_player()
+{
+	void* pClassGame1 = mono_class_from_name(_pDllImage, "StardewValley", "Game1");
+	void* methodGet_player = NULL;
+	//LOGE("get_game_player\n");
+	methodGet_player = mono_class_get_method_from_name(pClassGame1, "get_player", 0);
+	return mono_runtime_invoke(methodGet_player, NULL, NULL, NULL);
+}
+
+
+有了对象，就可以通过mono_runtime_invoke调用非静态函数
+void cheat_money_max()
+{
+	MonoObject* player = get_game_player();
+	if (player == NULL)
+		return;
+	LOGE("cheat_money_max begin\n");
+	void* pClassFarmer = mono_class_from_name(_pDllImage, "StardewValley", "Farmer");
+	
+	void* method_get_money = NULL;
+	method_get_money = mono_class_get_method_from_name(pClassFarmer, "get_money", 0);
+	if (method_get_money == NULL) LOGE("method_get_money == NULL\n");
+	void* retval = mono_runtime_invoke(method_get_money, player, NULL, NULL);
+	if (!retval)	LOGE("get_money return null\n");
+	LOGE("invoke get_money\n");
+	int res = {0};
+	res = *(int *) mono_object_unbox(retval);
+	LOGE("get money %d\n", res);
+	
+	void* method_set_money = NULL;
+	method_set_money = mono_class_get_method_from_name(pClassFarmer, "set_money", 1);
+	void *arg_ptrs[1];
+	int money = 99999999;
+	arg_ptrs[0] = &money;
+	LOGE("bbb\n");
+	mono_runtime_invoke(method_set_money, player, arg_ptrs, NULL);
+	
+	LOGE("cheat_money_max end\n");
+}
+
+
+
+
