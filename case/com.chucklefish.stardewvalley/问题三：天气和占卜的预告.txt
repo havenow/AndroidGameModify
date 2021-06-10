@@ -1,0 +1,34 @@
+getFortuneForecast getWeatherForecast两个函数使用的变量都是static的
+使用mono_object_new，可以获取到当前的Forecast？ 
+public static string currentSeason = "spring";
+public static double dailyLuck = 0.001;
+public static LocalizedContentManager content;
+public static int weatherForTomorrow; 
+
+
+void cheat_weatherFortuneForecast(int index)
+{
+	LOGE("cheat_weatherFortuneForecast begin\n");
+	MonoClass* pClass = mono_class_from_name(_pDllImage, "StardewValley", "Game1");
+	MonoMethod* methodShowMsg = mono_class_get_method_from_name(pClass, "showGlobalMessage", 1);//static function with args
+	if (!methodShowMsg)	LOGE("methodShowMsg null\n");
+	
+	MonoClass* pClassTV = mono_class_from_name(_pDllImage, "StardewValley.Objects", "TV");
+	MonoMethod* methodForecast = NULL;
+	if (1 == index)
+		methodForecast = mono_class_get_method_from_name(pClassTV, "getFortuneForecast", 0);//not static virtual function without args
+	else
+		methodForecast = mono_class_get_method_from_name(pClassTV, "getWeatherForecast", 0);
+	if (!methodForecast)	LOGE("methodForecast null\n");
+
+	MonoObject *pObj = NULL;
+	pObj = mono_object_new(mono_domain_get(), pClassTV/*mono_method_get_class(methodForecast)*/);
+	void* obj = mono_runtime_invoke(methodForecast,pObj, NULL, NULL);//MonoString*
+	if (!obj)	LOGE("getWeatherForecast return null\n");
+	char* str = mono_string_to_utf8(obj);
+	LOGE("###### forecast: %s\n", str);
+	void *arg_ptrs[1];
+	arg_ptrs[0] = obj;
+	mono_runtime_invoke(methodShowMsg, NULL, arg_ptrs, NULL);
+	LOGE("cheat_weatherFortuneForecast end\n");
+}
