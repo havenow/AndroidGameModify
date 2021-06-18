@@ -1,0 +1,30 @@
+AndroidXRef.com
+选择4.4.2_r2代码
+Definition: DexClassLoader	In Project(s): libcore
+
+xref: /libcore/dalvik/src/main/java/dalvik/system/DexClassLoader.java
+
+public class DexClassLoader extends BaseDexClassLoader {
+    public DexClassLoader(String dexPath, String optimizedDirectory,
+            String libraryPath, ClassLoader parent) {
+        super(dexPath, new File(optimizedDirectory), libraryPath, parent);
+    }
+}
+
+
+public class BaseDexClassLoader extends ClassLoader {
+
+
+/libcore/libart/src/main/java/java/lang/ClassLoader.java	4.4开始引入了art
+/libcore/libdvm/src/main/java/java/lang/ClassLoader.java
+
+这里先看/libcore/libdvm/src/main/java/java/lang/ClassLoader.java	dalvik下的ClassLoader
+
+
+/libcore/dalvik/src/main/java/dalvik/system/DexPathList.java	 makeDexElements
+
+
+
+
+
+
