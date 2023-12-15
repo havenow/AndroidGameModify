@@ -61,4 +61,28 @@ x9~x15是临时寄存器，从它们的功能来看是可以使用的，如果�
 我们能使用的就是x16~x18寄存器。
 x16、x17在PLT Hook中会用到，在LLVM中，x16、x17寄存器可以做一些传值的处理。
 唯一没有使用的是x18寄存器，它是一个平台寄存器，如果不是LLVM，那么就使用x16、x17寄存器，否则使用x18寄存器。
+
+2、3种寄存器赋值的方案
+MOV
+小位赋值，它可以给寄存器赋值，但是一旦赋值位数变长，它就会越界。
+
+ADRP
+使用ADRP的方式需要对页进行对齐，所以也不可行。
+
+LDR
+LDR赋值方式为LDR x16,4，4代表偏移。
+将当前地址偏移4之后，地址中的数据存到寄存器x16中。
+```
+
+```
+选择正确的指令、寄存器以及赋值方案后，就可以编码进行跳转
+
+int code1 = 0x50000058; // ldr x16, #8
+int code2 = 0xdf160200; // br x16
+long code3 = reinterpret_cast<long>(myreplace); // 待跳转的地址
+
+// 将code1 code2 code3分别赋值给需要Hook的函数的前三条指令
+*(int*)((char*)loadMethod) = code1;
+*(int*)((char*)loadMethod +4) = code1;
+*(int*)((char*)loadMethod +8) = code1;
 ```
